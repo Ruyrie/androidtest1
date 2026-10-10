@@ -29,11 +29,14 @@ public final class LocalTaskRepository implements TaskRepository {
     private final Context app;
     private final AppDatabase db;
     private final CurrentUser user;
+    /** 完成今日农事按 PointsRules 奖励积分（M5 实现） */
+    private final PointsRepository points;
 
-    public LocalTaskRepository(Context app, AppDatabase db, CurrentUser user) {
+    public LocalTaskRepository(Context app, AppDatabase db, CurrentUser user, PointsRepository points) {
         this.app = app;
         this.db = db;
         this.user = user;
+        this.points = points;
     }
 
     private static ZoneId zone() {

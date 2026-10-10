@@ -7,19 +7,33 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.heban.app.data.local.dao.AppealDao;
+import com.heban.app.data.local.dao.ChatDao;
 import com.heban.app.data.local.dao.CropDao;
 import com.heban.app.data.local.dao.FarmRecordDao;
 import com.heban.app.data.local.dao.FarmTaskDao;
+import com.heban.app.data.local.dao.FavoriteDao;
 import com.heban.app.data.local.dao.LedgerDao;
+import com.heban.app.data.local.dao.PestDao;
 import com.heban.app.data.local.dao.PlotDao;
+import com.heban.app.data.local.dao.PointsDao;
+import com.heban.app.data.local.dao.ProductDao;
+import com.heban.app.data.local.dao.ScanRecordDao;
 import com.heban.app.data.local.dao.UserDao;
 import com.heban.app.data.local.dao.WeatherDao;
 import com.heban.app.data.local.entity.AppealEntity;
+import com.heban.app.data.local.entity.ChatMessageEntity;
+import com.heban.app.data.local.entity.ChatSessionEntity;
+import com.heban.app.data.local.entity.CheckinEntity;
 import com.heban.app.data.local.entity.CropEntity;
 import com.heban.app.data.local.entity.FarmRecordEntity;
 import com.heban.app.data.local.entity.FarmTaskEntity;
+import com.heban.app.data.local.entity.FavoriteEntity;
 import com.heban.app.data.local.entity.LedgerEntryEntity;
+import com.heban.app.data.local.entity.PestEntity;
 import com.heban.app.data.local.entity.PlotEntity;
+import com.heban.app.data.local.entity.PointsTxnEntity;
+import com.heban.app.data.local.entity.ProductEntity;
+import com.heban.app.data.local.entity.ScanRecordEntity;
 import com.heban.app.data.local.entity.UserEntity;
 import com.heban.app.data.local.entity.WeatherCacheEntity;
 
@@ -30,8 +44,10 @@ import com.heban.app.data.local.entity.WeatherCacheEntity;
 @Database(entities = {
         UserEntity.class, AppealEntity.class,
         PlotEntity.class, CropEntity.class, FarmRecordEntity.class, FarmTaskEntity.class,
-        LedgerEntryEntity.class, WeatherCacheEntity.class
-}, version = 2, exportSchema = false)
+        LedgerEntryEntity.class, WeatherCacheEntity.class,
+        ChatSessionEntity.class, ChatMessageEntity.class, ScanRecordEntity.class, PestEntity.class,
+        ProductEntity.class, FavoriteEntity.class, CheckinEntity.class, PointsTxnEntity.class
+}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
 
@@ -48,6 +64,18 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract LedgerDao ledgerDao();
 
     public abstract WeatherDao weatherDao();
+
+    public abstract ChatDao chatDao();
+
+    public abstract ScanRecordDao scanRecordDao();
+
+    public abstract PestDao pestDao();
+
+    public abstract ProductDao productDao();
+
+    public abstract FavoriteDao favoriteDao();
+
+    public abstract PointsDao pointsDao();
 
     private static volatile AppDatabase instance;
 

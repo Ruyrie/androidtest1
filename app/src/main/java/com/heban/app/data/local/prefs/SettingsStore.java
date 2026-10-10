@@ -45,6 +45,21 @@ public final class SettingsStore implements SessionStore {
     public static final Preferences.Key<Boolean> NOTIFY_DM = PreferencesKeys.booleanKey("notify.dm");
     public static final Preferences.Key<Integer> NOTIFY_DND_START = PreferencesKeys.intKey("notify.dnd_start");
     public static final Preferences.Key<Integer> NOTIFY_DND_END = PreferencesKeys.intKey("notify.dnd_end");
+    // AI 助手（M11）：回答风格 BRIEF / DETAIL / PLAIN，参考内容开关，保存对话
+    public static final Preferences.Key<String> AI_STYLE = PreferencesKeys.stringKey("ai.style");
+    public static final Preferences.Key<Boolean> AI_USE_CROPS = PreferencesKeys.booleanKey("ai.use_crops");
+    public static final Preferences.Key<Boolean> AI_USE_WEATHER = PreferencesKeys.booleanKey("ai.use_weather");
+    public static final Preferences.Key<Boolean> AI_SAVE_HISTORY = PreferencesKeys.booleanKey("ai.save_history");
+    // 模型服务（M11 新增）；Key 经 SecureStore 加密后保存
+    public static final Preferences.Key<Boolean> LLM_ENABLED = PreferencesKeys.booleanKey("llm.enabled");
+    public static final Preferences.Key<String> LLM_PROVIDER = PreferencesKeys.stringKey("llm.provider");
+    public static final Preferences.Key<String> LLM_BASE_URL = PreferencesKeys.stringKey("llm.base_url");
+    public static final Preferences.Key<String> LLM_CHAT_MODEL = PreferencesKeys.stringKey("llm.chat_model");
+    public static final Preferences.Key<String> LLM_VISION_MODEL = PreferencesKeys.stringKey("llm.vision_model");
+    public static final Preferences.Key<String> LLM_API_KEY_ENC = PreferencesKeys.stringKey("llm.api_key_enc");
+    // 模拟数据导入版本
+    public static final Preferences.Key<Integer> MOCK_IMPORTED_VERSION =
+            PreferencesKeys.intKey("mock.imported_version");
     public static final int DEFAULT_DND_START = 22 * 60;
     public static final int DEFAULT_DND_END = 6 * 60 + 30;
 

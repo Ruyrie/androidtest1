@@ -52,5 +52,8 @@ public class HeBanApp extends Application {
         } catch (IllegalStateException e) {
             Log.w(TAG, "WorkManager not initialized", e);
         }
+        // 共享的模拟内容（百科、集市、农友圈……）首次启动时后台导入
+        //noinspection ResultOfMethodCallIgnored
+        container.mockImporter.importIfNeeded().subscribe(() -> { }, e -> Log.w(TAG, "Mock import failed", e));
     }
 }

@@ -6,19 +6,34 @@ import com.google.gson.Gson;
 import com.heban.app.BuildConfig;
 import com.heban.app.data.local.db.AppDatabase;
 import com.heban.app.data.local.prefs.CurrentUser;
+import com.heban.app.data.mock.MockDataImporter;
 import com.heban.app.data.local.prefs.SecureStore;
 import com.heban.app.data.local.prefs.SettingsStore;
 import com.heban.app.data.remote.NetworkModule;
 import com.heban.app.data.remote.sms.SmsService;
 import com.heban.app.data.remote.sms.SmsServices;
+import com.heban.app.data.repository.AiRepository;
 import com.heban.app.data.repository.CropRepository;
+import com.heban.app.data.repository.FavoriteRepository;
 import com.heban.app.data.repository.LedgerRepository;
+import com.heban.app.data.repository.LlmAiRepository;
+import com.heban.app.data.repository.LlmVisionRepository;
 import com.heban.app.data.repository.LocalCropRepository;
+import com.heban.app.data.repository.LocalFavoriteRepository;
 import com.heban.app.data.repository.LocalLedgerRepository;
+import com.heban.app.data.repository.LocalMarketRepository;
+import com.heban.app.data.repository.LocalModelServiceRepository;
+import com.heban.app.data.repository.LocalPestRepository;
+import com.heban.app.data.repository.LocalPointsRepository;
 import com.heban.app.data.repository.LocalTaskRepository;
+import com.heban.app.data.repository.MarketRepository;
+import com.heban.app.data.repository.ModelServiceRepository;
+import com.heban.app.data.repository.PestRepository;
+import com.heban.app.data.repository.PointsRepository;
 import com.heban.app.data.repository.QWeatherRepository;
 import com.heban.app.data.repository.TaskRepository;
 import com.heban.app.data.repository.UserRepository;
+import com.heban.app.data.repository.VisionRepository;
 import com.heban.app.data.repository.WeatherRepository;
 import com.heban.app.util.Notifier;
 
@@ -37,6 +52,7 @@ public final class AppContainer {
     public final OkHttpClient baseClient;
     public final CurrentUser currentUser;
     public final Notifier notifier;
+    public final MockDataImporter mockImporter;
     /** 当前 flavor 的数据来源："mock" 或 "remote" */
     public final String dataSource = RepositoryModule.DATA_SOURCE;
 
@@ -48,6 +64,13 @@ public final class AppContainer {
     public TaskRepository taskRepository;
     public LedgerRepository ledgerRepository;
     public WeatherRepository weatherRepository;
+    public PointsRepository pointsRepository;
+    public FavoriteRepository favoriteRepository;
+    public PestRepository pestRepository;
+    public MarketRepository marketRepository;
+    public ModelServiceRepository modelServiceRepository;
+    public AiRepository aiRepository;
+    public VisionRepository visionRepository;
 
     public AppContainer(Context context) {
         app = context.getApplicationContext();
@@ -56,15 +79,25 @@ public final class AppContainer {
         baseClient = NetworkModule.baseClient(BuildConfig.DEBUG);
         currentUser = new CurrentUser(settings);
         notifier = new Notifier(app, settings);
+        mockImporter = new MockDataImporter(app, db, settings, gson);
 
         smsService = SmsServices.create(baseClient, gson);   // aliyun 或 fake
 
         userRepository = RepositoryModule.userRepository(this);
 
+        pointsRepository = new LocalPointsRepository(db, currentUser);
         cropRepository = new LocalCropRepository(app, db, currentUser, gson);
-        taskRepository = new LocalTaskRepository(app, db, currentUser);
-        ledgerRepository = new LocalLedgerRepository(db, currentUser);
+        taskRepository = new LocalTaskRepository(app, db, currentUser, pointsRepository);
+        ledgerRepository = new LocalLedgerRepository(db, currentUser, pointsRepository);
         weatherRepository = new QWeatherRepository(app, baseClient, gson, db, settings,
                 userRepository, cropRepository);
+        favoriteRepository = new LocalFavoriteRepository(db, currentUser);
+        pestRepository = new LocalPestRepository(db);
+        marketRepository = new LocalMarketRepository(db, currentUser, pointsRepository);
+        modelServiceRepository = new LocalModelServiceRepository(baseClient, gson, settings, secureStore);
+        aiRepository = new LlmAiRepository(app, baseClient, gson, db, settings, secureStore, currentUser,
+                userRepository, cropRepository, weatherRepository);
+        visionRepository = new LlmVisionRepository(app, baseClient, gson, db, settings, secureStore,
+                currentUser, pestRepository, cropRepository);
     }
 }
