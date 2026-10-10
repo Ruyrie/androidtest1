@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A07 / A08 / A09 页面根布局的主题覆盖 -->
+<resources>
+    <!--
+        中文字形来自回退字体，默认的 fallbackLineSpacing 会按回退字体撑高行距（16sp 正文约 28dp），
+        与原型的行高（16/24、14/20、12/16）不一致。这里让页面内所有 TextView（含输入框内部的
+        占位文字、帮助文字）按主字体行高排版。
+    -->
+    <style name="ThemeOverlay.HeBan.Reset" parent="">
+        <item name="android:textViewStyle">@style/Widget.HeBan.Reset.TextView</item>
+    </style>
+
+    <style name="Widget.HeBan.Reset.TextView" parent="Widget.AppCompat.TextView">
+        <item name="android:fallbackLineSpacing">false</item>
+    </style>
+</resources>

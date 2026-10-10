@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A09 手机号已停用 · 申诉换绑（原型 PhoneAppeal.dc.html）：1 账号信息 → 2 验证新手机号 → 3 已提交 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.heban.app.ui.account.PhoneAppealViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:theme="@style/ThemeOverlay.HeBan.Reset">
+
+        <!-- 第 1、2 步 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:visible="@{vm.step != 3}">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                style="@style/Widget.HeBan.Toolbar"
+                android:layout_width="match_parent"
+                app:navigationContentDescription="@{vm.step == 2 ? @string/appeal_back_step : @string/back}"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:title="@string/appeal_title" />
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="24dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="@dimen/section_gap">
+
+                    <com.heban.app.ui.common.StepIndicatorView
+                        android:id="@+id/steps"
+                        android:layout_width="match_parent"
+                        android:layout_height="28dp"
+                        android:entries="@array/appeal_steps"
+                        app:currentStep="@{vm.step}" />
+
+                    <!-- 第 1 步：账号信息 -->
+                    <LinearLayout
+                        android:id="@+id/group_step1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:visible="@{vm.step == 1}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:text="@string/appeal_intro"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <!-- 浮动标签占用顶部约 5dp，间距相应减小，使边框间距与原型的 22dp 一致（段落末行没有行距，再补 2dp） -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_old_phone"
+                            style="@style/Widget.HeBan.TextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="19dp"
+                            android:hint="@string/appeal_label_old_phone"
+                            app:expandedHintEnabled="false"
+                            app:placeholderText="@string/appeal_hint_old_phone"
+                            app:placeholderTextColor="?attr/colorOutline"
+                            app:prefixText="@string/reset_phone_prefix"
+                            app:prefixTextAppearance="?attr/textAppearanceBodyLarge"
+                            app:prefixTextColor="?attr/colorOnSurfaceVariant">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_old_phone"
+                                android:fallbackLineSpacing="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="0123456789"
+                                android:imeOptions="actionNext"
+                                android:inputType="phone"
+                                android:maxLength="11"
+                                android:text="@={vm.oldPhone}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_nickname"
+                            style="@style/Widget.HeBan.TextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="17dp"
+                            android:hint="@string/appeal_label_nickname"
+                            app:expandedHintEnabled="false"
+                            app:placeholderText="@string/appeal_hint_nickname"
+                            app:placeholderTextColor="?attr/colorOutline">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_nickname"
+                                android:fallbackLineSpacing="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:imeOptions="actionDone"
+                                android:inputType="text"
+                                android:maxLength="20"
+                                android:text="@={vm.nickname}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="17dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/til_last_login"
+                                style="@style/Widget.HeBan.TextInputLayout.Dropdown"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/appeal_label_last_login">
+
+                                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                                    android:id="@+id/act_last_login"
+                                    android:fallbackLineSpacing="false"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="none"
+                                    android:saveEnabled="false"
+                                    app:simpleItems="@array/appeal_last_login_options" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/til_region"
+                                style="@style/Widget.HeBan.TextInputLayout.Dropdown"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:layout_weight="1"
+                                android:hint="@string/appeal_label_region">
+
+                                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                                    android:id="@+id/act_region"
+                                    android:fallbackLineSpacing="false"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="none"
+                                    android:saveEnabled="false"
+                                    app:simpleItems="@array/appeal_region_options" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_next"
+                            style="@style/Widget.HeBan.Button"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:layout_marginTop="22dp"
+                            android:enabled="@{vm.canNext}"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:onClick="@{() -> vm.next()}"
+                            android:text="@string/appeal_next"
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
+                    </LinearLayout>
+
+                    <!-- 第 2 步：验证新手机号 -->
+                    <LinearLayout
+                        android:id="@+id/group_step2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:visible="@{vm.step == 2}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="22dp"
+                            android:text="@string/appeal_intro_new"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_new_phone"
+                            style="@style/Widget.HeBan.TextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="19dp"
+                            android:hint="@string/appeal_label_new_phone"
+                            app:expandedHintEnabled="false"
+                            app:placeholderText="@string/reset_hint_phone"
+                            app:placeholderTextColor="?attr/colorOutline"
+                            app:prefixText="@string/reset_phone_prefix"
+                            app:prefixTextAppearance="?attr/textAppearanceBodyLarge"
+                            app:prefixTextColor="?attr/colorOnSurfaceVariant">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_new_phone"
+                                android:fallbackLineSpacing="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="0123456789"
+                                android:imeOptions="actionNext"
+                                android:inputType="phone"
+                                android:maxLength="11"
+                                android:text="@={vm.newPhone}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_code"
+                            style="@style/Widget.HeBan.TextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="17dp"
+                            android:hint="@string/reset_label_code"
+                            app:expandedHintEnabled="false"
+                            app:helperText="@{vm.samePhone ? @string/appeal_same_phone : (vm.sentMasked == null ? @string/appeal_code_hint : @string/appeal_code_sent(vm.sentMasked))}"
+                            app:placeholderText="@string/reset_hint_code"
+                            app:placeholderTextColor="?attr/colorOutline">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_code"
+                                android:fallbackLineSpacing="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:autofillHints="smsOTPCode"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:maxLength="6"
+                                android:text="@={vm.code}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- 框内「竖线 + 获取验证码」，由 Fragment 移入验证码输入框 -->
+                        <LinearLayout
+                            android:id="@+id/code_action"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="?attr/colorOutlineVariant" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_send"
+                                style="@style/Widget.HeBan.Button.Text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_marginEnd="4dp"
+                                android:enabled="@{vm.canSendCode}"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:minWidth="0dp"
+                                android:onClick="@{() -> vm.sendCode()}"
+                                android:paddingHorizontal="12dp"
+                                android:text="@{vm.countdown.buttonText}"
+                                android:textAppearance="?attr/textAppearanceLabelLarge"
+                                android:textColor="@color/reset_code_action_text" />
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_submit"
+                            style="@style/Widget.HeBan.Button"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:layout_marginTop="22dp"
+                            android:enabled="@{vm.canSubmit}"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:onClick="@{() -> vm.submit()}"
+                            android:text="@string/appeal_submit"
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+
+        <!-- 第 3 步：申诉已提交 -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:visible="@{vm.step == 3}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="64dp"
+                android:paddingBottom="@dimen/section_gap">
+
+                <FrameLayout
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/reset_bg_circle"
+                    android:backgroundTint="?attr/colorWarningContainer">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_hourglass_top_fill"
+                        app:tint="?attr/colorOnWarningContainer" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="@string/appeal_done_title"
+                    android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <TextView
+                    android:id="@+id/tv_appeal_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="@{@string/appeal_done_no(vm.appealNo)}"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textIsSelectable="true" />
+
+                <!-- 进度时间线 -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.Material3.CardView.Filled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+                    app:cardCornerRadius="@dimen/corner_large">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="18dp">
+
+                        <!-- ✓ 已提交 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="24dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="22dp"
+                                    android:layout_height="22dp"
+                                    android:layout_marginTop="1dp"
+                                    android:importantForAccessibility="no"
+                                    android:src="@drawable/ic_check_circle_fill"
+                                    app:tint="?attr/colorPrimary" />
+
+                                <View
+                                    android:layout_width="2dp"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1"
+                                    android:background="?attr/colorOutlineVariant"
+                                    android:minHeight="20dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="14dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:paddingBottom="14dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/appeal_tl_submitted"
+                                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                                    android:textColor="?attr/colorOnSurface" />
+
+                                <TextView
+                                    android:id="@+id/tv_tl_submitted"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:lineHeight="18sp"
+                                    android:text="@{@string/appeal_tl_submitted_desc(vm.submittedOldMasked, vm.submittedNewMasked)}"
+                                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textSize="13sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- ◷ 人工审核中 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="24dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="22dp"
+                                    android:layout_height="22dp"
+                                    android:layout_marginTop="1dp"
+                                    android:importantForAccessibility="no"
+                                    android:src="@drawable/ic_pending"
+                                    app:tint="?attr/colorWarning" />
+
+                                <View
+                                    android:layout_width="2dp"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1"
+                                    android:background="?attr/colorOutlineVariant"
+                                    android:minHeight="20dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="14dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:paddingBottom="14dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/appeal_tl_reviewing"
+                                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                                    android:textColor="?attr/colorOnSurface" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:lineHeight="18sp"
+                                    android:text="@string/appeal_tl_reviewing_desc"
+                                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textSize="13sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- ○ 审核结果 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="22dp"
+                                android:layout_marginTop="1dp"
+                                android:importantForAccessibility="no"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_radio_button_unchecked"
+                                app:tint="?attr/colorOutline" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="14dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/appeal_tl_result"
+                                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:lineHeight="18sp"
+                                    android:text="@string/appeal_tl_result_desc"
+                                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textSize="13sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_back_login"
+                    style="@style/Widget.HeBan.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="28dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/appeal_back_login"
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </FrameLayout>
+</layout>

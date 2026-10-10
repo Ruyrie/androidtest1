@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A07 忘记密码 · 验证手机（原型 ForgotPwd.dc.html） -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.heban.app.ui.account.ResetPwdViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:theme="@style/ThemeOverlay.HeBan.Reset"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.HeBan.Toolbar"
+            android:layout_width="match_parent"
+            app:navigationContentDescription="@string/back"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/reset_forgot_title" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="@dimen/section_gap">
+
+                <com.heban.app.ui.common.StepIndicatorView
+                    android:id="@+id/steps"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:entries="@array/reset_steps"
+                    app:currentStep="@{1}" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/section_gap"
+                    android:text="@string/reset_forgot_intro"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <!-- 输入框的浮动标签占用顶部约 5dp，间距相应减小，使边框间距与原型的 24dp 一致（段落末行没有行距，再补 2dp） -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_phone"
+                    style="@style/Widget.HeBan.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21dp"
+                    android:hint="@string/reset_label_phone"
+                    app:expandedHintEnabled="false"
+                    app:placeholderText="@string/reset_hint_phone"
+                    app:placeholderTextColor="?attr/colorOutline"
+                    app:prefixText="@string/reset_phone_prefix"
+                    app:prefixTextAppearance="?attr/textAppearanceBodyLarge"
+                    app:prefixTextColor="?attr/colorOnSurfaceVariant">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_phone"
+                        android:fallbackLineSpacing="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789 "
+                        android:imeOptions="actionNext"
+                        android:importantForAutofill="yes"
+                        android:autofillHints="phoneNumber"
+                        android:inputType="phone"
+                        android:maxLength="13"
+                        android:text="@={vm.phone}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_code"
+                    style="@style/Widget.HeBan.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp"
+                    android:hint="@string/reset_label_code"
+                    app:expandedHintEnabled="false"
+                    app:helperText="@{vm.sentMasked == null ? null : @string/reset_code_sent_to(vm.sentMasked)}"
+                    app:placeholderText="@string/reset_hint_code"
+                    app:placeholderTextColor="?attr/colorOutline">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_code"
+                        android:fallbackLineSpacing="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="smsOTPCode"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:text="@={vm.code}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 框内「竖线 + 获取验证码」，由 Fragment 移入验证码输入框 -->
+                <LinearLayout
+                    android:id="@+id/code_action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="?attr/colorOutlineVariant" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_send"
+                        style="@style/Widget.HeBan.Button.Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="4dp"
+                        android:enabled="@{vm.canSendCode}"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:minWidth="0dp"
+                        android:onClick="@{() -> vm.sendCode()}"
+                        android:paddingHorizontal="12dp"
+                        android:text="@{vm.countdown.buttonText}"
+                        android:textAppearance="?attr/textAppearanceLabelLarge"
+                        android:textColor="@color/reset_code_action_text" />
+                </LinearLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_appeal"
+                    style="@style/Widget.Material3.CardView.Filled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/section_gap"
+                    android:contentDescription="@string/reset_help_cd"
+                    app:cardBackgroundColor="?attr/colorTertiaryContainer"
+                    app:cardCornerRadius="@dimen/corner_medium">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_help"
+                            app:tint="?attr/colorOnTertiaryContainer" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:text="@string/reset_help_text"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?attr/colorOnTertiaryContainer" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:text="@string/reset_help_action"
+                            android:textAppearance="?attr/textAppearanceTitleSmall"
+                            android:textColor="?attr/colorTertiary" />
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="?attr/colorTertiary" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_next"
+                    style="@style/Widget.HeBan.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="@dimen/section_gap"
+                    android:enabled="@{vm.canNext}"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:onClick="@{() -> vm.next()}"
+                    android:text="@string/reset_next"
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 密码强度条的一格：高 4dp、圆角 2dp（颜色用 backgroundTint 指定） -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/white" />
+    <corners android:radius="2dp" />
+</shape>

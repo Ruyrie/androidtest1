@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A08 设置新密码（原型 ResetPwd.dc.html）：输入状态 + 「密码已重置」成功状态 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.heban.app.ui.account.ResetPwdViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:theme="@style/ThemeOverlay.HeBan.Reset">
+
+        <!-- 输入状态 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:visible="@{!vm.done}">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                style="@style/Widget.HeBan.Toolbar"
+                android:layout_width="match_parent"
+                app:navigationContentDescription="@string/back"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:title="@string/reset_new_title" />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="24dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="@dimen/section_gap">
+
+                    <com.heban.app.ui.common.StepIndicatorView
+                        android:id="@+id/steps"
+                        android:layout_width="match_parent"
+                        android:layout_height="28dp"
+                        android:entries="@array/reset_steps"
+                        app:currentStep="@{2}" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_new_pwd"
+                        style="@style/Widget.HeBan.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="19dp"
+                        android:hint="@string/reset_label_new_pwd"
+                        app:endIconDrawable="@drawable/reset_password_eye"
+                        app:endIconMode="password_toggle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_new_pwd"
+                            android:fallbackLineSpacing="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="newPassword"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPassword"
+                            android:maxLength="20"
+                            android:text="@={vm.newPwd}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- 强度条：三格 + 「强度：强」 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="4dp">
+
+                        <View
+                            android:id="@+id/seg1"
+                            android:layout_width="0dp"
+                            android:layout_height="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/reset_bg_segment"
+                            android:backgroundTint="?attr/colorSurfaceContainerHighest" />
+
+                        <View
+                            android:id="@+id/seg2"
+                            android:layout_width="0dp"
+                            android:layout_height="4dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/reset_bg_segment"
+                            android:backgroundTint="?attr/colorSurfaceContainerHighest" />
+
+                        <View
+                            android:id="@+id/seg3"
+                            android:layout_width="0dp"
+                            android:layout_height="4dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/reset_bg_segment"
+                            android:backgroundTint="?attr/colorSurfaceContainerHighest" />
+
+                        <TextView
+                            android:id="@+id/tv_strength"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@{@string/reset_strength(vm.strength.label())}"
+                            android:textAppearance="?attr/textAppearanceLabelMedium"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_confirm_pwd"
+                        style="@style/Widget.HeBan.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="19dp"
+                        android:hint="@string/reset_label_confirm_pwd"
+                        app:endIconDrawable="@drawable/ic_check_circle_fill"
+                        app:endIconMode="custom"
+                        app:endIconTint="?attr/colorPrimary"
+                        app:errorIconDrawable="@null"
+                        app:helperText="@string/reset_confirm_hint">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_confirm_pwd"
+                            android:fallbackLineSpacing="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="newPassword"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:maxLength="20"
+                            android:text="@={vm.confirmPwd}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- 密码规则 -->
+                    <com.google.android.material.card.MaterialCardView
+                        style="@style/Widget.Material3.CardView.Filled"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/section_gap"
+                        app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+                        app:cardCornerRadius="@dimen/corner_medium">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="14dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/ic_rule_length"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:importantForAccessibility="no"
+                                    android:src="@drawable/ic_radio_button_unchecked" />
+
+                                <TextView
+                                    android:id="@+id/tv_rule_length"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="@string/reset_rule_length"
+                                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                                    android:textColor="?attr/colorOnSurface" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/ic_rule_mix"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:importantForAccessibility="no"
+                                    android:src="@drawable/ic_radio_button_unchecked" />
+
+                                <TextView
+                                    android:id="@+id/tv_rule_mix"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="@string/reset_rule_mix"
+                                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                                    android:textColor="?attr/colorOnSurface" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/ic_rule_recent"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:importantForAccessibility="no"
+                                    android:src="@drawable/ic_radio_button_unchecked" />
+
+                                <TextView
+                                    android:id="@+id/tv_rule_recent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="@string/reset_rule_recent"
+                                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                                    android:textColor="?attr/colorOnSurface" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_finish"
+                        style="@style/Widget.HeBan.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="@dimen/section_gap"
+                        android:enabled="@{vm.canFinish}"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:onClick="@{() -> vm.finish()}"
+                        android:text="@string/reset_finish"
+                        android:textAppearance="?attr/textAppearanceTitleMedium" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+
+        <!-- 成功状态：密码已重置 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:visible="@{vm.done}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="32dp">
+
+                <FrameLayout
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:background="@drawable/reset_bg_circle"
+                    android:backgroundTint="?attr/colorPrimaryContainer">
+
+                    <ImageView
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_lock_reset_fill"
+                        app:tint="?attr/colorOnPrimaryContainer" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/section_gap"
+                    android:gravity="center"
+                    android:text="@string/reset_done_title"
+                    android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="@string/reset_done_desc"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_login"
+                style="@style/Widget.HeBan.Button"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="40dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/reset_go_login"
+                android:textAppearance="?attr/textAppearanceTitleMedium" />
+        </LinearLayout>
+    </FrameLayout>
+</layout>
