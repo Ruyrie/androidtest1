@@ -1,5 +1,8 @@
 package com.heban.app.di;
 
+import com.heban.app.BuildConfig;
+import com.heban.app.data.remote.NetworkModule;
+import com.heban.app.data.remote.api.HeBanApi;
 import com.heban.app.data.repository.RemoteUserRepository;
 import com.heban.app.data.repository.UserRepository;
 
@@ -13,6 +16,12 @@ public final class RepositoryModule {
     }
 
     public static UserRepository userRepository(AppContainer c) {
-        return new RemoteUserRepository(c.db, c.settings, c.secureStore, c.smsService);
+        return new RemoteUserRepository(heBanApi(c), c.db.userDao(), c.settings, c.secureStore);
+    }
+
+    /** 禾伴后端接口，地址为 BuildConfig.API_BASE_URL */
+    private static HeBanApi heBanApi(AppContainer c) {
+        return NetworkModule.retrofit(BuildConfig.API_BASE_URL, c.baseClient, c.gson)
+                .create(HeBanApi.class);
     }
 }

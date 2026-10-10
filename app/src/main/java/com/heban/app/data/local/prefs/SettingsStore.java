@@ -3,6 +3,7 @@ package com.heban.app.data.local.prefs;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.datastore.preferences.core.MutablePreferences;
 import androidx.datastore.preferences.core.Preferences;
@@ -18,7 +19,7 @@ import io.reactivex.rxjava3.core.Single;
  * 设置项与登录态（DataStore Preferences，技术准备文档 7.3）。
  * 整个 App 只创建一个实例，放在 AppContainer 中。
  */
-public final class SettingsStore {
+public final class SettingsStore implements SessionStore {
     // 登录态
     public static final Preferences.Key<Long> SESSION_USER_ID = PreferencesKeys.longKey("session.user_id");
     public static final Preferences.Key<String> SESSION_TOKEN = PreferencesKeys.stringKey("session.token");
@@ -92,5 +93,59 @@ public final class SettingsStore {
 
     public boolean onboardingDone() {
         return peek(ONBOARDING_DONE, false);
+    }
+
+    // —— SessionStore：登录态 ——
+
+    @Override
+    public Flowable<Long> observeSessionUserId() {
+        return observe(SESSION_USER_ID, 0L);
+    }
+
+    @Override
+    public Single<String> sessionToken() {
+        return get(SESSION_TOKEN, "");
+    }
+
+    @Override
+    public Completable saveSession(long userId, @Nullable String encryptedToken) {
+        return store.updateDataAsync(p -> {
+            MutablePreferences m = p.toMutablePreferences();
+            m.set(SESSION_USER_ID, userId);
+            if (encryptedToken != null) {
+                m.set(SESSION_TOKEN, encryptedToken);
+            } else {
+                m.remove(SESSION_TOKEN);
+            }
+            m.set(SESSION_GUEST, false);
+            m.set(ONBOARDING_DONE, true);
+            return Single.just(m);
+        }).ignoreElement();
+    }
+
+    @Override
+    public Completable clearSession() {
+        return store.updateDataAsync(p -> {
+            MutablePreferences m = p.toMutablePreferences();
+            m.remove(SESSION_USER_ID);
+            m.remove(SESSION_TOKEN);
+            m.remove(SESSION_GUEST);
+            return Single.just(m);
+        }).ignoreElement();
+    }
+
+    @Override
+    public Completable saveGuest() {
+        return store.updateDataAsync(p -> {
+            MutablePreferences m = p.toMutablePreferences();
+            m.set(SESSION_GUEST, true);
+            m.set(ONBOARDING_DONE, true);
+            return Single.just(m);
+        }).ignoreElement();
+    }
+
+    @Override
+    public Completable saveOnboardingDone() {
+        return put(ONBOARDING_DONE, true);
     }
 }

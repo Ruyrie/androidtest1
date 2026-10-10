@@ -24,6 +24,8 @@ public interface UserRepository {
         public static final String PHONE_EXISTS = "PHONE_EXISTS";       // 手机号已注册
         public static final String SAME_AS_RECENT = "SAME_AS_RECENT";   // 新密码与最近使用过的密码相同
         public static final String SAME_PHONE = "SAME_PHONE";           // 新手机号与原手机号相同
+        public static final String INVALID_PHONE = "INVALID_PHONE";     // 请输入正确的手机号
+        public static final String WEAK_PASSWORD = "WEAK_PASSWORD";     // 密码需为 8–20 位，并同时包含字母和数字
 
         private Errors() {
         }

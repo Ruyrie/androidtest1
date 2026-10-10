@@ -13,6 +13,7 @@ public final class RepositoryModule {
     }
 
     public static UserRepository userRepository(AppContainer c) {
-        return new MockUserRepository(c.db, c.settings, c.secureStore, c.smsService);
+        return new MockUserRepository(c.db.userDao(), c.db.appealDao(), c.settings,
+                c.secureStore, c.smsService, System::currentTimeMillis);
     }
 }

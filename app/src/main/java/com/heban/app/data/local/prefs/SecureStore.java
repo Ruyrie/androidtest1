@@ -16,7 +16,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 
 /** Android Keystore 中的 AES-256-GCM 密钥加密敏感信息（技术准备文档 7.4）。 */
-public final class SecureStore {
+public final class SecureStore implements TokenCipher {
     private static final String ALIAS = "heban_secret_key";
     private static final String TRANSFORM = "AES/GCM/NoPadding";
 
@@ -37,6 +37,7 @@ public final class SecureStore {
         return kg.generateKey();
     }
 
+    @Override
     public String encrypt(String plain) throws GeneralSecurityException, IOException {
         Cipher cipher = Cipher.getInstance(TRANSFORM);
         cipher.init(Cipher.ENCRYPT_MODE, key());
@@ -46,6 +47,7 @@ public final class SecureStore {
         return Base64.getEncoder().encodeToString(out);
     }
 
+    @Override
     public String decrypt(String encoded) throws GeneralSecurityException, IOException {
         byte[] all = Base64.getDecoder().decode(encoded);
         Cipher cipher = Cipher.getInstance(TRANSFORM);
