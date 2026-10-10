@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 登录方式切换的指示条：56 × 3dp，上方圆角 3dp -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners
+        android:topLeftRadius="3dp"
+        android:topRightRadius="3dp" />
+    <solid android:color="?attr/colorPrimary" />
+</shape>

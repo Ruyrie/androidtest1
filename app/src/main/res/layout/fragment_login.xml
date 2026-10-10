@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A03 密码登录（原型 Login.dc.html） -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.heban.app.ui.account.LoginViewModel" />
+
+        <variable
+            name="openAgreement"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 顶栏：右侧「游客浏览」 -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/top_bar_height"
+                android:paddingHorizontal="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_guest"
+                    style="@style/Widget.HeBan.Button.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:enabled="@{!safeUnbox(vm.loading)}"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minHeight="40dp"
+                    android:onClick="@{() -> vm.enterGuest()}"
+                    android:text="@string/login_guest" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="24dp">
+
+                <include
+                    layout="@layout/login_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:subtitle="@{@string/login_subtitle}"
+                    app:title="@{@string/login_title}" />
+
+                <include
+                    android:id="@+id/tabs"
+                    layout="@layout/login_tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    app:smsSelected="@{false}" />
+
+                <include
+                    android:id="@+id/phone"
+                    layout="@layout/login_phone_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp"
+                    app:phone="@{vm.phone}" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_password"
+                    style="@style/Widget.HeBan.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp"
+                    android:hint="@string/login_password"
+                    app:endIconDrawable="@drawable/login_password_toggle"
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="?attr/colorOnSurfaceVariant">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="password"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:text="@={vm.password}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_forgot"
+                    style="@style/Widget.HeBan.Button.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="4dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="40dp"
+                    android:paddingHorizontal="4dp"
+                    android:text="@string/login_forgot_password" />
+
+                <!-- 协议勾选：复选框触控区 48dp，向左偏移让 18dp 的方框与输入框左边对齐 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/agreement"
+                        layout="@layout/view_agreement"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-15dp"
+                        app:agreed="@{vm.agreed}"
+                        app:onOpenAgreement="@{openAgreement}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="-10dp"
+                        android:layout_marginBottom="14dp"
+                        android:accessibilityLiveRegion="polite"
+                        android:text="@string/agreement_required"
+                        android:fallbackLineSpacing="false"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorError"
+                        app:visible="@{safeUnbox(vm.showAgreementHint)}" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="10dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_login"
+                        style="@style/Widget.HeBan.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@{safeUnbox(vm.loading) ? @string/login_in_progress : null}"
+                        android:enabled="@{safeUnbox(vm.canSubmit) &amp;&amp; !safeUnbox(vm.loading)}"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@{safeUnbox(vm.loading) ? `` : @string/login_submit}"
+                        android:fallbackLineSpacing="false"
+                        android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:elevation="8dp"
+                        android:indeterminate="true"
+                        app:indicatorColor="?attr/colorPrimary"
+                        app:indicatorSize="24dp"
+                        app:trackThickness="3dp"
+                        app:visible="@{safeUnbox(vm.loading)}" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:id="@+id/link_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login_no_account"
+                        android:fallbackLineSpacing="false"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login_register_now"
+                        android:fallbackLineSpacing="false"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:textColor="?attr/colorPrimary" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

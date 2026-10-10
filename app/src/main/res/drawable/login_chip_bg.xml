@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A02 引导页浮动小卡片：高 40dp，圆角 20dp。
+     浅色下 Surface Bright 与 Surface 同为 #F8FAF0（原型色）；深色下更亮一级，避免卡片与背景融在一起 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="20dp" />
+    <solid android:color="?attr/colorSurfaceBright" />
+</shape>

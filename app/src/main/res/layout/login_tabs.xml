@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 登录方式切换：密码登录 | 验证码登录（高 48dp，指示条 56 × 3dp，底部分隔线 1dp） -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="smsSelected"
+            type="boolean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/tab_password"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:selected="@{!smsSelected}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:duplicateParentState="true"
+                    android:text="@string/login_tab_password"
+                    android:fallbackLineSpacing="false"
+                    android:textAppearance="?attr/textAppearanceTitleSmall"
+                    android:textColor="@color/login_tab_text" />
+
+                <View
+                    android:layout_width="56dp"
+                    android:layout_height="3dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:background="@drawable/login_tab_indicator"
+                    app:visible="@{!smsSelected}" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/tab_sms"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:selected="@{smsSelected}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:duplicateParentState="true"
+                    android:text="@string/login_tab_sms"
+                    android:fallbackLineSpacing="false"
+                    android:textAppearance="?attr/textAppearanceTitleSmall"
+                    android:textColor="@color/login_tab_text" />
+
+                <View
+                    android:layout_width="56dp"
+                    android:layout_height="3dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:background="@drawable/login_tab_indicator"
+                    app:visible="@{smsSelected}" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorSurfaceVariant" />
+    </LinearLayout>
+</layout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A02 引导页、A03 密码登录、A04 验证码登录 -->
+<resources>
+    <!-- A02 引导页 -->
+    <string name="onboarding_skip">跳过</string>
+    <string name="onboarding_next">下一步</string>
+    <string name="onboarding_start">开始使用</string>
+    <string name="onboarding_has_account">已有账号？</string>
+    <string name="onboarding_login">登录</string>
+    <string name="onboarding_progress">引导进度：第 %1$d 屏，共 %2$d 屏</string>
+
+    <string name="onboarding_title_1">管好每一块地</string>
+    <string name="onboarding_body_1">作物、地块、农事记录一处管理，田间没信号也能用</string>
+    <string name="onboarding_chip_a_1">番茄 · 结果期</string>
+    <string name="onboarding_chip_b_1">明早 8:00 追肥</string>
+
+    <string name="onboarding_title_2">随时问 AI 农技助手</string>
+    <string name="onboarding_body_2">拍照识别病虫害，AI 结合你的作物和天气给出建议</string>
+    <string name="onboarding_chip_a_2" formatted="false">霜霉病 · 92%</string>
+    <string name="onboarding_chip_b_2">建议上午通风</string>
+
+    <string name="onboarding_title_3">和农友一起交流</string>
+    <string name="onboarding_body_3">分享种植经验、提问求助、买卖农产品</string>
+    <string name="onboarding_chip_a_3">草莓姐姐 赞了你</string>
+    <string name="onboarding_chip_b_3">3 个新回答</string>
+
+    <!-- A03 / A04 共用 -->
+    <string name="login_guest">游客浏览</string>
+    <string name="login_tab_password">密码登录</string>
+    <string name="login_tab_sms">验证码登录</string>
+    <string name="login_phone">手机号</string>
+    <string name="login_phone_prefix">+86</string>
+    <string name="login_phone_invalid">请输入正确的手机号</string>
+    <string name="login_in_progress">正在登录</string>
+
+    <!-- A03 密码登录 -->
+    <string name="login_title">欢迎回到禾伴</string>
+    <string name="login_subtitle">登录后同步你的作物、农事和农友动态</string>
+    <string name="login_password">密码</string>
+    <string name="login_forgot_password">忘记密码？</string>
+    <string name="login_submit">登录</string>
+    <string name="login_no_account">还没有账号？</string>
+    <string name="login_register_now">立即注册</string>
+
+    <!-- A04 验证码登录 -->
+    <string name="login_sms_title">验证码登录</string>
+    <string name="login_sms_subtitle">未注册的手机号验证后将自动创建账号</string>
+    <string name="login_sms_code">验证码</string>
+    <string name="login_sms_code_placeholder">6 位数字</string>
+    <string name="login_sms_code_sent">验证码已发送至 %1$s，5 分钟内有效</string>
+    <string name="login_sms_submit">登录 / 注册</string>
+    <string name="login_sms_no_code">收不到验证码？</string>
+    <string name="login_sms_help">请确认号码正确、短信未被拦截；也可以改用 %1$s</string>
+</resources>

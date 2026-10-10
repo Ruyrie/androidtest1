@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 手机号输入框：「+86 ▾ |」前缀（LoginPhoneInput 中补上箭头和分隔线），输入时按 3-4-4 分隔 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="androidx.lifecycle.MutableLiveData" />
+
+        <variable
+            name="phone"
+            type="MutableLiveData&lt;String&gt;" />
+    </data>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_phone"
+        style="@style/Widget.HeBan.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/login_phone"
+        app:expandedHintEnabled="false"
+        app:prefixText="@string/login_phone_prefix"
+        app:prefixTextAppearance="?attr/textAppearanceBodyLarge"
+        app:prefixTextColor="?attr/colorOnSurfaceVariant">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="phoneNational"
+            android:imeOptions="actionNext"
+            android:inputType="phone"
+            android:maxLength="13"
+            android:text="@={phone}" />
+    </com.google.android.material.textfield.TextInputLayout>
+</layout>

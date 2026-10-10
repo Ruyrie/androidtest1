@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 「获取验证码」：可点击 Primary，倒计时中 Outline -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="?attr/colorOutline" android:state_enabled="false" />
+    <item android:color="?attr/colorPrimary" />
+</selector>

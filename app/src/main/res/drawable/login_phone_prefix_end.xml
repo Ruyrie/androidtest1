@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 手机号前缀「+86」后面的下拉箭头（20dp）和分隔线（1 × 24dp），左右各留约 8dp。
+     整体高度按 20dp 计算（分隔线上下各超出 2dp），输入框保持 56dp 高 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="35dp"
+        android:height="20dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+    <item
+        android:width="20dp"
+        android:height="20dp"
+        android:drawable="@drawable/ic_arrow_drop_down"
+        android:gravity="start|center_vertical" />
+    <item
+        android:width="1dp"
+        android:height="24dp"
+        android:bottom="-2dp"
+        android:gravity="start|center_vertical"
+        android:left="28dp"
+        android:top="-2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/colorOutlineVariant" />
+        </shape>
+    </item>
+</layer-list>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A04 验证码登录（原型 LoginSms.dc.html） -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="vm"
+            type="com.heban.app.ui.account.LoginSmsViewModel" />
+
+        <variable
+            name="openAgreement"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 顶栏：右侧「游客浏览」 -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/top_bar_height"
+                android:paddingHorizontal="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_guest"
+                    style="@style/Widget.HeBan.Button.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:enabled="@{!safeUnbox(vm.loading)}"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minHeight="40dp"
+                    android:onClick="@{() -> vm.enterGuest()}"
+                    android:text="@string/login_guest" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="24dp">
+
+                <include
+                    layout="@layout/login_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:subtitle="@{@string/login_sms_subtitle}"
+                    app:title="@{@string/login_sms_title}" />
+
+                <include
+                    android:id="@+id/tabs"
+                    layout="@layout/login_tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    app:smsSelected="@{true}" />
+
+                <include
+                    android:id="@+id/phone"
+                    layout="@layout/login_phone_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp"
+                    app:phone="@{vm.phone}" />
+
+                <!-- 验证码输入框 + 右侧「| 获取验证码」 -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_code"
+                        style="@style/Widget.HeBan.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/login_sms_code"
+                        app:expandedHintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="smsOTPCode"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:maxLength="6"
+                            android:paddingEnd="128dp"
+                            android:text="@={vm.code}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- 占位文字「6 位数字」：不用 TextInputLayout 的 placeholder（中文行高会把输入框撑高 2dp，输入后又缩回） -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
+                        android:layout_gravity="bottom|start"
+                        android:layout_marginStart="16dp"
+                        android:fallbackLineSpacing="false"
+                        android:gravity="center_vertical"
+                        android:importantForAccessibility="no"
+                        android:text="@string/login_sms_code_placeholder"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOutline"
+                        app:visible="@{TextUtils.isEmpty(vm.code)}" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="24dp"
+                            android:background="?attr/colorOutlineVariant" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_send_code"
+                            style="@style/Widget.HeBan.Button.Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="8dp"
+                            android:enabled="@{safeUnbox(vm.canSendCode)}"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:minWidth="0dp"
+                            android:minHeight="40dp"
+                            android:onClick="@{() -> vm.sendCode()}"
+                            android:paddingHorizontal="12dp"
+                            android:text="@{vm.countdown.buttonText}"
+                            android:textColor="@color/login_code_button_text" />
+                    </LinearLayout>
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:accessibilityLiveRegion="polite"
+                    android:paddingHorizontal="16dp"
+                    android:text="@{@string/login_sms_code_sent(vm.sentTo)}"
+                    android:fallbackLineSpacing="false"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    app:visible="@{safeUnbox(vm.codeSentVisible)}" />
+
+                <!-- 协议勾选：复选框触控区 48dp，向左偏移让 18dp 的方框与输入框左边对齐 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/agreement"
+                        layout="@layout/view_agreement"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-15dp"
+                        app:agreed="@{vm.agreed}"
+                        app:onOpenAgreement="@{openAgreement}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="-10dp"
+                        android:layout_marginBottom="14dp"
+                        android:accessibilityLiveRegion="polite"
+                        android:text="@string/agreement_required"
+                        android:fallbackLineSpacing="false"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorError"
+                        app:visible="@{safeUnbox(vm.showAgreementHint)}" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="10dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_login"
+                        style="@style/Widget.HeBan.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@{safeUnbox(vm.loading) ? @string/login_in_progress : null}"
+                        android:enabled="@{safeUnbox(vm.canSubmit) &amp;&amp; !safeUnbox(vm.loading)}"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@{safeUnbox(vm.loading) ? `` : @string/login_sms_submit}"
+                        android:fallbackLineSpacing="false"
+                        android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:elevation="8dp"
+                        android:indeterminate="true"
+                        app:indicatorColor="?attr/colorPrimary"
+                        app:indicatorSize="24dp"
+                        app:trackThickness="3dp"
+                        app:visible="@{safeUnbox(vm.loading)}" />
+                </FrameLayout>
+
+                <!-- 收不到验证码？ -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="?attr/colorSurfaceVariant" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:text="@string/login_sms_no_code"
+                        android:fallbackLineSpacing="false"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOutline" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="?attr/colorSurfaceVariant" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_help"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center_horizontal"
+                    android:fallbackLineSpacing="false"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>
