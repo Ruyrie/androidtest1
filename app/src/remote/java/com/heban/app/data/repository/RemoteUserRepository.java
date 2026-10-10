@@ -174,6 +174,21 @@ public class RemoteUserRepository implements UserRepository {
 
     /** 验证码由后端发送，界面不显示「模拟短信」提示 */
     @Override
+    public Completable updateProfile(UserEntity profile) {
+        return Completable.error(new UnsupportedOperationException());
+    }
+
+    @Override
+    public Completable changePhone(String newPhone) {
+        return Completable.error(new UnsupportedOperationException());
+    }
+
+    @Override
+    public Completable deleteAccount() {
+        return Completable.error(new UnsupportedOperationException());
+    }
+
+    @Override
     public boolean isFakeSms() {
         return false;
     }

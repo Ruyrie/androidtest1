@@ -13,20 +13,26 @@ import com.heban.app.data.remote.NetworkModule;
 import com.heban.app.data.remote.sms.SmsService;
 import com.heban.app.data.remote.sms.SmsServices;
 import com.heban.app.data.repository.AiRepository;
+import com.heban.app.data.repository.CommunityRepository;
 import com.heban.app.data.repository.CropRepository;
 import com.heban.app.data.repository.FavoriteRepository;
 import com.heban.app.data.repository.LedgerRepository;
 import com.heban.app.data.repository.LlmAiRepository;
 import com.heban.app.data.repository.LlmVisionRepository;
+import com.heban.app.data.repository.LocalCommunityRepository;
 import com.heban.app.data.repository.LocalCropRepository;
 import com.heban.app.data.repository.LocalFavoriteRepository;
 import com.heban.app.data.repository.LocalLedgerRepository;
+import com.heban.app.data.repository.LocalMallRepository;
 import com.heban.app.data.repository.LocalMarketRepository;
+import com.heban.app.data.repository.LocalMessageRepository;
 import com.heban.app.data.repository.LocalModelServiceRepository;
 import com.heban.app.data.repository.LocalPestRepository;
 import com.heban.app.data.repository.LocalPointsRepository;
 import com.heban.app.data.repository.LocalTaskRepository;
+import com.heban.app.data.repository.MallRepository;
 import com.heban.app.data.repository.MarketRepository;
+import com.heban.app.data.repository.MessageRepository;
 import com.heban.app.data.repository.ModelServiceRepository;
 import com.heban.app.data.repository.PestRepository;
 import com.heban.app.data.repository.PointsRepository;
@@ -71,6 +77,9 @@ public final class AppContainer {
     public ModelServiceRepository modelServiceRepository;
     public AiRepository aiRepository;
     public VisionRepository visionRepository;
+    public MessageRepository messageRepository;
+    public CommunityRepository communityRepository;
+    public MallRepository mallRepository;
 
     public AppContainer(Context context) {
         app = context.getApplicationContext();
@@ -99,5 +108,9 @@ public final class AppContainer {
                 userRepository, cropRepository, weatherRepository);
         visionRepository = new LlmVisionRepository(app, baseClient, gson, db, settings, secureStore,
                 currentUser, pestRepository, cropRepository);
+        messageRepository = new LocalMessageRepository(app, db, currentUser, gson);
+        communityRepository = new LocalCommunityRepository(app, db, currentUser, gson, userRepository,
+                pointsRepository, aiRepository, messageRepository);
+        mallRepository = new LocalMallRepository(db, currentUser, gson, pointsRepository);
     }
 }

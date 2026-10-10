@@ -26,6 +26,7 @@ public interface UserRepository {
         public static final String SAME_PHONE = "SAME_PHONE";           // 新手机号与原手机号相同
         public static final String INVALID_PHONE = "INVALID_PHONE";     // 请输入正确的手机号
         public static final String WEAK_PASSWORD = "WEAK_PASSWORD";     // 密码需为 8–20 位，并同时包含字母和数字
+        public static final String NICKNAME_LOCKED = "NICKNAME_LOCKED"; // 昵称 30 天内只能修改 1 次
 
         private Errors() {
         }
@@ -65,6 +66,18 @@ public interface UserRepository {
 
     /** 当前登录用户；游客或未登录时不发射 */
     Flowable<UserEntity> currentUser();
+
+    /**
+     * M03 保存资料（昵称、简介、地区、年限、身份、擅长作物、头像、封面、展示开关）。
+     * 昵称有变化且距上次修改不足 30 天时抛出 NICKNAME_LOCKED。
+     */
+    Completable updateProfile(UserEntity profile);
+
+    /** M08 换绑：新手机号的验证码已通过 verifyCode 校验；与原号相同抛出 SAME_PHONE，已被其他账号使用抛出 PHONE_EXISTS */
+    Completable changePhone(String newPhone);
+
+    /** M06 注销账号：标记 deleted_at 并退出登录（7 天内重新登录可撤销） */
+    Completable deleteAccount();
 
     /** 短信是否为模拟模式（界面在发送成功后提示「模拟短信：123456」） */
     boolean isFakeSms();

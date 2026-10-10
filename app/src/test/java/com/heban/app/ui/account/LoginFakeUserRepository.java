@@ -100,4 +100,19 @@ class LoginFakeUserRepository implements UserRepository {
     public Flowable<UserEntity> currentUser() {
         return Flowable.empty();
     }
+
+    @Override
+    public Completable updateProfile(UserEntity profile) {
+        return Completable.complete();
+    }
+
+    @Override
+    public Completable changePhone(String newPhone) {
+        return Completable.complete();
+    }
+
+    @Override
+    public Completable deleteAccount() {
+        return Completable.complete();
+    }
 }

@@ -45,6 +45,15 @@ public final class SettingsStore implements SessionStore {
     public static final Preferences.Key<Boolean> NOTIFY_DM = PreferencesKeys.booleanKey("notify.dm");
     public static final Preferences.Key<Integer> NOTIFY_DND_START = PreferencesKeys.intKey("notify.dnd_start");
     public static final Preferences.Key<Integer> NOTIFY_DND_END = PreferencesKeys.intKey("notify.dnd_end");
+    // 隐私（M10）：动态可见范围 所有人 / 我关注的人 / 仅自己；私信 所有人 / 我关注的人 / 互相关注的人 / 关闭私信
+    public static final Preferences.Key<String> PRIVACY_POST_VISIBILITY =
+            PreferencesKeys.stringKey("privacy.post_visibility");
+    public static final Preferences.Key<String> PRIVACY_REGION_PRECISION =
+            PreferencesKeys.stringKey("privacy.region_precision");
+    public static final Preferences.Key<Boolean> PRIVACY_FIND_BY_PHONE =
+            PreferencesKeys.booleanKey("privacy.find_by_phone");
+    public static final Preferences.Key<String> PRIVACY_DM = PreferencesKeys.stringKey("privacy.dm");
+    public static final Preferences.Key<String> PRIVACY_COMMENT = PreferencesKeys.stringKey("privacy.comment");
     // AI 助手（M11）：回答风格 BRIEF / DETAIL / PLAIN，参考内容开关，保存对话
     public static final Preferences.Key<String> AI_STYLE = PreferencesKeys.stringKey("ai.style");
     public static final Preferences.Key<Boolean> AI_USE_CROPS = PreferencesKeys.booleanKey("ai.use_crops");

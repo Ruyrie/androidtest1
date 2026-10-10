@@ -55,6 +55,36 @@ public class UserEntity {
     @ColumnInfo(name = "created_at")
     public long createdAt;
 
+    /** 头像（App 私有目录路径），为空时显示昵称首字 */
+    @ColumnInfo(name = "avatar_path")
+    public String avatarPath;
+
+    /** 主页封面（M02 / M03「更换封面」） */
+    @ColumnInfo(name = "cover_path")
+    public String coverPath;
+
+    /** 上次修改昵称的时间（30 天内只能修改 1 次） */
+    @ColumnInfo(name = "nickname_changed_at")
+    public long nicknameChangedAt;
+
+    /** 擅长作物，逗号分隔，最多 5 个（M03） */
+    public String skills;
+
+    /** 在主页展示我的作物 / 成就徽章（M03） */
+    @ColumnInfo(name = "show_crops")
+    public boolean showCrops = true;
+
+    @ColumnInfo(name = "show_badges")
+    public boolean showBadges = true;
+
+    /** 实名认证（M06），现阶段始终未认证 */
+    @ColumnInfo(name = "real_name_verified")
+    public boolean realNameVerified;
+
+    /** 最近一次登录时间（M06「登录记录」） */
+    @ColumnInfo(name = "last_login_at")
+    public long lastLoginAt;
+
     /** 注销时间，0 表示正常；7 天内重新登录可撤销 */
     @ColumnInfo(name = "deleted_at")
     public long deletedAt;

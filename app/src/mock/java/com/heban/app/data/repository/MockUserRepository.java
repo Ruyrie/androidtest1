@@ -287,6 +287,21 @@ public class MockUserRepository implements UserRepository {
     }
 
     @Override
+    public Completable updateProfile(UserEntity profile) {
+        return Completable.error(new UnsupportedOperationException());
+    }
+
+    @Override
+    public Completable changePhone(String newPhone) {
+        return Completable.error(new UnsupportedOperationException());
+    }
+
+    @Override
+    public Completable deleteAccount() {
+        return Completable.error(new UnsupportedOperationException());
+    }
+
+    @Override
     public boolean isFakeSms() {
         return sms.isFake();
     }

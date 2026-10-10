@@ -32,4 +32,25 @@ public final class NavArgs {
     public static final String ENTRY_ID = "entry_id";
     /** String：LedgerEntryEntity.TYPE_IN / TYPE_OUT（D11 预选收支） */
     public static final String ENTRY_TYPE = "entry_type";
+
+    /** long：动态 / 提问 id（S02、S05） */
+    public static final String POST_ID = "post_id";
+    /** long：农友 id（S06、S09） */
+    public static final String FARMER_ID = "farmer_id";
+    /** long：私信会话 id（S09、P09） */
+    public static final String CONVERSATION_ID = "conversation_id";
+    /** String：S03 发布模式 PostEntity.TYPE_POST / TYPE_QUESTION */
+    public static final String PUBLISH_TYPE = "publish_type";
+    /** String：S03 预填内容（如 D03「发到问答」带入识别结论） */
+    public static final String PUBLISH_TEXT = "publish_text";
+    /** String：S07 打开的 Tab：fans / following */
+    public static final String FOLLOWS_TAB = "follows_tab";
+    /** long：积分商品 id（P04 / P05） */
+    public static final String MALL_ITEM_ID = "mall_item_id";
+    /** int：兑换数量（P05） */
+    public static final String QTY = "qty";
+    /** String：兑换订单号（P08 物流、P07 修改地址） */
+    public static final String ORDER_NO = "order_no";
+    /** boolean：P06 以「选择地址」模式打开（选中后返回 P05） */
+    public static final String PICK_ADDRESS = "pick_address";
 }

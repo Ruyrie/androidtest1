@@ -111,4 +111,19 @@ class FakeUserRepository implements UserRepository {
         for (String c : calls) if (c.equals(call)) n++;
         return n;
     }
+
+    @Override
+    public Completable updateProfile(UserEntity profile) {
+        return Completable.complete();
+    }
+
+    @Override
+    public Completable changePhone(String newPhone) {
+        return Completable.complete();
+    }
+
+    @Override
+    public Completable deleteAccount() {
+        return Completable.complete();
+    }
 }
