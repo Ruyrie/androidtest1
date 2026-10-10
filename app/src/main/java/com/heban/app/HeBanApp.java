@@ -45,5 +45,6 @@ public class HeBanApp extends Application {
                 .build());
 
         RxJavaPlugins.setErrorHandler(e -> Log.w(TAG, "Undeliverable RxJava error", e));
+        container.notifier.createChannels();
     }
 }

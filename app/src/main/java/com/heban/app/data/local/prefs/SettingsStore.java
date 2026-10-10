@@ -30,6 +30,23 @@ public final class SettingsStore implements SessionStore {
     public static final Preferences.Key<Integer> THEME_MODE = PreferencesKeys.intKey("ui.theme_mode");
     public static final Preferences.Key<Boolean> DYNAMIC_COLOR = PreferencesKeys.booleanKey("ui.dynamic_color");
     public static final Preferences.Key<Float> FONT_SCALE = PreferencesKeys.floatKey("ui.font_scale");
+    // 天气地点（H02 切换地点后保存；为空时按定位或资料中的地区解析）
+    public static final Preferences.Key<String> WEATHER_LOCATION_ID = PreferencesKeys.stringKey("weather.location_id");
+    public static final Preferences.Key<String> WEATHER_LOCATION_NAME =
+            PreferencesKeys.stringKey("weather.location_name");
+    // 消息通知（M09）；免打扰用「当天分钟数」存储，默认 22:00 – 次日 06:30
+    public static final Preferences.Key<Boolean> NOTIFY_ENABLED = PreferencesKeys.booleanKey("notify.enabled");
+    public static final Preferences.Key<Boolean> NOTIFY_FARM_TASK = PreferencesKeys.booleanKey("notify.farm_task");
+    public static final Preferences.Key<Boolean> NOTIFY_WEATHER = PreferencesKeys.booleanKey("notify.weather");
+    public static final Preferences.Key<Boolean> NOTIFY_PEST = PreferencesKeys.booleanKey("notify.pest");
+    public static final Preferences.Key<Boolean> NOTIFY_COMMENT = PreferencesKeys.booleanKey("notify.comment");
+    public static final Preferences.Key<Boolean> NOTIFY_LIKE = PreferencesKeys.booleanKey("notify.like");
+    public static final Preferences.Key<Boolean> NOTIFY_FOLLOW = PreferencesKeys.booleanKey("notify.follow");
+    public static final Preferences.Key<Boolean> NOTIFY_DM = PreferencesKeys.booleanKey("notify.dm");
+    public static final Preferences.Key<Integer> NOTIFY_DND_START = PreferencesKeys.intKey("notify.dnd_start");
+    public static final Preferences.Key<Integer> NOTIFY_DND_END = PreferencesKeys.intKey("notify.dnd_end");
+    public static final int DEFAULT_DND_START = 22 * 60;
+    public static final int DEFAULT_DND_END = 6 * 60 + 30;
 
     private final RxDataStore<Preferences> store;
     private volatile Preferences snapshot;

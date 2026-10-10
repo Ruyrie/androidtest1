@@ -18,4 +18,17 @@
     <string name="agreement_privacy">《隐私政策》</string>
     <string name="agreement_required">请先阅读并勾选同意协议</string>
     <string name="fake_sms_hint">模拟短信：验证码 %1$s</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="delete">删除</string>
+    <string name="save">保存</string>
+    <string name="login_required_title">登录后才能使用</string>
+    <string name="login_required_message">游客只能浏览内容，登录后即可记录作物、记账、使用 AI 助手和参与互动。</string>
+    <string name="login_required_go">去登录</string>
+    <string name="channel_farm_task">农事提醒</string>
+    <string name="channel_weather">天气预警</string>
+    <string name="channel_pest">病虫害高发</string>
+    <string name="channel_interaction">互动消息</string>
+    <string name="channel_dm">私信</string>
+    <string name="channel_order">兑换与物流</string>
 </resources>

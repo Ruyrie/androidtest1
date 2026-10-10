@@ -1,5 +1,6 @@
 package com.heban.app.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.widget.Toast;
@@ -28,6 +29,8 @@ import java.util.Set;
  * A01 闪屏使用 Android 12 原生 SplashScreen：启动设置在 Application 中同步读取，读取完成前保持闪屏。
  */
 public class MainActivity extends AppCompatActivity {
+    /** 通知点击后要打开的页面（导航目的地 id），仅在已登录（含游客）时生效 */
+    public static final String EXTRA_OPEN_DEST = "open_dest";
     private static final Set<Integer> SHOW_AI_FAB = Set.of(
             R.id.homeFragment, R.id.cropsFragment, R.id.discoverFragment);
     private static final long EXIT_WINDOW_MS = 2000;
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
             applyInsets();
         });
         binding.fabAi.setOnClickListener(v -> nav.navigate(R.id.aiChatFragment));
+        if (savedInstanceState == null) openFromIntent(getIntent());
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root, (v, insets) -> {
             systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -81,6 +85,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        openFromIntent(intent);
+    }
+
+    private void openFromIntent(Intent intent) {
+        int dest = intent == null ? 0 : intent.getIntExtra(EXTRA_OPEN_DEST, 0);
+        if (dest == 0 || !HeBanApp.container(this).settings.isLoggedIn() || NavRoutes.inAuthFlow(nav)) return;
+        intent.removeExtra(EXTRA_OPEN_DEST);
+        nav.navigate(dest);
     }
 
     /** 状态栏留给页面顶栏；底部导航隐藏时，页面自己避开导航栏和输入法 */
