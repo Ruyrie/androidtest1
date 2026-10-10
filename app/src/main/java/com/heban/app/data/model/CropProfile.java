@@ -11,6 +11,8 @@ public final class CropProfile {
     public int expectedDays;
     /** Material Symbol 名称，对应 @drawable/ic_<icon>，如 nutrition / eco / grass / psychiatry */
     public String icon;
+    /** 示例图片相对路径，如 images/crops/tomato.jpg（没有图片时为空，界面显示 icon 占位） */
+    public String image;
     /** 生长阶段，第一个通常是「育苗」（定植前，视为已完成） */
     public List<Stage> stages = new ArrayList<>();
 
