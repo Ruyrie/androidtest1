@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A06「你主要种什么？」中的作物 Filter Chip：选中为 Secondary Container + 勾 -->
+<com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.HeBan.Chip.Filter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="@color/register_chip_text"
+    app:checkedIconTint="@color/register_chip_text"
+    app:chipEndPadding="11dp"
+    app:chipStartPadding="9dp"
+    app:chipStrokeColor="@color/register_chip_stroke"
+    app:iconEndPadding="0dp"
+    app:textEndPadding="6dp"
+    app:textStartPadding="8dp" />

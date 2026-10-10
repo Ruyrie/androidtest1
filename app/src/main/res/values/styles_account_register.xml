@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A05 注册 / A06 完善资料 专用的尺寸与样式 -->
+<resources>
+    <!-- 输入框之间的间距：原型框与框之间 20dp，减去 TextInputLayout 顶部为浮动标签预留的空间 -->
+    <dimen name="register_field_gap">14dp</dimen>
+    <!-- 密码规则行（文字行高比原型多约 2dp）到确认密码框 -->
+    <dimen name="register_confirm_gap">12dp</dimen>
+    <!-- A06 各区块之间 22dp：减去浮动标签预留、Chip 触控区，并抵消中文文字行高比原型多出的约 2dp -->
+    <dimen name="register_avatar_top">18dp</dimen>
+    <dimen name="register_nickname_top">17dp</dimen>
+    <dimen name="register_profile_field_gap">15dp</dimen>
+    <dimen name="register_identity_top">20dp</dimen>
+    <!-- 复选框的 48dp 触控区比 18dp 方框宽，向左偏移使方框与输入框左边对齐 -->
+    <dimen name="register_checkbox_offset">-15dp</dimen>
+    <!-- 协议行上下各 20dp，减去复选框 48dp 触控区比 18dp 方框多出的 15dp -->
+    <dimen name="register_agreement_gap">6dp</dimen>
+    <!-- Chip 为保证 48dp 触控区上下各留 8dp 透明区域：原型行距 8dp、标题下 10dp、按钮上 26dp 需扣除 -->
+    <dimen name="register_chip_group_top">0dp</dimen>
+    <dimen name="register_chip_row_gap">-8dp</dimen>
+    <dimen name="register_cta_top">18dp</dimen>
+
+    <style name="ShapeAppearance.HeBan.Register.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- 底部主按钮：原型 .cta 高 56dp、圆角 28dp、16sp Medium -->
+    <style name="Widget.HeBan.Register.Cta" parent="Widget.HeBan.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceTitleMedium</item>
+        <item name="cornerRadius">28dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">20dp</item>
+    </style>
+
+    <!-- 密码规则：16dp 图标 + 8dp 间距 + Body Small，颜色在代码中按是否满足切换 -->
+    <style name="Widget.HeBan.Register.Rule" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceBodySmall</item>
+        <item name="android:textColor">?attr/colorOutline</item>
+    </style>
+
+    <!-- 种植身份分段按钮：高 40dp，选中 Secondary Container + 勾 -->
+    <style name="Widget.HeBan.Register.Segment" parent="Widget.HeBan.Button.Outlined">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">18dp</item>
+        <item name="iconPadding">6dp</item>
+    </style>
+</resources>

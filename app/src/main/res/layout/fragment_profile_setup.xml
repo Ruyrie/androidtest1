@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A06 完善资料（原型 ProfileSetup.dc.html）：头像、昵称、地区、种植身份、主要作物，可跳过 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.heban.app.ui.account.RegisterViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.HeBan.Toolbar"
+            android:layout_width="match_parent"
+            app:navigationContentDescription="@string/back"
+            app:contentInsetEnd="0dp"
+            app:contentInsetEndWithActions="0dp"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/register_profile_title">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_skip"
+                style="@style/Widget.HeBan.Button.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:minWidth="48dp"
+                android:enabled="@{!vm.loading}"
+                android:onClick="@{() -> vm.skip()}"
+                android:text="@string/register_skip" />
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <!-- 注册进度：第 2 步，共 2 步 -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress"
+            style="@style/Widget.Material3.LinearProgressIndicator.Legacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/register_progress"
+            android:max="2"
+            android:progress="2"
+            app:indicatorColor="?attr/colorPrimary"
+            app:trackColor="?attr/colorSecondaryContainer"
+            app:trackThickness="4dp" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/register_step2"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    android:textColor="?attr/colorPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/register_step2_desc"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <!-- 头像 96dp：昵称首字（默认「农」）或本次选择的照片；右下角相机徽标超出圆 2dp -->
+                <FrameLayout
+                    android:id="@+id/avatar"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/register_avatar_top"
+                    android:layout_marginBottom="-2dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/register_avatar_upload"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                    <TextView
+                        android:id="@+id/tv_avatar"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/register_avatar_circle"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:importantForAccessibility="no"
+                        android:includeFontPadding="false"
+                        android:text="@{vm.avatarInitial ?? @string/register_avatar_fallback}"
+                        android:textColor="?attr/colorOnPrimaryContainer"
+                        android:textSize="40sp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/iv_avatar"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:scaleType="centerCrop"
+                        app:imageUrl="@{vm.avatarUri}"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.HeBan.Register.Circle"
+                        app:visible="@{vm.avatarUri != null}" />
+
+                    <!-- 原型徽标内径 36dp + 3dp 描边 = 42dp -->
+                    <FrameLayout
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="bottom|end"
+                        android:background="@drawable/register_avatar_badge"
+                        android:importantForAccessibility="no">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_photo_camera"
+                            app:tint="?attr/colorOnPrimary" />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <!-- 昵称：框内右侧显示 x/16 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_nickname"
+                    style="@style/Widget.HeBan.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/register_nickname_top"
+                    android:hint="@string/register_nickname"
+                    app:suffixText="@{@string/register_nickname_counter(vm.nicknameLength, 16)}"
+                    app:suffixTextAppearance="?attr/textAppearanceBodySmall"
+                    app:suffixTextColor="?attr/colorOnSurfaceVariant">
+
+                    <!-- 最多 16 字（RegisterViewModel.NICKNAME_MAX） -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_nickname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLength="16"
+                        android:text="@={vm.nickname}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 所在地区：可手动输入，右侧定位图标自动填写 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_region"
+                    style="@style/Widget.HeBan.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/register_profile_field_gap"
+                    android:hint="@string/register_region"
+                    app:endIconContentDescription="@string/register_locate"
+                    app:endIconDrawable="@drawable/ic_my_location"
+                    app:endIconMode="custom"
+                    app:endIconTint="?attr/colorOnSurfaceVariant">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_region"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="postalAddress"
+                        android:inputType="textPostalAddress"
+                        android:text="@={vm.region}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/register_identity_top"
+                    android:accessibilityHeading="true"
+                    android:text="@string/register_identity"
+                    android:textAppearance="?attr/textAppearanceTitleSmall"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/group_identity"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_identity_0"
+                        style="@style/Widget.HeBan.Register.Segment" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_identity_1"
+                        style="@style/Widget.HeBan.Register.Segment" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_identity_2"
+                        style="@style/Widget.HeBan.Register.Segment" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:accessibilityHeading="true"
+                        android:text="@string/register_crops"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <TextView
+                        android:id="@+id/tv_crop_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/register_crops_count(vm.cropCount)}"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                </LinearLayout>
+
+                <!-- 作物 Chip 在代码中按 RegisterViewModel.CROP_OPTIONS 生成 -->
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/group_crops"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/register_chip_group_top"
+                    app:chipSpacingHorizontal="@dimen/chip_gap"
+                    app:chipSpacingVertical="@dimen/register_chip_row_gap" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_enter"
+                    style="@style/Widget.HeBan.Register.Cta"
+                    android:layout_marginTop="@dimen/register_cta_top"
+                    android:onClick="@{() -> vm.enterApp()}"
+                    android:text="@string/register_enter_app" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>
