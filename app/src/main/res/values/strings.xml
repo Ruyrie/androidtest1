@@ -11,4 +11,11 @@
     <string name="press_again_to_exit">再按一次返回键退出禾伴</string>
     <string name="feature_not_open">功能暂未开放</string>
     <string name="placeholder_phase">此页面为占位页，将在 %1$s 阶段按原型图实现。下方按钮按原型的跳转关系排列。</string>
+    <string name="agreement_checkbox">同意用户协议和隐私政策</string>
+    <string name="agreement_prefix">我已阅读并同意 </string>
+    <string name="agreement_terms">《用户协议》</string>
+    <string name="agreement_and"> 和 </string>
+    <string name="agreement_privacy">《隐私政策》</string>
+    <string name="agreement_required">请先阅读并勾选同意协议</string>
+    <string name="fake_sms_hint">模拟短信：验证码 %1$s</string>
 </resources>

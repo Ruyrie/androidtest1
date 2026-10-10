@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 「我已阅读并同意《用户协议》和《隐私政策》」（A03 / A04 / A05 共用） -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="androidx.lifecycle.MutableLiveData" />
+
+        <variable
+            name="agreed"
+            type="MutableLiveData&lt;Boolean&gt;" />
+
+        <variable
+            name="onOpenAgreement"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="@={agreed}"
+            android:contentDescription="@string/agreement_checkbox" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/agreement_prefix"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{onOpenAgreement}"
+            android:paddingVertical="8dp"
+            android:text="@string/agreement_terms"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorPrimary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/agreement_and"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{onOpenAgreement}"
+            android:paddingVertical="8dp"
+            android:text="@string/agreement_privacy"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorPrimary" />
+    </LinearLayout>
+</layout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 通用控件样式：颜色、圆角、字号都从 Material 3 主题取值（UI 设计文档第 6 章） -->
+<resources>
+    <!-- 标准顶栏：高 64dp，标题 Title Large -->
+    <style name="Widget.HeBan.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:layout_height">@dimen/top_bar_height</item>
+        <item name="titleTextAppearance">?attr/textAppearanceTitleLarge</item>
+        <item name="titleTextColor">?attr/colorOnSurface</item>
+        <item name="navigationIconTint">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- 文本框：描边样式，高 56dp，圆角 4dp -->
+    <style name="Widget.HeBan.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox" />
+
+    <style name="Widget.HeBan.TextInputLayout.Dropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu" />
+
+    <!-- 主操作按钮（一屏只放一个 Filled） -->
+    <style name="Widget.HeBan.Button" parent="Widget.Material3.Button" />
+
+    <style name="Widget.HeBan.Button.Tonal" parent="Widget.Material3.Button.TonalButton" />
+
+    <style name="Widget.HeBan.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton" />
+
+    <style name="Widget.HeBan.Button.Text" parent="Widget.Material3.Button.TextButton" />
+
+    <!-- Chip：高 32dp，圆角 8dp -->
+    <style name="Widget.HeBan.Chip.Filter" parent="Widget.Material3.Chip.Filter" />
+
+    <style name="Widget.HeBan.Chip.Assist" parent="Widget.Material3.Chip.Assist" />
+</resources>
