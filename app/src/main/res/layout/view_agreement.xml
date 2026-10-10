@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/agreement_prefix"
-            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant" />
 
         <TextView
@@ -39,15 +39,16 @@
             android:layout_height="wrap_content"
             android:onClick="@{onOpenAgreement}"
             android:paddingVertical="8dp"
+            android:fontFamily="sans-serif-medium"
             android:text="@string/agreement_terms"
-            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/agreement_and"
-            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant" />
 
         <TextView
@@ -55,8 +56,9 @@
             android:layout_height="wrap_content"
             android:onClick="@{onOpenAgreement}"
             android:paddingVertical="8dp"
+            android:fontFamily="sans-serif-medium"
             android:text="@string/agreement_privacy"
-            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorPrimary" />
     </LinearLayout>
 </layout>

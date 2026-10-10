@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 通用控件样式：颜色、圆角、字号都从 Material 3 主题取值（UI 设计文档第 6 章） -->
 <resources>
+    <!-- 全局 TextView：关闭中文回退字体额外行距，行高与 Material 3 字号阶梯一致 -->
+    <style name="Widget.HeBan.TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:fallbackLineSpacing">false</item>
+    </style>
+
     <!-- 标准顶栏：高 64dp，标题 Title Large -->
     <style name="Widget.HeBan.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:layout_height">@dimen/top_bar_height</item>
@@ -24,7 +29,11 @@
     <style name="Widget.HeBan.Button.Text" parent="Widget.Material3.Button.TextButton" />
 
     <!-- Chip：高 32dp，圆角 8dp -->
-    <style name="Widget.HeBan.Chip.Filter" parent="Widget.Material3.Chip.Filter" />
+    <style name="Widget.HeBan.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+        <item name="chipStrokeColor">@color/chip_filter_stroke</item>
+        <item name="android:textColor">@color/chip_filter_text</item>
+        <item name="checkedIconTint">?attr/colorOnSecondaryContainer</item>
+    </style>
 
     <style name="Widget.HeBan.Chip.Assist" parent="Widget.Material3.Chip.Assist" />
 </resources>

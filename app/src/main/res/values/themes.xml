@@ -42,6 +42,8 @@
         <item name="colorWarningContainer">@color/md_warning_container</item>
         <item name="colorOnWarningContainer">@color/md_on_warning_container</item>
 
+        <item name="android:textViewStyle">@style/Widget.HeBan.TextView</item>
+
         <!-- 字号阶梯（UI 设计文档 4.3） -->
         <item name="textAppearanceHeadlineLarge">@style/TextAppearance.HeBan.HeadlineLarge</item>
         <item name="textAppearanceHeadlineMedium">@style/TextAppearance.HeBan.HeadlineMedium</item>
