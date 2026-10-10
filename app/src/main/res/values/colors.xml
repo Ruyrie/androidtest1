@@ -1,5 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 浅色颜色角色：种子色 #4C8C2B · Tonal Spot（UI 设计文档表 2-2） -->
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="md_primary">#456732</color>
+    <color name="md_on_primary">#FFFFFF</color>
+    <color name="md_primary_container">#C5EFAB</color>
+    <color name="md_on_primary_container">#2E4F1C</color>
+    <color name="md_secondary">#55624C</color>
+    <color name="md_on_secondary">#FFFFFF</color>
+    <color name="md_secondary_container">#D9E7CB</color>
+    <color name="md_on_secondary_container">#3E4A35</color>
+    <color name="md_tertiary">#386666</color>
+    <color name="md_on_tertiary">#FFFFFF</color>
+    <color name="md_tertiary_container">#BBEBEC</color>
+    <color name="md_on_tertiary_container">#1E4E4E</color>
+    <color name="md_error">#BA1A1A</color>
+    <color name="md_on_error">#FFFFFF</color>
+    <color name="md_error_container">#FFDAD6</color>
+    <color name="md_on_error_container">#93000A</color>
+    <color name="md_warning">#745B00</color>
+    <color name="md_on_warning">#FFFFFF</color>
+    <color name="md_warning_container">#FFE08B</color>
+    <color name="md_on_warning_container">#241A00</color>
+    <color name="md_surface">#F8FAF0</color>
+    <color name="md_on_surface">#191D16</color>
+    <color name="md_surface_variant">#E0E4D6</color>
+    <color name="md_on_surface_variant">#43483E</color>
+    <color name="md_surface_dim">#D9DBD1</color>
+    <color name="md_surface_bright">#F8FAF0</color>
+    <color name="md_surface_container_lowest">#FFFFFF</color>
+    <color name="md_surface_container_low">#F2F5EA</color>
+    <color name="md_surface_container">#EDEFE4</color>
+    <color name="md_surface_container_high">#E7E9DF</color>
+    <color name="md_surface_container_highest">#E1E4D9</color>
+    <color name="md_inverse_surface">#2E312B</color>
+    <color name="md_inverse_on_surface">#F0F2E7</color>
+    <color name="md_inverse_primary">#AAD291</color>
+    <color name="md_outline">#74796D</color>
+    <color name="md_outline_variant">#C3C8BB</color>
+    <color name="md_scrim">#000000</color>
+    <!-- 头像容器色（按用户 ID 固定取色，UI 设计文档第 7 章） -->
+    <color name="avatar_1_bg">#456732</color>
+    <color name="avatar_1_fg">#FFFFFF</color>
+    <color name="avatar_2_bg">#BBEBEC</color>
+    <color name="avatar_2_fg">#1E4E4E</color>
+    <color name="avatar_3_bg">#FFE08B</color>
+    <color name="avatar_3_fg">#241A00</color>
+    <color name="avatar_4_bg">#D9E7CB</color>
+    <color name="avatar_4_fg">#3E4A35</color>
+    <color name="avatar_5_bg">#C5EFAB</color>
+    <color name="avatar_5_fg">#2E4F1C</color>
 </resources>

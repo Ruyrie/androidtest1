@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">androidtest1</string>
+    <string name="app_name">禾伴</string>
+    <string name="app_slogan">种好每一季</string>
+    <string name="nav_home">首页</string>
+    <string name="nav_crops">作物</string>
+    <string name="nav_discover">发现</string>
+    <string name="nav_community">农友圈</string>
+    <string name="nav_me">我的</string>
+    <string name="ask_ai">问 AI</string>
+    <string name="back">返回</string>
+    <string name="press_again_to_exit">再按一次返回键退出禾伴</string>
+    <string name="feature_not_open">功能暂未开放</string>
+    <string name="placeholder_phase">此页面为占位页，将在 %1$s 阶段按原型图实现。下方按钮按原型的跳转关系排列。</string>
 </resources>

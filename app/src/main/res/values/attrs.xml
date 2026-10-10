@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 自定义 Warning 颜色角色（UI 设计文档 2.4） -->
+    <attr name="colorWarning" format="color" />
+    <attr name="colorOnWarning" format="color" />
+    <attr name="colorWarningContainer" format="color" />
+    <attr name="colorOnWarningContainer" format="color" />
+</resources>

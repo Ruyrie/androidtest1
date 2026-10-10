@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 深色颜色角色（UI 设计文档表 2-2） -->
+<resources>
+    <color name="md_primary">#AAD291</color>
+    <color name="md_on_primary">#173807</color>
+    <color name="md_primary_container">#2E4F1C</color>
+    <color name="md_on_primary_container">#C5EFAB</color>
+    <color name="md_secondary">#BDCBB0</color>
+    <color name="md_on_secondary">#283420</color>
+    <color name="md_secondary_container">#3E4A35</color>
+    <color name="md_on_secondary_container">#D9E7CB</color>
+    <color name="md_tertiary">#A0CFCF</color>
+    <color name="md_on_tertiary">#003737</color>
+    <color name="md_tertiary_container">#1E4E4E</color>
+    <color name="md_on_tertiary_container">#BBEBEC</color>
+    <color name="md_error">#FFB4AB</color>
+    <color name="md_on_error">#690005</color>
+    <color name="md_error_container">#93000A</color>
+    <color name="md_on_error_container">#FFDAD6</color>
+    <color name="md_warning">#EAC246</color>
+    <color name="md_on_warning">#3D2F00</color>
+    <color name="md_warning_container">#584400</color>
+    <color name="md_on_warning_container">#FFE08B</color>
+    <color name="md_surface">#11140E</color>
+    <color name="md_on_surface">#E1E4D9</color>
+    <color name="md_surface_variant">#43483E</color>
+    <color name="md_on_surface_variant">#C3C8BB</color>
+    <color name="md_surface_dim">#11140E</color>
+    <color name="md_surface_bright">#373A33</color>
+    <color name="md_surface_container_lowest">#0C0F09</color>
+    <color name="md_surface_container_low">#191D16</color>
+    <color name="md_surface_container">#1D211A</color>
+    <color name="md_surface_container_high">#282B24</color>
+    <color name="md_surface_container_highest">#32362F</color>
+    <color name="md_inverse_surface">#E1E4D9</color>
+    <color name="md_inverse_on_surface">#2E312B</color>
+    <color name="md_inverse_primary">#456732</color>
+    <color name="md_outline">#8D9286</color>
+    <color name="md_outline_variant">#43483E</color>
+    <color name="md_scrim">#000000</color>
+</resources>

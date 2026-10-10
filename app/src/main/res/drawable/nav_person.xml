@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 底部导航：选中时显示实心图标（UI 设计文档 6 章 · 导航） -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_person_fill" android:state_checked="true" />
+    <item android:drawable="@drawable/ic_person" />
+</selector>

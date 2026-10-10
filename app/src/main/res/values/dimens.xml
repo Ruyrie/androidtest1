@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 间距与尺寸，4dp 网格（UI 设计文档 5.2） -->
+<resources>
+    <dimen name="page_margin">16dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_padding_hero">20dp</dimen>
+    <dimen name="card_padding_compact">12dp</dimen>
+    <dimen name="card_gap">12dp</dimen>
+    <dimen name="section_gap">24dp</dimen>
+    <dimen name="chip_gap">8dp</dimen>
+    <dimen name="icon_text_gap">16dp</dimen>
+    <dimen name="list_item_one_line">56dp</dimen>
+    <dimen name="list_item_two_line">72dp</dimen>
+    <dimen name="top_bar_height">64dp</dimen>
+    <dimen name="bottom_nav_height">80dp</dimen>
+    <dimen name="touch_target">48dp</dimen>
+    <dimen name="button_height">40dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="corner_extra_small">4dp</dimen>
+    <dimen name="corner_small">8dp</dimen>
+    <dimen name="corner_medium">12dp</dimen>
+    <dimen name="corner_large">16dp</dimen>
+    <dimen name="corner_extra_large">28dp</dimen>
+</resources>

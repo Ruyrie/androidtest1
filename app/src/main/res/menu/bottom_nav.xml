@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 5 个一级入口，id 与导航图中的目的地 id 一致 -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/nav_home"
+        android:title="@string/nav_home" />
+    <item
+        android:id="@+id/cropsFragment"
+        android:icon="@drawable/nav_potted_plant"
+        android:title="@string/nav_crops" />
+    <item
+        android:id="@+id/discoverFragment"
+        android:icon="@drawable/nav_explore"
+        android:title="@string/nav_discover" />
+    <item
+        android:id="@+id/communityFragment"
+        android:icon="@drawable/nav_forum"
+        android:title="@string/nav_community" />
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/nav_person"
+        android:title="@string/nav_me" />
+</menu>

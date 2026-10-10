@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Material 3 字号阶梯；中文 letterSpacing 为 0，Title 及以上中文用 Medium（UI 设计文档 4.2 / 4.3） -->
+<resources>
+    <style name="TextAppearance.HeBan.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="TextAppearance.HeBan.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="TextAppearance.HeBan.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="TextAppearance.HeBan.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="TextAppearance.HeBan.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="TextAppearance.HeBan.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="TextAppearance.HeBan.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="TextAppearance.HeBan.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="TextAppearance.HeBan.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="TextAppearance.HeBan.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="TextAppearance.HeBan.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="TextAppearance.HeBan.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:letterSpacing">0</item>
+    </style>
+</resources>

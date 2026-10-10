@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 导航图（技术准备文档 6.1）：起始页由 MainActivity 在运行时设置 -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <navigation
+        android:id="@+id/auth_graph"
+        app:startDestination="@id/onboardingFragment">
+
+        <fragment
+            android:id="@+id/onboardingFragment"
+            android:name="com.heban.app.ui.account.OnboardingFragment"
+            android:label="A02 引导页" />
+
+        <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.heban.app.ui.account.LoginFragment"
+            android:label="A03 密码登录" />
+
+        <fragment
+            android:id="@+id/loginSmsFragment"
+            android:name="com.heban.app.ui.account.LoginSmsFragment"
+            android:label="A04 验证码登录" />
+
+        <fragment
+            android:id="@+id/phoneAppealFragment"
+            android:name="com.heban.app.ui.account.PhoneAppealFragment"
+            android:label="A09 手机号已停用 · 申诉换绑" />
+
+        <navigation
+            android:id="@+id/register_graph"
+            app:startDestination="@id/registerFragment">
+
+            <fragment
+                android:id="@+id/registerFragment"
+                android:name="com.heban.app.ui.account.RegisterFragment"
+                android:label="A05 注册" />
+
+            <fragment
+                android:id="@+id/profileSetupFragment"
+                android:name="com.heban.app.ui.account.ProfileSetupFragment"
+                android:label="A06 完善资料" />
+
+        </navigation>
+
+        <navigation
+            android:id="@+id/reset_graph"
+            app:startDestination="@id/forgotPwdFragment">
+
+            <fragment
+                android:id="@+id/forgotPwdFragment"
+                android:name="com.heban.app.ui.account.ForgotPwdFragment"
+                android:label="A07 忘记密码 · 验证手机" />
+
+            <fragment
+                android:id="@+id/resetPwdFragment"
+                android:name="com.heban.app.ui.account.ResetPwdFragment"
+                android:label="A08 设置新密码" />
+
+        </navigation>
+
+    </navigation>
+
+    <navigation
+        android:id="@+id/scan_graph"
+        app:startDestination="@id/scanFragment">
+
+        <fragment
+            android:id="@+id/scanFragment"
+            android:name="com.heban.app.ui.discover.scan.ScanFragment"
+            android:label="D02 拍照识别" />
+
+        <fragment
+            android:id="@+id/scanResultFragment"
+            android:name="com.heban.app.ui.discover.scan.ScanResultFragment"
+            android:label="D03 识别结果" />
+
+    </navigation>
+
+    <navigation
+        android:id="@+id/mall_graph"
+        app:startDestination="@id/mallItemFragment">
+
+        <fragment
+            android:id="@+id/mallItemFragment"
+            android:name="com.heban.app.ui.points.MallItemFragment"
+            android:label="P04 兑换商品详情" />
+
+        <fragment
+            android:id="@+id/mallConfirmFragment"
+            android:name="com.heban.app.ui.points.MallConfirmFragment"
+            android:label="P05 确认兑换" />
+
+    </navigation>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.heban.app.ui.home.HomeFragment"
+        android:label="H01 首页" />
+
+    <fragment
+        android:id="@+id/weatherFragment"
+        android:name="com.heban.app.ui.home.WeatherFragment"
+        android:label="H02 天气详情" />
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.heban.app.ui.home.CalendarFragment"
+        android:label="H03 农事日历" />
+
+    <fragment
+        android:id="@+id/addTaskFragment"
+        android:name="com.heban.app.ui.home.AddTaskFragment"
+        android:label="H04 新建农事" />
+
+    <fragment
+        android:id="@+id/checkInFragment"
+        android:name="com.heban.app.ui.home.CheckInFragment"
+        android:label="H05 签到与成就" />
+
+    <fragment
+        android:id="@+id/cropsFragment"
+        android:name="com.heban.app.ui.crop.CropsFragment"
+        android:label="C01 我的作物" />
+
+    <fragment
+        android:id="@+id/cropDetailFragment"
+        android:name="com.heban.app.ui.crop.CropDetailFragment"
+        android:label="C02 作物详情" />
+
+    <fragment
+        android:id="@+id/addCropFragment"
+        android:name="com.heban.app.ui.crop.AddCropFragment"
+        android:label="C03 添加作物" />
+
+    <fragment
+        android:id="@+id/addRecordFragment"
+        android:name="com.heban.app.ui.crop.AddRecordFragment"
+        android:label="C04 添加农事记录" />
+
+    <fragment
+        android:id="@+id/plotsFragment"
+        android:name="com.heban.app.ui.crop.PlotsFragment"
+        android:label="C05 地块管理" />
+
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.heban.app.ui.discover.DiscoverFragment"
+        android:label="D01 发现" />
+
+    <fragment
+        android:id="@+id/pestsFragment"
+        android:name="com.heban.app.ui.discover.pest.PestsFragment"
+        android:label="D04 病虫害百科" />
+
+    <fragment
+        android:id="@+id/pestDetailFragment"
+        android:name="com.heban.app.ui.discover.pest.PestDetailFragment"
+        android:label="D05 病害详情" />
+
+    <fragment
+        android:id="@+id/aiChatFragment"
+        android:name="com.heban.app.ui.discover.ai.AiChatFragment"
+        android:label="D06 AI 助手" />
+
+    <fragment
+        android:id="@+id/marketFragment"
+        android:name="com.heban.app.ui.discover.market.MarketFragment"
+        android:label="D07 农产品集市" />
+
+    <fragment
+        android:id="@+id/productFragment"
+        android:name="com.heban.app.ui.discover.market.ProductFragment"
+        android:label="D08 商品详情" />
+
+    <fragment
+        android:id="@+id/addProductFragment"
+        android:name="com.heban.app.ui.discover.market.AddProductFragment"
+        android:label="D09 发布商品" />
+
+    <fragment
+        android:id="@+id/ledgerFragment"
+        android:name="com.heban.app.ui.discover.ledger.LedgerFragment"
+        android:label="D10 收支记账" />
+
+    <fragment
+        android:id="@+id/addEntryFragment"
+        android:name="com.heban.app.ui.discover.ledger.AddEntryFragment"
+        android:label="D11 记一笔" />
+
+    <fragment
+        android:id="@+id/communityFragment"
+        android:name="com.heban.app.ui.community.CommunityFragment"
+        android:label="S01 农友圈" />
+
+    <fragment
+        android:id="@+id/postDetailFragment"
+        android:name="com.heban.app.ui.community.PostDetailFragment"
+        android:label="S02 动态详情" />
+
+    <fragment
+        android:id="@+id/publishFragment"
+        android:name="com.heban.app.ui.community.PublishFragment"
+        android:label="S03 发布动态 / 提问" />
+
+    <fragment
+        android:id="@+id/qaFragment"
+        android:name="com.heban.app.ui.community.QaFragment"
+        android:label="S04 问答" />
+
+    <fragment
+        android:id="@+id/questionFragment"
+        android:name="com.heban.app.ui.community.QuestionFragment"
+        android:label="S05 问题详情" />
+
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.heban.app.ui.community.UserProfileFragment"
+        android:label="S06 农友主页" />
+
+    <fragment
+        android:id="@+id/followsFragment"
+        android:name="com.heban.app.ui.community.FollowsFragment"
+        android:label="S07 关注与粉丝" />
+
+    <fragment
+        android:id="@+id/messagesFragment"
+        android:name="com.heban.app.ui.community.MessagesFragment"
+        android:label="S08 消息" />
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.heban.app.ui.community.ChatFragment"
+        android:label="S09 私信聊天" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.heban.app.ui.me.ProfileFragment"
+        android:label="M01 我的" />
+
+    <fragment
+        android:id="@+id/myHomeFragment"
+        android:name="com.heban.app.ui.me.MyHomeFragment"
+        android:label="M02 我的主页" />
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.heban.app.ui.me.EditProfileFragment"
+        android:label="M03 编辑资料" />
+
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.heban.app.ui.me.FavoritesFragment"
+        android:label="M04 我的收藏" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.heban.app.ui.me.settings.SettingsFragment"
+        android:label="M05 设置" />
+
+    <fragment
+        android:id="@+id/securityFragment"
+        android:name="com.heban.app.ui.me.settings.SecurityFragment"
+        android:label="M06 账号与安全" />
+
+    <fragment
+        android:id="@+id/changePwdFragment"
+        android:name="com.heban.app.ui.me.settings.ChangePwdFragment"
+        android:label="M07 修改密码" />
+
+    <fragment
+        android:id="@+id/changePhoneFragment"
+        android:name="com.heban.app.ui.me.settings.ChangePhoneFragment"
+        android:label="M08 换绑手机号" />
+
+    <fragment
+        android:id="@+id/notifySettingsFragment"
+        android:name="com.heban.app.ui.me.settings.NotifySettingsFragment"
+        android:label="M09 消息通知" />
+
+    <fragment
+        android:id="@+id/privacySettingsFragment"
+        android:name="com.heban.app.ui.me.settings.PrivacySettingsFragment"
+        android:label="M10 隐私设置" />
+
+    <fragment
+        android:id="@+id/aiSettingsFragment"
+        android:name="com.heban.app.ui.me.settings.AiSettingsFragment"
+        android:label="M11 AI 助手设置" />
+
+    <fragment
+        android:id="@+id/generalSettingsFragment"
+        android:name="com.heban.app.ui.me.settings.GeneralSettingsFragment"
+        android:label="M12 显示与通用" />
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.heban.app.ui.me.settings.AboutFragment"
+        android:label="M13 关于禾伴" />
+
+    <fragment
+        android:id="@+id/pointsDetailFragment"
+        android:name="com.heban.app.ui.points.PointsDetailFragment"
+        android:label="P01 积分明细" />
+
+    <fragment
+        android:id="@+id/pointsRulesFragment"
+        android:name="com.heban.app.ui.points.PointsRulesFragment"
+        android:label="P02 积分规则" />
+
+    <fragment
+        android:id="@+id/pointsMallFragment"
+        android:name="com.heban.app.ui.points.PointsMallFragment"
+        android:label="P03 积分商城" />
+
+    <fragment
+        android:id="@+id/addressFragment"
+        android:name="com.heban.app.ui.points.AddressFragment"
+        android:label="P06 收货地址" />
+
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="com.heban.app.ui.points.OrdersFragment"
+        android:label="P07 兑换记录" />
+
+    <fragment
+        android:id="@+id/logisticsFragment"
+        android:name="com.heban.app.ui.points.LogisticsFragment"
+        android:label="P08 物流详情" />
+
+    <fragment
+        android:id="@+id/serviceChatFragment"
+        android:name="com.heban.app.ui.points.ServiceChatFragment"
+        android:label="P09 禾伴客服" />
+
+</navigation>
