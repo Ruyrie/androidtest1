@@ -1,8 +1,10 @@
 package com.heban.app.data.repository;
 
 import com.heban.app.data.model.CityOption;
+import com.heban.app.data.model.FarmType;
 import com.heban.app.data.model.WeatherState;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -27,4 +29,11 @@ public interface WeatherRepository {
     Single<List<CityOption>> searchCity(String keyword);
 
     Completable setLocation(CityOption city);
+
+    /**
+     * H04「AI 提示」：根据缓存的逐小时 / 逐日预报给出这类农事在 day 前后的最佳作业时段（FarmIndexCalculator，不调用大模型），
+     * 如「11 日 7:00–10:00 风力 1 级、无降水，适合喷药；12 日起有降雨，建议提前完成。」（不含「AI 提示：」前缀）。
+     * 没有天气数据或无法判断时返回空字符串。
+     */
+    Single<String> farmTaskTip(FarmType type, LocalDate day);
 }

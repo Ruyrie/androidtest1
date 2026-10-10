@@ -6,8 +6,10 @@ import com.google.gson.Gson;
 import com.heban.app.data.local.db.AppDatabase;
 import com.heban.app.data.local.prefs.SettingsStore;
 import com.heban.app.data.model.CityOption;
+import com.heban.app.data.model.FarmType;
 import com.heban.app.data.model.WeatherState;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,5 +60,10 @@ public final class QWeatherRepository implements WeatherRepository {
     @Override
     public Completable setLocation(CityOption city) {
         return Completable.complete();
+    }
+
+    @Override
+    public Single<String> farmTaskTip(FarmType type, LocalDate day) {
+        return Single.just("");
     }
 }
