@@ -15,6 +15,7 @@ import com.heban.app.data.model.WeatherBundle;
 import com.heban.app.data.model.WeatherNow;
 import com.heban.app.data.model.WeatherState;
 import com.heban.app.data.remote.AppError;
+import com.heban.app.data.remote.weather.QWeatherErrors;
 
 import org.junit.Test;
 
@@ -95,7 +96,7 @@ public class WeatherStateUiTest {
 
     @Test
     public void missingLocation_offersCityPick() {
-        WeatherStateUi ui = new WeatherStateUi(error(AppError.Type.BUSINESS, "无法确定所在地区，请选择城市"));
+        WeatherStateUi ui = new WeatherStateUi(error(AppError.Type.BUSINESS, QWeatherErrors.MSG_NO_LOCATION));
         assertTrue(ui.needsCityPick());
         assertFalse(ui.canRetry());
     }

@@ -75,7 +75,16 @@ public final class WeatherFormat {
     @NonNull
     public static String nowText(@NonNull WeatherStateUi ui) {
         WeatherBundle b = ui.bundle();
-        return b == null ? "" : nonNull(b.now.text);
+        return b == null ? "" : conditionText(b);
+    }
+
+    /** 当天预报「白天转夜间」（如「多云转晴」），没有当天预报时用实况文字 */
+    @NonNull
+    static String conditionText(@NonNull WeatherBundle b) {
+        DailyWeather d = today(b, currentTimeMillis());
+        String s = d == null ? null : d.summaryText();
+        if (s != null && !s.isEmpty()) return s;
+        return b.now == null ? "" : nonNull(b.now.text);
     }
 
     @NonNull
@@ -141,8 +150,8 @@ public final class WeatherFormat {
         WeatherNow n = b.now;
         DailyWeather d = today(b, currentTimeMillis());
         return d != null
-                ? c.getString(R.string.weather_current_detail, nonNull(n.text), d.tempMin, d.tempMax, n.feelsLike)
-                : c.getString(R.string.weather_current_detail_no_range, nonNull(n.text), n.feelsLike);
+                ? c.getString(R.string.weather_current_detail, conditionText(b), d.tempMin, d.tempMax, n.feelsLike)
+                : c.getString(R.string.weather_current_detail_no_range, conditionText(b), n.feelsLike);
     }
 
     /** H01 顶部：「10月10日 周六 · 南京 江宁」（没有地点时只显示日期） */

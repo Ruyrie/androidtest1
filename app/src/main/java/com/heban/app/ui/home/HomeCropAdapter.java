@@ -1,5 +1,8 @@
 package com.heban.app.ui.home;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +52,9 @@ public class HomeCropAdapter extends ListAdapter<CropCard, HomeCropAdapter.Holde
             h.cover.setVisibility(View.GONE);
         } else {
             h.cover.setVisibility(View.VISIBLE);
-            Glide.with(h.cover).load(cover).centerCrop().into(h.cover);
+            // 图片不存在或加载失败时保持透明，露出下面的作物图标占位
+            Drawable none = new ColorDrawable(Color.TRANSPARENT);
+            Glide.with(h.cover).load(cover).centerCrop().placeholder(none).error(none).into(h.cover);
         }
         h.name.setText(c.name);
         String stage = c.stage == null || c.stage.isEmpty()

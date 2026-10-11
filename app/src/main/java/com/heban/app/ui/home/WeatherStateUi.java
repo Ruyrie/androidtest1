@@ -7,6 +7,7 @@ import com.heban.app.data.model.WeatherAlert;
 import com.heban.app.data.model.WeatherBundle;
 import com.heban.app.data.model.WeatherState;
 import com.heban.app.data.remote.AppError;
+import com.heban.app.data.remote.weather.QWeatherErrors;
 
 /**
  * H01 天气卡 / H02 天气详情共用的显示状态（UI 设计文档表 7-2）：
@@ -14,9 +15,6 @@ import com.heban.app.data.remote.AppError;
  * 缺少地点时提供「选择城市」，网络类错误提供「重试」，缺少 Key 等配置问题只显示提示。
  */
 public final class WeatherStateUi {
-    /** 缺少地点的错误提示中会出现的词（数据层的提示文字，如「无法确定所在地区，请选择城市」） */
-    private static final String[] LOCATION_WORDS = {"地区", "位置", "定位", "城市", "地点"};
-
     @NonNull public final WeatherState state;
 
     public WeatherStateUi(@Nullable WeatherState state) {
@@ -104,10 +102,6 @@ public final class WeatherStateUi {
     }
 
     static boolean isLocationError(@Nullable AppError e) {
-        if (e == null || e.type != AppError.Type.BUSINESS) return false;
-        for (String w : LOCATION_WORDS) {
-            if (e.message.contains(w)) return true;
-        }
-        return false;
+        return QWeatherErrors.isNoLocation(e);
     }
 }
