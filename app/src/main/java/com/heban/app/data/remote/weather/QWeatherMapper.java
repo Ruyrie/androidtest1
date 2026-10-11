@@ -60,6 +60,8 @@ public final class QWeatherMapper {
                 w.tempMin = parseInt(d.tempMin, 0);
                 w.textDay = d.textDay;
                 w.iconDay = d.iconDay;
+                w.textNight = d.textNight;
+                w.iconNight = d.iconNight;
                 w.precip = parseDouble(d.precip);
                 w.humidity = parseInt(d.humidity, 0);
                 w.windScaleDay = d.windScaleDay;

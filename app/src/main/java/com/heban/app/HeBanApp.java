@@ -10,6 +10,7 @@ import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.DynamicColorsOptions;
 import com.heban.app.di.AppContainer;
 import com.heban.app.di.AppViewModelFactory;
+import com.heban.app.worker.WeatherRefreshWorker;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
@@ -46,5 +47,10 @@ public class HeBanApp extends Application {
 
         RxJavaPlugins.setErrorHandler(e -> Log.w(TAG, "Undeliverable RxJava error", e));
         container.notifier.createChannels();
+        try {
+            WeatherRefreshWorker.enqueue(this);     // 每 3 小时刷新天气，满足降温预警时通知
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "WorkManager not initialized", e);
+        }
     }
 }

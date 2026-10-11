@@ -8,7 +8,17 @@ public final class DailyWeather {
     public int tempMin;
     public String textDay;
     public String iconDay;
+    /** 夜间天气文字，与白天不同时显示为「多云转晴」 */
+    public String textNight;
+    public String iconNight;
     public double precip;
     public int humidity;
     public String windScaleDay;
+
+    /** 「多云转晴」：白天与夜间天气不同时用「转」连接 */
+    public String summaryText() {
+        if (textNight == null || textNight.isEmpty() || textNight.equals(textDay)) return textDay;
+        if (textDay == null || textDay.isEmpty()) return textNight;
+        return textDay + "转" + textNight;
+    }
 }
