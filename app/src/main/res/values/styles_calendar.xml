@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- H03 农事日历、H04 新建农事 -->
+<resources>
+    <!-- 星期行：高 32dp，14sp，On Surface Variant -->
+    <style name="Widget.HeBan.Calendar.WeekLabel" parent="Widget.HeBan.TextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- 图例圆点 8dp -->
+    <style name="Widget.HeBan.Calendar.LegendDot" parent="">
+        <item name="android:layout_width">8dp</item>
+        <item name="android:layout_height">8dp</item>
+        <item name="android:background">@drawable/calendar_oval</item>
+    </style>
+
+    <!-- 图例文字：12sp，On Surface Variant，与圆点间距 6dp -->
+    <style name="Widget.HeBan.Calendar.LegendText" parent="Widget.HeBan.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">6dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceBodySmall</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- 月历格子里的农事圆点 4dp -->
+    <style name="Widget.HeBan.Calendar.Dot" parent="">
+        <item name="android:layout_width">4dp</item>
+        <item name="android:layout_height">4dp</item>
+        <item name="android:layout_marginHorizontal">1dp</item>
+        <item name="android:background">@drawable/calendar_oval</item>
+    </style>
+
+    <!-- 顶栏 / 月份切换的图标按钮 48dp -->
+    <style name="Widget.HeBan.Calendar.IconButton" parent="">
+        <item name="android:layout_width">@dimen/touch_target</item>
+        <item name="android:layout_height">@dimen/touch_target</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:scaleType">center</item>
+        <item name="tint">?attr/colorOnSurfaceVariant</item>
+    </style>
+</resources>

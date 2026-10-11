@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- H03 农事日历、H04 新建农事 -->
+<resources>
+    <!-- H03 -->
+    <string name="calendar_title">农事日历</string>
+    <string name="calendar_today">回到今天</string>
+    <string name="calendar_prev_month">上个月</string>
+    <string name="calendar_next_month">下个月</string>
+    <string name="calendar_month_title">%1$d年%2$d月</string>
+    <string name="calendar_pick_date">选择日期</string>
+    <string-array name="calendar_weekdays">
+        <item>日</item>
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+    </string-array>
+    <string-array name="calendar_weekday_names">
+        <item>周日</item>
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+    </string-array>
+    <!-- 10月10日 周六 -->
+    <string name="calendar_day_title">%1$d月%2$d日 %3$s</string>
+    <string name="calendar_day_count">· %1$d 项</string>
+    <string name="calendar_day_desc">%1$d月%2$d日</string>
+    <string name="calendar_legend_manage">施肥 / 管理</string>
+    <string name="calendar_legend_irrigate">灌溉</string>
+    <string name="calendar_legend_pest">用药 / 病虫害</string>
+    <!-- 霜降（10月23日）前后注意防霜冻，露天地块适时完成冬小麦播种。 -->
+    <string name="calendar_term_tip">%1$s（%2$d月%3$d日）前后%4$s</string>
+    <string name="calendar_add_task">新建农事</string>
+    <string name="calendar_attention">需关注</string>
+    <string name="calendar_task_done">已完成</string>
+    <string name="calendar_task_undone">未完成</string>
+    <string name="calendar_task_meta">%1$s · %2$s</string>
+    <string name="calendar_empty_title">这天没有农事</string>
+    <string name="calendar_empty_desc">点右下角 + 新建农事，到时间提醒你</string>
+    <string name="calendar_delete_title">删除这项农事？</string>
+    <string name="calendar_delete_message">「%1$s」删除后不能恢复。</string>
+    <string name="calendar_deleted">已删除</string>
+
+    <!-- H04 -->
+    <string name="add_task_title">新建农事</string>
+    <string name="add_task_close">关闭</string>
+    <string name="add_task_type">农事类型</string>
+    <string name="add_task_crop">关联作物</string>
+    <string name="add_task_crop_none">不关联作物</string>
+    <string name="add_task_crop_with_plot">%1$s · %2$s</string>
+    <string name="add_task_date">日期</string>
+    <string name="add_task_time">时间</string>
+    <string name="add_task_repeat">重复</string>
+    <string name="add_task_repeat_none">不重复</string>
+    <string name="add_task_repeat_every">每 %1$d 天，共 %2$d 次</string>
+    <string name="add_task_remind">提醒我</string>
+    <string name="add_task_remind_on">提前 30 分钟通知</string>
+    <string name="add_task_remind_off">不提醒</string>
+    <string name="add_task_note">备注</string>
+    <string name="add_task_note_hint">如：农药名称、稀释倍数</string>
+    <string name="add_task_ai_tip">AI 提示：%1$s</string>
+    <string name="add_task_pick_date">选择日期</string>
+    <string name="add_task_pick_time">选择时间</string>
+    <string name="add_task_saved">已添加到农事日历</string>
+    <string name="add_task_notify_denied">未开启通知权限，到时间不会收到提醒</string>
+    <string name="add_task_notify_settings">去设置</string>
+</resources>

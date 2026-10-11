@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- H03 月历格子：高 52dp；数字圆 40dp（选中实心 / 今天描边），下方节气小字或农事圆点 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="day"
+            type="com.heban.app.ui.home.CalendarDay" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:clipChildren="false"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_number"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:activated="@{day.today}"
+            android:background="@drawable/calendar_day_bg"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:selected="@{day.selected}"
+            android:text="@{day.dayText()}"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="@color/calendar_day_text"
+            tools:text="10" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:clipChildren="false"
+            android:gravity="center"
+            android:importantForAccessibility="noHideDescendants"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_term"
+                android:layout_width="wrap_content"
+                android:layout_height="10dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="@{day.term}"
+                android:textColor="?attr/colorTertiary"
+                android:textSize="10sp"
+                app:visible="@{day.hasTerm()}"
+                tools:text="寒露" />
+
+            <View
+                style="@style/Widget.HeBan.Calendar.Dot"
+                android:backgroundTint="?attr/colorPrimary"
+                app:visible="@{day.dotManage}" />
+
+            <View
+                style="@style/Widget.HeBan.Calendar.Dot"
+                android:backgroundTint="?attr/colorTertiary"
+                app:visible="@{day.dotIrrigate}" />
+
+            <View
+                style="@style/Widget.HeBan.Calendar.Dot"
+                android:backgroundTint="?attr/colorError"
+                app:visible="@{day.dotPest}" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

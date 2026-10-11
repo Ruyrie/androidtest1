@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- H03 当日农事区域：Surface Container Low，顶部圆角 28dp -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="?attr/colorSurfaceContainerLow" />
+    <corners
+        android:topLeftRadius="@dimen/corner_extra_large"
+        android:topRightRadius="@dimen/corner_extra_large" />
+</shape>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- H03 / H04 -->
+<resources>
+    <!--
+        H04 表单项间距：原型为 20dp，但描边输入框的浮动标签会在框上方额外占约 6dp，
+        所以输入框的 marginTop 用 14dp，使框与框之间的可见间距仍为 20dp。
+    -->
+    <dimen name="add_task_field_gap">14dp</dimen>
+</resources>

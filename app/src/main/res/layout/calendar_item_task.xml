@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- H03 当日农事一行（分隔线由 MaterialDividerItemDecoration 绘制）：高 64dp；类型图标圆 40dp、标题 / 地块 · 时间、「需关注」、完成状态（点击整行切换） -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="task"
+            type="com.heban.app.data.model.TaskItem" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/row"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <ImageView
+                android:id="@+id/iv_type"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/calendar_oval"
+                android:importantForAccessibility="no"
+                android:scaleType="center"
+                tools:src="@drawable/ic_compost" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{task.title}"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    tools:text="番茄追施钾肥" />
+
+                <TextView
+                    android:id="@+id/tv_meta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="1号大棚 · 08:00" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_attention"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/calendar_attention_bg"
+                android:gravity="center"
+                android:paddingHorizontal="8dp"
+                android:text="@string/calendar_attention"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="?attr/colorOnErrorContainer"
+                app:visible="@{task.attention &amp;&amp; !task.done}" />
+
+            <ImageView
+                android:id="@+id/iv_done"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:importantForAccessibility="no"
+                tools:src="@drawable/ic_check_circle_fill" />
+        </LinearLayout>
+    </FrameLayout>
+</layout>

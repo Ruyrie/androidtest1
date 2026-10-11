@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- H03 日期数字：选中为 Primary 实心圆，今天为 Primary 描边圆 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape android:shape="oval">
+            <solid android:color="?attr/colorPrimary" />
+        </shape>
+    </item>
+    <item android:state_activated="true">
+        <shape android:shape="oval">
+            <stroke
+                android:width="1dp"
+                android:color="?attr/colorPrimary" />
+        </shape>
+    </item>
+    <item android:drawable="@android:color/transparent" />
+</selector>
