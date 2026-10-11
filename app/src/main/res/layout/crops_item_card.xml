@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C01 作物卡片（Outlined）：缩略图 72dp、名称 + 阶段 / 需关注标签、地块 · 面积、生长进度 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.heban.app.ui.crop.CropsFormat" />
+
+        <variable
+            name="card"
+            type="com.heban.app.data.model.CropCard" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.Material3.CardView.Outlined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/card_gap"
+        app:cardBackgroundColor="?attr/colorSurface"
+        app:cardCornerRadius="@dimen/corner_medium"
+        app:strokeColor="?attr/colorOutlineVariant"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="13dp">
+
+            <!-- 缩略图：封面图（Glide centerCrop）或作物图标占位 -->
+            <FrameLayout
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:background="@drawable/crops_bg_thumb"
+                android:importantForAccessibility="no">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    app:cropIcon="@{card.icon}"
+                    app:tint="?attr/colorOutline" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="centerCrop"
+                    app:cropCover="@{card.coverPath}"
+                    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{CropsFormat.cropTitle(card.name, card.variety)}"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <!-- 生长阶段标签：Secondary Container -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/crops_bg_tag"
+                        android:backgroundTint="?attr/colorSecondaryContainer"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="8dp"
+                        android:text="@{card.stage}"
+                        android:textAppearance="?attr/textAppearanceLabelMedium"
+                        android:textColor="?attr/colorOnSecondaryContainer"
+                        app:visible="@{!CropsFormat.hasAttention(card) &amp;&amp; card.stage != null}" />
+
+                    <!-- 需关注标签：Error Container + 警告图标 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/crops_bg_tag"
+                        android:backgroundTint="?attr/colorErrorContainer"
+                        android:drawablePadding="4dp"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:maxWidth="160dp"
+                        android:maxLines="1"
+                        android:paddingHorizontal="8dp"
+                        android:text="@{card.attentionNote}"
+                        android:textAppearance="?attr/textAppearanceLabelMedium"
+                        android:textColor="?attr/colorOnErrorContainer"
+                        app:drawableStartCompat="@drawable/crops_ic_warning_small"
+                        app:drawableTint="?attr/colorOnErrorContainer"
+                        app:visible="@{CropsFormat.hasAttention(card)}" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{CropsFormat.cropSubtitle(card)}"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <!-- 生长进度：4dp 进度条 + 「68/110 天」 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        style="@style/Widget.Material3.LinearProgressIndicator.Legacy"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:importantForAccessibility="no"
+                        android:max="100"
+                        android:progress="@{card.progress}"
+                        app:indicatorColor="?attr/colorPrimary"
+                        app:trackColor="?attr/colorSecondaryContainer"
+                        app:trackCornerRadius="2dp"
+                        app:trackThickness="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{@string/crops_days_progress(card.daysPlanted, card.expectedDays)}"
+                        android:textAppearance="?attr/textAppearanceLabelSmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

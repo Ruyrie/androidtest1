@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C02 封面上的圆形按钮：40dp，Surface 90% -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/crop_detail_circle_button" />
+</shape>

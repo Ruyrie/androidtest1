@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C01 我的作物 / C02 作物详情 / C05 地块管理 -->
+<resources>
+    <!-- C01 我的作物 -->
+    <string name="crops_title">我的作物</string>
+    <string name="crops_plots">地块管理</string>
+    <string name="crops_add">添加作物</string>
+    <string name="crops_search_hint">搜索作物或地块</string>
+    <string name="crops_voice_search">语音搜索</string>
+    <string name="crops_voice_prompt">说出作物或地块名称</string>
+    <string name="crops_clear_search">清除搜索</string>
+    <string name="crops_filter_all">全部 %1$d</string>
+    <string name="crops_filter_greenhouse">大棚</string>
+    <string name="crops_filter_open">露天</string>
+    <string name="crops_filter_attention">需关注</string>
+    <string name="crops_stat_growing">在种作物</string>
+    <string name="crops_stat_week_tasks">本周农事</string>
+    <string name="crops_stat_attention">需关注</string>
+    <string name="crops_days_progress">%1$d/%2$d 天</string>
+    <string name="crops_empty_title">还没有作物</string>
+    <string name="crops_empty_desc">添加第一块地和作物，禾伴会按生长阶段提醒你</string>
+    <string name="crops_empty_action">添加作物</string>
+    <string name="crops_no_match_title">没有找到相关作物</string>
+    <string name="crops_no_match_desc">换个关键词或筛选条件试试</string>
+
+    <!-- C02 作物详情 -->
+    <string name="crop_detail_share">分享到农友圈</string>
+    <string name="crop_detail_edit">编辑作物</string>
+    <string name="crop_detail_more">更多操作</string>
+    <string name="crop_detail_cover">作物封面图</string>
+    <string name="crop_detail_planted_on">定植 %1$s</string>
+    <string name="crop_detail_days_planted">已种 %1$d 天</string>
+    <string name="crop_detail_harvest_on">预计 %1$s 采收</string>
+    <string name="crop_detail_stages">生长阶段</string>
+    <string name="crop_detail_days_left">预计还需 %1$d 天</string>
+    <string name="crop_detail_harvest_due">已到预计采收期</string>
+    <string name="crop_detail_dismiss_attention">取消关注</string>
+    <string name="crop_detail_attention_dismissed">已取消关注</string>
+    <string name="crop_detail_tab_records">农事记录</string>
+    <string name="crop_detail_tab_growth">生长数据</string>
+    <string name="crop_detail_tab_photos">照片</string>
+    <string name="crop_detail_ask_ai">问 AI 诊断</string>
+    <string name="crop_detail_add_record">添加记录</string>
+    <string name="crop_detail_delete_crop">删除作物</string>
+    <string name="crop_detail_delete_crop_title">删除作物？</string>
+    <string name="crop_detail_delete_crop_message">删除「%1$s」后，它的农事记录也会一并删除，无法恢复。</string>
+    <string name="crop_detail_delete_record_title">删除这条农事记录？</string>
+    <string name="crop_detail_delete_record_message">删除后无法恢复。</string>
+    <string name="crop_detail_record_deleted">已删除</string>
+    <string name="crop_detail_not_found">作物不存在或已删除</string>
+    <string name="crop_detail_records_empty_title">还没有农事记录</string>
+    <string name="crop_detail_records_empty_desc">施肥、用药、灌溉都可以记下来</string>
+    <string name="crop_detail_photos_empty_title">还没有照片</string>
+    <string name="crop_detail_photos_empty_desc">添加农事记录时可以拍照或从相册选择</string>
+    <string name="crop_detail_photo">现场照片</string>
+    <string name="crop_detail_growth_days">已种天数</string>
+    <string name="crop_detail_growth_expected">预计生长期</string>
+    <string name="crop_detail_growth_progress">生长进度</string>
+    <string name="crop_detail_growth_days_value">%1$d 天</string>
+    <string name="crop_detail_growth_percent">%1$d%%</string>
+    <string name="crop_detail_growth_records">农事统计</string>
+    <string name="crop_detail_growth_total">累计投入 %1$s</string>
+    <string name="crop_detail_growth_count">%1$d 次</string>
+    <string name="crop_detail_growth_last">最近 %1$s</string>
+    <string name="crop_detail_growth_none">还没有记录</string>
+
+    <!-- C05 地块管理 -->
+    <string name="plots_title">地块管理</string>
+    <string name="plots_add">添加地块</string>
+    <string name="plots_stat_count">地块</string>
+    <string name="plots_stat_area">总面积（亩）</string>
+    <string name="plots_stat_utilization">利用率</string>
+    <string name="plots_percent">%1$d%%</string>
+    <string name="plots_more">%1$s更多操作</string>
+    <string name="plots_humidity_high">湿度偏高</string>
+    <string name="plots_reading">棚内 %1$s°C · 湿度 %2$d%%</string>
+    <string name="plots_reading_none">棚内温湿度未记录</string>
+    <string name="plots_last_irrigation">上次灌溉 %1$s</string>
+    <string name="plots_irrigation_none">暂无灌溉记录</string>
+    <string name="plots_season_cost">本季投入 %1$s</string>
+    <string name="plots_crop_stage">%1$s · %2$s</string>
+    <string name="plots_no_crops">还没有种植作物</string>
+    <string name="plots_empty_title">还没有地块</string>
+    <string name="plots_empty_desc">添加大棚或露天地块，统一管理作物和投入</string>
+    <string name="plots_menu_edit">编辑地块</string>
+    <string name="plots_menu_reading">记录温湿度</string>
+    <string name="plots_menu_delete">删除地块</string>
+    <string name="plots_delete_title">删除地块？</string>
+    <string name="plots_delete_message">删除「%1$s」后，地块中的作物会保留，但不再关联地块。</string>
+    <string name="plots_deleted">已删除地块</string>
+    <string name="plots_saved">已保存</string>
+    <!-- 添加 / 编辑地块 -->
+    <string name="plots_edit_title">编辑地块</string>
+    <string name="plots_field_name">地块名称</string>
+    <string name="plots_field_name_hint">如：1号大棚、东地块</string>
+    <string name="plots_field_area">面积（亩）</string>
+    <string name="plots_field_type">地块类型</string>
+    <string name="plots_field_structure">棚型 / 地块描述</string>
+    <string name="plots_field_structure_hint">如：钢架薄膜棚、平地</string>
+    <string name="plots_field_irrigation">灌溉方式</string>
+    <string name="plots_field_soil">土壤</string>
+    <string name="plots_field_note">备注</string>
+    <string name="plots_error_name">请输入地块名称</string>
+    <string name="plots_error_area">请输入大于 0 的面积</string>
+    <!-- 记录温湿度 -->
+    <string name="plots_reading_title">记录温湿度</string>
+    <string name="plots_reading_temp">温度（℃）</string>
+    <string name="plots_reading_humidity">湿度（%）</string>
+    <string name="plots_error_temp">请输入 -30 到 60 之间的温度</string>
+    <string name="plots_error_humidity">请输入 0 到 100 之间的湿度</string>
+    <string-array name="plots_irrigation_options">
+        <item>滴灌</item>
+        <item>喷灌</item>
+        <item>微喷</item>
+        <item>漫灌</item>
+        <item>沟灌</item>
+    </string-array>
+    <string-array name="plots_soil_options">
+        <item>壤土</item>
+        <item>沙壤土</item>
+        <item>黏壤土</item>
+        <item>沙土</item>
+        <item>黏土</item>
+    </string-array>
+</resources>

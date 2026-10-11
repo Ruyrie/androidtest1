@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C01 顶栏操作：地块管理、添加作物（图标 On Surface Variant） -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/crops_action_plots"
+        android:icon="@drawable/ic_landscape"
+        android:title="@string/crops_plots"
+        app:iconTint="?attr/colorOnSurfaceVariant"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/crops_action_add"
+        android:icon="@drawable/ic_add"
+        android:title="@string/crops_add"
+        app:iconTint="?attr/colorOnSurfaceVariant"
+        app:showAsAction="always" />
+</menu>

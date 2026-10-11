@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 空状态（UI 设计文档表 7-2）：图标 64（圆形底）+ 标题 + 一句说明 + 一个主操作。
+     large = true 为整页空状态（标题 Headline Large），false 为列表内的小空状态（标题 Title Medium、无按钮）。 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="icon"
+            type="android.graphics.drawable.Drawable" />
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="desc"
+            type="String" />
+
+        <variable
+            name="action"
+            type="String" />
+
+        <variable
+            name="large"
+            type="boolean" />
+
+        <variable
+            name="onAction"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="24dp">
+
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/crops_bg_circle"
+            android:backgroundTint="?attr/colorSecondaryContainer"
+            android:importantForAccessibility="no">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:src="@{icon}"
+                app:tint="?attr/colorOnSecondaryContainer" />
+        </FrameLayout>
+
+        <!-- 整页空状态标题：Headline Large -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@{title}"
+            android:textAppearance="?attr/textAppearanceHeadlineLarge"
+            android:textColor="?attr/colorOnSurface"
+            app:visible="@{large}" />
+
+        <!-- 列表内空状态标题：Title Medium -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@{title}"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="?attr/colorOnSurface"
+            app:visible="@{!large}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@{desc}"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:visible="@{desc != null}" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.HeBan.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:paddingStart="16dp"
+            android:onClick="@{onAction}"
+            android:text="@{action}"
+            app:icon="@drawable/ic_add"
+            app:visible="@{action != null}" />
+    </LinearLayout>
+</layout>

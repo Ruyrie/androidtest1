@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C02 生长阶段步进条中的一个节点：24dp 圆点 + 名称（Label Medium），间距 6dp -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/stage_circle"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:importantForAccessibility="no">
+
+        <ImageView
+            android:id="@+id/stage_check"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_check"
+            app:tint="?attr/colorOnPrimary" />
+
+        <View
+            android:id="@+id/stage_dot"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="center"
+            android:background="@drawable/crop_detail_stage_dot" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/stage_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textAppearance="?attr/textAppearanceLabelMedium"
+        android:textColor="?attr/colorOnSurfaceVariant" />
+</LinearLayout>

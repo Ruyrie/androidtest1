@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C01 / C02 / C05 页面样式 -->
+<resources>
+    <!-- C02 信息 Chip（定植 / 已种 / 预计采收）：32dp，Outline Variant 描边，Primary 18dp 图标，仅展示 -->
+    <style name="Widget.HeBan.Crops.InfoChip" parent="Widget.HeBan.Chip.Assist">
+        <item name="chipBackgroundColor">@android:color/transparent</item>
+        <item name="chipStrokeColor">?attr/colorOutlineVariant</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipCornerRadius">@dimen/corner_small</item>
+        <item name="chipMinHeight">32dp</item>
+        <item name="chipIconVisible">true</item>
+        <item name="chipIconSize">18dp</item>
+        <item name="chipIconTint">?attr/colorPrimary</item>
+        <item name="chipStartPadding">8dp</item>
+        <item name="iconStartPadding">0dp</item>
+        <item name="iconEndPadding">0dp</item>
+        <item name="textStartPadding">6dp</item>
+        <item name="textEndPadding">0dp</item>
+        <item name="chipEndPadding">12dp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="ensureMinTouchTargetSize">false</item>
+    </style>
+
+    <!-- C05 地块卡片中的作物 Chip：Surface Container Low 底、无描边，点击进入作物详情 -->
+    <style name="Widget.HeBan.Crops.PlotCropChip" parent="Widget.HeBan.Crops.InfoChip">
+        <item name="chipBackgroundColor">?attr/colorSurfaceContainerLow</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <!-- 统计块数字：24/32，常规字重（原型统计数字不加粗） -->
+    <style name="TextAppearance.HeBan.Crops.StatValue" parent="TextAppearance.HeBan.HeadlineSmall">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <!-- C05 添加 / 编辑地块底部弹窗：输入法弹出时调整大小 -->
+    <style name="ThemeOverlay.HeBan.Plots.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+</resources>

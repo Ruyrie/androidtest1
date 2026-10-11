@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C01 我的作物（原型 Crops.dc.html）：搜索、筛选 Chip、统计块、作物卡片列表；「问 AI」按钮由 MainActivity 提供 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.heban.app.ui.crop.CropsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.HeBan.Toolbar"
+            android:layout_width="match_parent"
+            android:paddingEnd="4dp"
+            app:contentInsetEndWithActions="0dp"
+            app:menu="@menu/crops_toolbar"
+            app:title="@string/crops_title" />
+
+        <!-- 搜索、筛选、统计：没有任何作物时隐藏，只显示空状态 -->
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/page_margin"
+            android:paddingTop="4dp"
+            app:visible="@{safeUnbox(vm.hasCrops)}">
+
+            <!-- 搜索栏：56dp，圆角 Full，Surface Container High -->
+            <LinearLayout
+                android:id="@+id/search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/crops_bg_search"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="4dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_search"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:autofillHints="none"
+                    android:background="@null"
+                    android:hint="@string/crops_search_hint"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:text="@={vm.search}"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textColorHint="?attr/colorOnSurfaceVariant" />
+
+                <!-- 语音搜索；输入了关键字时变为清除 -->
+                <ImageButton
+                    android:id="@+id/btn_mic"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/crops_voice_search"
+                    android:src="@drawable/ic_mic"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+
+            <!-- 筛选 Chip：全部 N / 大棚 / 露天 / 需关注（Chip 触控区 48dp，上下各 8dp 透明区，用负边距抵消） -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="-8dp"
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingHorizontal="@dimen/chip_gap"
+                    app:selectionRequired="true"
+                    app:singleLine="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_all"
+                        style="@style/Widget.HeBan.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@{@string/crops_filter_all(safeUnbox(vm.totalCount))}"
+                        app:chipEndPadding="11dp"
+                        app:chipStartPadding="9dp"
+                        app:iconEndPadding="0dp"
+                        app:textEndPadding="6dp"
+                        app:textStartPadding="8dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_greenhouse"
+                        style="@style/Widget.HeBan.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/crops_filter_greenhouse"
+                        app:chipEndPadding="11dp"
+                        app:chipStartPadding="9dp"
+                        app:iconEndPadding="0dp"
+                        app:textEndPadding="6dp"
+                        app:textStartPadding="8dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_open"
+                        style="@style/Widget.HeBan.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/crops_filter_open"
+                        app:chipEndPadding="11dp"
+                        app:chipStartPadding="9dp"
+                        app:iconEndPadding="0dp"
+                        app:textEndPadding="6dp"
+                        app:textStartPadding="8dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_attention"
+                        style="@style/Widget.HeBan.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/crops_filter_attention"
+                        app:chipEndPadding="11dp"
+                        app:chipStartPadding="9dp"
+                        app:iconEndPadding="0dp"
+                        app:textEndPadding="6dp"
+                        app:textStartPadding="8dp" />
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
+            <!-- 统计块：在种作物 / 本周农事 / 需关注（Error Container） -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/crops_bg_tile"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp">
+
+                    <TextView
+                        android:id="@+id/tv_stat_growing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(vm.stats.growing)}"
+                        android:textAppearance="@style/TextAppearance.HeBan.Crops.StatValue"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/crops_stat_growing"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/crops_bg_tile"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp">
+
+                    <TextView
+                        android:id="@+id/tv_stat_tasks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(vm.stats.weekTasks)}"
+                        android:textAppearance="@style/TextAppearance.HeBan.Crops.StatValue"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/crops_stat_week_tasks"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/crops_bg_tile_error"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp">
+
+                    <TextView
+                        android:id="@+id/tv_stat_attention"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(vm.stats.attention)}"
+                        android:textAppearance="@style/TextAppearance.HeBan.Crops.StatValue"
+                        android:textColor="?attr/colorOnErrorContainer" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/crops_stat_attention"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnErrorContainer" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <!-- 底部留出「问 AI」悬浮按钮的位置（56 + 16 + 16） -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingHorizontal="@dimen/page_margin"
+                android:paddingTop="12dp"
+                android:paddingBottom="88dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:visible="@{safeUnbox(vm.showList)}" />
+
+            <!-- 筛选或搜索没有结果 -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                app:visible="@{safeUnbox(vm.showNoMatch)}">
+
+                <include
+                    android:id="@+id/no_match"
+                    layout="@layout/crops_view_empty"
+                    app:desc="@{@string/crops_no_match_desc}"
+                    app:icon="@{@drawable/ic_search}"
+                    app:large="@{false}"
+                    app:title="@{@string/crops_no_match_title}" />
+            </FrameLayout>
+
+            <!-- 还没有任何作物 -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="88dp"
+                app:visible="@{safeUnbox(vm.showEmpty)}">
+
+                <include
+                    android:id="@+id/empty"
+                    layout="@layout/crops_view_empty"
+                    app:action="@{@string/crops_empty_action}"
+                    app:desc="@{@string/crops_empty_desc}"
+                    app:icon="@{@drawable/ic_potted_plant}"
+                    app:large="@{true}"
+                    app:title="@{@string/crops_empty_title}" />
+            </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
+</layout>

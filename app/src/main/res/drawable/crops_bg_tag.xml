@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 状态标签：高 24dp，圆角 8dp；颜色由 backgroundTint 指定 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="@dimen/corner_small" />
+    <solid android:color="@android:color/white" />
+</shape>

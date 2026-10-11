@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C05 地块卡片底部「棚内温湿度」16dp 图标 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="16dp"
+        android:height="16dp"
+        android:drawable="@drawable/ic_thermostat" />
+</layer-list>
