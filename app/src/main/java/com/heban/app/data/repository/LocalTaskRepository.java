@@ -121,7 +121,10 @@ public final class LocalTaskRepository implements TaskRepository {
         }).subscribeOn(Schedulers.io());
     }
 
-    /** 完成时取消提醒；取消完成时，提醒时刻还没到则重新安排 */
+    /**
+     * 完成时取消提醒；取消完成时，提醒时刻还没到则重新安排。
+     * 完成今天的农事时按「完成今日农事」奖励积分（每天 1 次由 PointsRepository 控制，积分出错不影响勾选）。
+     */
     @Override
     public Completable setDone(long taskId, boolean done) {
         return UserScope.require(user).flatMapCompletable(uid -> Completable.fromAction(() -> {
@@ -135,6 +138,11 @@ public final class LocalTaskRepository implements TaskRepository {
                 return x;
             });
             TaskReminders.sync(app, t, now);
+            if (done && DateRanges.toDate(t.dueAt, zone()).equals(LocalDate.now(zone()))) {
+                points.award(PointsRules.TYPE_FARM_TASK, "完成今日农事", String.valueOf(taskId))
+                        .onErrorReturnItem(0)
+                        .blockingGet();
+            }
         })).subscribeOn(Schedulers.io());
     }
 
