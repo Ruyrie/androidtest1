@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import com.heban.app.R;
+import com.heban.app.data.repository.LedgerCategories;
 import com.heban.app.data.model.FarmType;
 
 import java.util.Arrays;
@@ -70,23 +71,29 @@ public final class AddRecordFields {
         switch (type) {
             case FERTILIZE:
                 return new AddRecordFields(R.string.add_record_material_fertilize, R.array.add_record_suggest_fertilize,
-                        R.string.add_record_amount, Arrays.asList("kg", "斤", "g", "袋", "L", "mL"), false, "化肥");
+                        R.string.add_record_amount, Arrays.asList("kg", "斤", "g", "袋", "L", "mL"),
+                        false, LedgerCategories.forRecordType("FERTILIZE"));
             case SPRAY:
                 return new AddRecordFields(R.string.add_record_material_spray, R.array.add_record_suggest_spray,
-                        R.string.add_record_amount, Arrays.asList("mL", "g", "L", "kg", "倍"), false, "农药");
+                        R.string.add_record_amount, Arrays.asList("mL", "g", "L", "kg", "倍"),
+                        false, LedgerCategories.forRecordType("SPRAY"));
             case IRRIGATE:
                 return new AddRecordFields(R.string.add_record_material_irrigate, R.array.add_record_suggest_irrigate,
-                        R.string.add_record_amount_water, Arrays.asList("吨", "m³", "L"), false, "水电灌溉");
+                        R.string.add_record_amount_water, Arrays.asList("吨", "m³", "L"),
+                        false, LedgerCategories.forRecordType("IRRIGATE"));
             case PRUNE:
                 return new AddRecordFields(R.string.add_record_material_prune, R.array.add_record_suggest_prune,
-                        0, Collections.emptyList(), false, "人工");
+                        0, Collections.emptyList(),
+                        false, LedgerCategories.forRecordType("PRUNE"));
             case HARVEST:
                 return new AddRecordFields(0, 0,
-                        R.string.add_record_amount_harvest, Arrays.asList("kg", "斤", "箱"), true, "人工");
+                        R.string.add_record_amount_harvest, Arrays.asList("kg", "斤", "箱"),
+                        true, LedgerCategories.forRecordType("HARVEST"));
             case OTHER:
             default:
                 return new AddRecordFields(R.string.add_record_material_other, R.array.add_record_suggest_other,
-                        0, Collections.emptyList(), false, "其他");
+                        0, Collections.emptyList(),
+                        false, LedgerCategories.forRecordType("OTHER"));
         }
     }
 }
