@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C03 添加作物 / C04 添加农事记录 专用尺寸与样式 -->
+<resources>
+    <!-- 原型表单项之间 20dp：描边输入框顶部为浮动标签预留约 7dp，紧接输入框时减去（实测 14dp 与原型对齐） -->
+    <dimen name="add_crop_gap">20dp</dimen>
+    <dimen name="add_crop_field_gap">14dp</dimen>
+
+    <!-- 顶栏右侧「保存」文字按钮：高 40dp，左右 12dp，距右边 8dp -->
+    <style name="Widget.HeBan.AddCrop.SaveButton" parent="Widget.HeBan.Button.Text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_gravity">end|center_vertical</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:minWidth">48dp</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+    </style>
+
+    <!-- 种植方式分段按钮：高 40dp，Outline 描边，选中 Secondary Container + 勾 -->
+    <style name="Widget.HeBan.AddCrop.Segment" parent="Widget.HeBan.Button.Outlined">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="android:textColor">@color/add_crop_segment_fg</item>
+        <item name="iconTint">@color/add_crop_segment_fg</item>
+        <item name="backgroundTint">@color/add_crop_segment_bg</item>
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">18dp</item>
+        <item name="iconPadding">8dp</item>
+    </style>
+
+    <!-- 开关 52 × 32：打开时白色滑块内显示 Primary 色的勾（图标在代码中按开关状态设置） -->
+    <style name="Widget.HeBan.AddCrop.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbIconTint">?attr/colorPrimary</item>
+    </style>
+
+    <!-- C04 记录类型方块：高 40dp，圆角 8dp，图标 18dp + 6dp；
+         未选中透明底 + 1dp Outline Variant 描边，选中 Secondary Container 底与描边（原型 AddRecord .ty） -->
+    <style name="Widget.HeBan.AddRecord.TypeTile" parent="Widget.HeBan.Button.Outlined">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:checkable">true</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="android:textColor">@color/add_record_type_fg</item>
+        <item name="iconTint">@color/add_record_type_fg</item>
+        <item name="backgroundTint">@color/add_record_type_bg</item>
+        <item name="strokeColor">@color/add_record_type_stroke</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">18dp</item>
+        <item name="iconPadding">6dp</item>
+    </style>
+
+    <style name="ShapeAppearance.HeBan.AddRecord.Photo" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+</resources>

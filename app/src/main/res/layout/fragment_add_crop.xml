@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C03 添加 / 编辑作物（原型 AddCrop.dc.html） -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.heban.app.ui.crop.AddCropViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.HeBan.Toolbar"
+            android:layout_width="match_parent"
+            app:contentInsetEnd="0dp"
+            app:contentInsetEndWithActions="0dp"
+            app:navigationContentDescription="@string/add_crop_close"
+            app:navigationIcon="@drawable/ic_close"
+            app:title="@{vm.editMode ? @string/add_crop_edit_title : @string/add_crop_title}"
+            tools:title="@string/add_crop_title">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save"
+                style="@style/Widget.HeBan.AddCrop.SaveButton"
+                android:enabled="@{vm.canSave}"
+                android:text="@string/save" />
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/page_margin"
+                android:paddingTop="8dp"
+                android:paddingBottom="@dimen/section_gap">
+
+                <!-- 作物照片：128dp，Surface Container High，圆角 12dp -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="128dp"
+                    android:contentDescription="@{vm.coverPath == null ? @string/add_crop_photo_title : @string/add_crop_photo_change}"
+                    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+                    app:cardCornerRadius="@dimen/corner_medium"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:importantForAccessibility="no"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_add_a_photo"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/add_crop_photo_title"
+                            android:textAppearance="?attr/textAppearanceTitleSmall"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/add_crop_photo_hint"
+                            android:textAppearance="?attr/textAppearanceBodySmall"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_cover"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:importantForAccessibility="no"
+                        android:scaleType="centerCrop"
+                        app:imageUrl="@{vm.coverPath}"
+                        app:visible="@{vm.coverPath != null}" />
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"
+                        app:visible="@{vm.photoBusy}" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- 作物名称 | 品种 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/add_crop_field_gap"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_name"
+                        style="@style/Widget.HeBan.TextInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/add_crop_name">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/et_name"
+                            style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:completionThreshold="1"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLength="20"
+                            android:text="@={vm.name}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_variety"
+                        style="@style/Widget.HeBan.TextInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:hint="@string/add_crop_variety">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_variety"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLength="20"
+                            android:text="@={vm.variety}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!-- 种植地块：下拉选择，含「不选择地块」 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_plot"
+                    style="@style/Widget.HeBan.TextInputLayout.Dropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/add_crop_field_gap"
+                    android:hint="@string/add_crop_plot"
+                    app:endIconTint="?attr/colorOnSurfaceVariant">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/et_plot"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/add_crop_gap"
+                    android:accessibilityHeading="true"
+                    android:text="@string/add_crop_mode"
+                    android:textAppearance="?attr/textAppearanceTitleSmall"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/group_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:contentDescription="@string/add_crop_mode"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_mode_greenhouse"
+                        style="@style/Widget.HeBan.AddCrop.Segment"
+                        android:layout_height="40dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_mode_open"
+                        style="@style/Widget.HeBan.AddCrop.Segment"
+                        android:layout_height="40dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_mode_pot"
+                        style="@style/Widget.HeBan.AddCrop.Segment"
+                        android:layout_height="40dp" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                <!-- 种植面积（亩） -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_area"
+                    style="@style/Widget.HeBan.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/add_crop_field_gap"
+                    android:hint="@string/add_crop_area"
+                    app:helperText="@string/add_crop_area_helper">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_area"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal"
+                        android:maxLength="9"
+                        android:text="@={vm.area}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 定植日期 + 预计采收 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_planted"
+                    style="@style/Widget.HeBan.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/add_crop_field_gap"
+                    android:hint="@string/add_crop_planted"
+                    app:endIconContentDescription="@string/add_crop_planted_pick"
+                    app:endIconDrawable="@drawable/ic_calendar_today"
+                    app:endIconMode="custom"
+                    app:endIconTint="?attr/colorOnSurfaceVariant">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_planted"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:longClickable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 备注 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_note"
+                    style="@style/Widget.HeBan.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/add_crop_field_gap"
+                    android:hint="@string/add_crop_note"
+                    app:expandedHintEnabled="false"
+                    app:placeholderText="@string/add_crop_note_hint"
+                    app:placeholderTextColor="?attr/colorOnSurfaceVariant">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_note"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|start"
+                        android:inputType="textMultiLine"
+                        android:maxLength="200"
+                        android:minHeight="88dp"
+                        android:text="@={vm.note}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 开启农事提醒 -->
+                <LinearLayout
+                    android:id="@+id/row_remind"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/add_crop_gap"
+                    android:gravity="center_vertical"
+                    android:minHeight="56dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_crop_remind"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_crop_remind_desc"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+                    </LinearLayout>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/sw_remind"
+                        style="@style/Widget.HeBan.AddCrop.Switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="@={vm.remind}"
+                        android:contentDescription="@string/add_crop_remind" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

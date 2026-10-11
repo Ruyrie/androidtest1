@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C03 添加 / 编辑作物、C04 添加农事记录（原型 AddCrop.dc.html、AddRecord.dc.html） -->
+<resources>
+    <string name="add_crop_close">关闭</string>
+    <string name="add_crop_date">%1$d年%2$d月%3$d日</string>
+
+    <!-- ===== C03 添加 / 编辑作物 ===== -->
+    <string name="add_crop_title">添加作物</string>
+    <string name="add_crop_edit_title">编辑作物</string>
+    <string name="add_crop_photo_title">添加作物照片</string>
+    <string name="add_crop_photo_hint">拍照或从相册选择</string>
+    <string name="add_crop_photo_change">更换作物照片</string>
+    <string name="add_crop_photo_take">拍照</string>
+    <string name="add_crop_photo_pick">从相册选择</string>
+    <string name="add_crop_photo_remove">移除照片</string>
+    <string name="add_crop_photo_failed">照片读取失败，请重试</string>
+    <string name="add_crop_camera_denied">未获得相机权限，可从相册选择照片</string>
+    <string name="add_crop_camera_unavailable">无法打开相机，可从相册选择照片</string>
+    <string name="add_crop_name">作物名称</string>
+    <string name="add_crop_variety">品种</string>
+    <string name="add_crop_plot">种植地块</string>
+    <string name="add_crop_plot_none">不选择地块</string>
+    <string name="add_crop_mode">种植方式</string>
+    <string name="add_crop_area">种植面积（亩）</string>
+    <string name="add_crop_area_helper">用于估算用肥量与产量</string>
+    <string name="add_crop_planted">定植日期</string>
+    <string name="add_crop_planted_pick">选择定植日期</string>
+    <string name="add_crop_harvest">预计采收：%1$s（按 %2$d 天计）</string>
+    <string name="add_crop_harvest_month">%1$d年%2$d月%3$s</string>
+    <string name="add_crop_period_early">上旬</string>
+    <string name="add_crop_period_middle">中旬</string>
+    <string name="add_crop_period_late">下旬</string>
+    <string name="add_crop_note">备注</string>
+    <string name="add_crop_note_hint">如：使用防虫网、基肥用量等</string>
+    <string name="add_crop_remind">开启农事提醒</string>
+    <string name="add_crop_remind_desc">按生长阶段提醒施肥、用药</string>
+    <string name="add_crop_error_name">请填写作物名称</string>
+    <string name="add_crop_error_area">请填写种植面积</string>
+    <string name="add_crop_error_area_format">请输入正确的面积</string>
+    <string name="add_crop_error_area_positive">种植面积需大于 0</string>
+    <string name="add_crop_not_found">作物不存在或已删除</string>
+    <string name="add_crop_saved">已添加作物</string>
+    <string name="add_crop_updated">已保存修改</string>
+
+    <!-- ===== C04 添加农事记录 ===== -->
+    <string name="add_record_title">添加记录</string>
+    <string name="add_record_crop_choose">选择作物</string>
+    <string name="add_record_crop_choose_desc">点击选择要记录的作物</string>
+    <string name="add_record_crop_empty">还没有作物</string>
+    <string name="add_record_crop_empty_desc">先添加作物，再记录农事</string>
+    <string name="add_record_crop_title">%1$s · %2$s</string>
+    <string name="add_record_crop_days">第 %1$d 天</string>
+    <string name="add_record_crop_sep">" · "</string>
+    <string name="add_record_type">记录类型</string>
+    <string name="add_record_date">日期</string>
+    <string name="add_record_date_pick">选择日期和时间</string>
+    <string name="add_record_day_pick">选择日期</string>
+    <string name="add_record_time_pick">选择时间</string>
+    <string name="add_record_date_value">%1$s · %2$s</string>
+    <string name="add_record_morning">上午</string>
+    <string name="add_record_afternoon">下午</string>
+    <string name="add_record_evening">晚上</string>
+    <string name="add_record_material_fertilize">肥料名称</string>
+    <string name="add_record_material_spray">药剂名称</string>
+    <string name="add_record_material_irrigate">灌溉方式</string>
+    <string name="add_record_material_prune">作业内容</string>
+    <string name="add_record_material_other">内容</string>
+    <string name="add_record_amount">用量</string>
+    <string name="add_record_amount_water">水量</string>
+    <string name="add_record_amount_harvest">采收量</string>
+    <string name="add_record_unit">单位</string>
+    <string name="add_record_cost">费用（元）</string>
+    <string name="add_record_suggest">常用名称</string>
+    <string name="add_record_sync">同步到收支记账</string>
+    <string name="add_record_sync_on">保存后自动记一笔支出 ¥%1$s · %2$s</string>
+    <string name="add_record_sync_no_cost">填写费用后自动记一笔支出</string>
+    <string name="add_record_sync_off">不记账</string>
+    <string name="add_record_photos">现场照片</string>
+    <string name="add_record_photos_count">%1$d/%2$d</string>
+    <string name="add_record_photo_add">添加照片</string>
+    <string name="add_record_photo_item">现场照片 %1$d</string>
+    <string name="add_record_photo_remove">删除照片</string>
+    <string name="add_record_photos_limit">最多添加 %1$d 张照片</string>
+    <string name="add_record_note">备注</string>
+    <string name="add_record_error_required">请填写%1$s</string>
+    <string name="add_record_error_number">请输入正确的%1$s</string>
+    <string name="add_record_error_positive">%1$s需大于 0</string>
+    <string name="add_record_error_cost">请输入正确的金额</string>
+    <string name="add_record_error_cost_decimals">最多两位小数</string>
+    <string name="add_record_error_crop">请先选择作物</string>
+    <string name="add_record_saved">已保存记录</string>
+    <string name="add_record_saved_synced">已保存记录，并同步到收支记账</string>
+
+    <!-- 物料 / 内容右侧搜索图标弹出的常用名称 -->
+    <string-array name="add_record_suggest_fertilize">
+        <item>尿素</item>
+        <item>复合肥（15-15-15）</item>
+        <item>硫酸钾（K₂O ≥ 50%）</item>
+        <item>磷酸二氢钾</item>
+        <item>过磷酸钙</item>
+        <item>有机肥</item>
+        <item>腐熟农家肥</item>
+        <item>水溶肥</item>
+        <item>钙镁肥</item>
+    </string-array>
+    <string-array name="add_record_suggest_spray">
+        <item>嘧霉胺 40% 悬浮剂</item>
+        <item>百菌清</item>
+        <item>多菌灵</item>
+        <item>代森锰锌</item>
+        <item>烯酰吗啉</item>
+        <item>吡虫啉</item>
+        <item>阿维菌素</item>
+        <item>啶虫脒</item>
+        <item>春雷霉素</item>
+    </string-array>
+    <string-array name="add_record_suggest_irrigate">
+        <item>膜下滴灌</item>
+        <item>滴灌</item>
+        <item>微喷</item>
+        <item>喷灌</item>
+        <item>沟灌</item>
+        <item>漫灌</item>
+        <item>浇灌</item>
+    </string-array>
+    <string-array name="add_record_suggest_prune">
+        <item>整枝打杈，摘除老叶</item>
+        <item>整枝打杈</item>
+        <item>摘除老叶</item>
+        <item>绑蔓吊蔓</item>
+        <item>摘心</item>
+        <item>疏花疏果</item>
+    </string-array>
+    <string-array name="add_record_suggest_other">
+        <item>除草</item>
+        <item>中耕松土</item>
+        <item>覆膜</item>
+        <item>通风降湿</item>
+        <item>扣棚保温</item>
+        <item>巡田查看</item>
+    </string-array>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C04 现场照片：80dp，圆角 8dp；右上角删除 -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:layout_marginEnd="8dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.HeBan.AddRecord.Photo" />
+
+    <FrameLayout
+        android:id="@+id/btn_remove"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="top|end"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@string/add_record_photo_remove"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/add_record_photo_remove_bg"
+            android:importantForAccessibility="no"
+            android:padding="3dp"
+            android:src="@drawable/ic_close"
+            app:tint="?attr/colorOnSurfaceInverse" />
+    </FrameLayout>
+</FrameLayout>

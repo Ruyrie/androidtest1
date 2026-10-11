@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- C04 作物卡片左侧 40dp 图标底：圆角 8dp，Surface Container Highest -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners android:radius="8dp" />
+    <solid android:color="?attr/colorSurfaceContainerHighest" />
+</shape>
