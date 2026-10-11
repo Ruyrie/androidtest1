@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- H01 / H02 专用样式 -->
+<resources>
+    <!-- 分组标题右侧「全部 >」：高 40dp，左 12 右 8，图标 18dp 在文字后 -->
+    <style name="Widget.HeBan.Home.LinkButton" parent="Widget.HeBan.Button.Text">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="iconGravity">textEnd</item>
+        <item name="iconSize">18dp</item>
+        <item name="iconPadding">2dp</item>
+        <item name="icon">@drawable/ic_chevron_right</item>
+    </style>
+
+    <!-- 预警栏「查看」：高 40dp，左右 12，Warning 色 -->
+    <style name="Widget.HeBan.Home.AlertButton" parent="Widget.HeBan.Button.Text">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:textColor">?attr/colorWarning</item>
+        <item name="rippleColor">?attr/colorWarning</item>
+    </style>
+
+    <!-- 常用工具：56dp 圆角 16 图标块 -->
+    <style name="Widget.HeBan.Home.ToolBox" parent="">
+        <item name="android:layout_width">56dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:background">@drawable/home_bg_round16</item>
+    </style>
+
+    <style name="Widget.HeBan.Home.Tool" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="Widget.HeBan.Home.ToolLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelMedium</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+</resources>

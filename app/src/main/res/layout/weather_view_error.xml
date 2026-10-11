@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 没有天气缓存时的报错（放在天气卡位置）：提示文字来自 WeatherState.error；
+     缺少地点时提供「选择城市」，网络类错误提供「重试」，缺少 Key 只显示提示 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="ui"
+            type="com.heban.app.ui.home.WeatherStateUi" />
+
+        <variable
+            name="onRetry"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onPickCity"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/home_bg_round28"
+        android:backgroundTint="?attr/colorSurfaceContainerLow"
+        android:orientation="vertical"
+        android:padding="@dimen/card_padding_hero">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:importantForAccessibility="no"
+                android:src="@{ui.needsCityPick() ? @drawable/ic_location_on : @drawable/ic_cloud_off}"
+                app:tint="?attr/colorOnSurfaceVariant" />
+
+            <TextView
+                android:id="@+id/weather_error_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/icon_text_gap"
+                android:layout_weight="1"
+                android:accessibilityLiveRegion="polite"
+                android:minHeight="24dp"
+                android:text="@{ui.errorMessage()}"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurface" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_pick_city"
+            style="@style/Widget.HeBan.Button.Tonal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="12dp"
+            android:onClick="@{onPickCity}"
+            android:text="@string/weather_pick_city"
+            app:icon="@drawable/ic_edit_location_alt"
+            app:visible="@{ui.needsCityPick()}" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_retry"
+            style="@style/Widget.HeBan.Button.Tonal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="12dp"
+            android:onClick="@{onRetry}"
+            android:text="@string/weather_retry"
+            app:icon="@drawable/ic_refresh"
+            app:visible="@{ui.canRetry()}" />
+    </LinearLayout>
+</layout>

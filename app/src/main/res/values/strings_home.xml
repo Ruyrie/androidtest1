@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- H01 首页、H02 天气详情、城市选择 -->
+<resources>
+    <!-- H01 顶部 -->
+    <string name="home_date_pattern" translatable="false">M月d日 EEE</string>
+    <string name="home_date_location">%1$s · %2$s</string>
+    <string name="home_greeting_morning">上午好，%1$s</string>
+    <string name="home_greeting_noon">中午好，%1$s</string>
+    <string name="home_greeting_afternoon">下午好，%1$s</string>
+    <string name="home_greeting_evening">晚上好，%1$s</string>
+    <string name="home_guest_name">农友</string>
+    <string name="home_guest_avatar">农</string>
+    <string name="home_cd_messages">消息</string>
+    <string name="home_cd_messages_unread">消息，有未读</string>
+    <string name="home_cd_profile">我的</string>
+    <string name="home_cd_item">%1$s，%2$s</string>
+
+    <!-- H01 天气卡与预警 -->
+    <string name="home_cd_weather">今日天气，查看详情</string>
+    <string name="home_weather_detail">%1$d° / %2$d° · 湿度 %3$d%% · %4$s %5$s 级</string>
+    <string name="home_weather_detail_no_range">湿度 %1$d%% · %2$s %3$s 级</string>
+    <string name="home_forecast_15">15 天预报</string>
+    <string name="home_alert_view">查看</string>
+
+    <!-- H01 常用工具 -->
+    <string name="home_tool_scan">拍照识别</string>
+    <string name="home_tool_calendar">农事日历</string>
+    <string name="home_tool_ledger">记一笔</string>
+    <string name="home_tool_checkin">签到 +10</string>
+
+    <!-- H01 今日农事 -->
+    <string name="home_tasks_title">今日农事</string>
+    <string name="home_tasks_summary">%1$d 项 · 已完成 %2$d</string>
+    <string name="home_all">全部</string>
+    <string name="home_task_done">已完成</string>
+    <string name="home_task_attention">需关注</string>
+    <string name="home_tasks_empty_title">今天没有农事</string>
+    <string name="home_tasks_empty_desc">在农事日历里安排要做的事，到时提醒你</string>
+    <string name="home_tasks_empty_action">新建农事</string>
+
+    <!-- H01 我的作物 -->
+    <string name="home_crops_title">我的作物</string>
+    <string name="home_crops_all">全部 %1$d</string>
+    <string name="home_crop_stage_day">%1$s · 第 %2$d 天</string>
+    <string name="home_crop_day">第 %1$d 天</string>
+    <string name="home_crops_empty_title">还没有作物</string>
+    <string name="home_crops_empty_desc">添加第一种作物，禾伴会按生长阶段提醒你</string>
+    <string name="home_crops_empty_action">添加作物</string>
+
+    <!-- 天气状态（H01 / H02 共用） -->
+    <string name="weather_offline">当前离线，显示 %1$s 更新的天气</string>
+    <string name="weather_offline_plain">当前离线，显示的是缓存天气</string>
+    <string name="weather_date_time">%1$d月%2$d日 %3$s</string>
+    <string name="weather_retry">重试</string>
+    <string name="weather_pick_city">选择城市</string>
+    <string name="weather_loading">正在获取天气</string>
+
+    <!-- H02 天气详情 -->
+    <string name="weather_title">天气详情</string>
+    <string name="weather_cd_switch">切换地区</string>
+    <string name="weather_current_detail">%1$s · %2$d° / %3$d° · 体感 %4$d°</string>
+    <string name="weather_current_detail_no_range">%1$s · 体感 %2$d°</string>
+    <string name="weather_alert_separator" translatable="false">" · "</string>
+    <string name="weather_now">现在</string>
+    <string name="weather_hour">%1$d时</string>
+    <string name="weather_indices_title">今日农事指数</string>
+    <string name="weather_week_title">未来 7 天</string>
+    <string name="weather_updated">%1$s 更新</string>
+    <string name="weather_today">今天</string>
+    <string name="weather_day">%1$s %2$d日</string>
+
+    <!-- 城市选择 -->
+    <string name="city_picker_title">切换地区</string>
+    <string name="city_picker_hint">搜索城市或区县</string>
+    <string name="city_picker_idle">输入城市或区县名称，如「江宁」</string>
+    <string name="city_picker_empty">没有找到相关地区</string>
+</resources>
