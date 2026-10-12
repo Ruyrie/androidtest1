@@ -18,11 +18,11 @@ public final class AvatarColors {
 
     /** [背景色属性, 文字色属性] */
     private static final int[][] PALETTE = {
-            {R.attr.colorTertiaryContainer, R.attr.colorOnTertiaryContainer},       // 0
-            {R.attr.colorSecondaryContainer, R.attr.colorOnSecondaryContainer},     // 1
+            {com.google.android.material.R.attr.colorTertiaryContainer, com.google.android.material.R.attr.colorOnTertiaryContainer},       // 0
+            {com.google.android.material.R.attr.colorSecondaryContainer, com.google.android.material.R.attr.colorOnSecondaryContainer},     // 1
             {R.attr.colorWarningContainer, R.attr.colorOnWarningContainer},         // 2
-            {R.attr.colorPrimaryContainer, R.attr.colorOnPrimaryContainer},         // 3
-            {R.attr.colorSurfaceContainerHighest, R.attr.colorOnSurfaceVariant},    // 4
+            {com.google.android.material.R.attr.colorPrimaryContainer, com.google.android.material.R.attr.colorOnPrimaryContainer},         // 3
+            {com.google.android.material.R.attr.colorSurfaceContainerHighest, com.google.android.material.R.attr.colorOnSurfaceVariant},    // 4
     };
 
     /** 原型中的农友：1 草莓姐姐、2 王农艺师、3 果园阿强、4 菜园小周、5 江宁老陈、6 小林的阳台菜园、7 禾伴官方、8 江苏农技推广 */
@@ -33,8 +33,8 @@ public final class AvatarColors {
         int bg;
         int fg;
         if (me || slotOf(farmerId) == -2) {
-            bg = MaterialColors.getColor(avatar, R.attr.colorPrimary);
-            fg = MaterialColors.getColor(avatar, R.attr.colorOnPrimary);
+            bg = MaterialColors.getColor(avatar, androidx.appcompat.R.attr.colorPrimary);
+            fg = MaterialColors.getColor(avatar, com.google.android.material.R.attr.colorOnPrimary);
         } else {
             int[] pair = PALETTE[slotOf(farmerId)];
             bg = MaterialColors.getColor(avatar, pair[0]);
@@ -48,7 +48,7 @@ public final class AvatarColors {
     @AttrRes
     public static int backgroundAttr(long farmerId, boolean me) {
         int slot = me ? -2 : slotOf(farmerId);
-        return slot == -2 ? R.attr.colorPrimary : PALETTE[slot][0];
+        return slot == -2 ? androidx.appcompat.R.attr.colorPrimary : PALETTE[slot][0];
     }
 
     static int slotOf(long farmerId) {

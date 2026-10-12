@@ -30,14 +30,14 @@ public final class BadgeStyles {
             bgAttr = R.attr.colorWarningContainer;
             fgAttr = R.attr.colorOnWarningContainer;
         } else if (badge.contains("专家") || badge.contains("机构")) {
-            bgAttr = R.attr.colorTertiaryContainer;
-            fgAttr = R.attr.colorOnTertiaryContainer;
+            bgAttr = com.google.android.material.R.attr.colorTertiaryContainer;
+            fgAttr = com.google.android.material.R.attr.colorOnTertiaryContainer;
         } else if (badge.contains("官方")) {
-            bgAttr = R.attr.colorPrimaryContainer;
-            fgAttr = R.attr.colorOnPrimaryContainer;
+            bgAttr = com.google.android.material.R.attr.colorPrimaryContainer;
+            fgAttr = com.google.android.material.R.attr.colorOnPrimaryContainer;
         } else {
-            bgAttr = R.attr.colorSurfaceContainerHighest;
-            fgAttr = R.attr.colorOnSurfaceVariant;
+            bgAttr = com.google.android.material.R.attr.colorSurfaceContainerHighest;
+            fgAttr = com.google.android.material.R.attr.colorOnSurfaceVariant;
         }
         view.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(view, bgAttr)));
         view.setTextColor(MaterialColors.getColor(view, fgAttr));
