@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D05 图片加载成功后左下角的说明底色：Inverse Surface 70% -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="0.7" android:color="?attr/colorSurfaceInverse" />
+</selector>

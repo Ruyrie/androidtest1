@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D05 病原 / 易发条件 / 危害作物信息框：圆角 12dp，Surface Container Low -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="@dimen/corner_medium" />
+    <solid android:color="?attr/colorSurfaceContainerLow" />
+</shape>

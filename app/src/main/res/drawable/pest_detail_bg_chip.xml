@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D05 特征标签：高 32dp，圆角 8dp；颜色用 backgroundTint 设置 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="@dimen/corner_small" />
+    <solid android:color="@android:color/white" />
+</shape>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D01 发现、D04 病虫害百科、D05 病害详情 -->
+<resources>
+    <!-- D01 发现 -->
+    <string name="discover_search_hint">搜索病虫害、农产品、问题</string>
+    <string name="discover_search_cd">搜索</string>
+    <string name="discover_scan_cd">拍照识别</string>
+    <string name="discover_tile_scan_title">拍照识别</string>
+    <string name="discover_tile_scan_sub">拍一拍，认出病虫害</string>
+    <string name="discover_tile_pests_title">病虫害百科</string>
+    <string name="discover_tile_pests_sub">%1$d 种 · 可离线查看</string>
+    <string name="discover_tile_market_title">农产品集市</string>
+    <string name="discover_tile_market_sub">附近 %1$d 件在售</string>
+    <string name="discover_tile_ledger_title">收支记账</string>
+    <string name="discover_tile_ledger_sub">本月结余 %1$s</string>
+    <string name="discover_tile_ledger_guest">登录后记账</string>
+    <string name="discover_season_title">本季高发</string>
+    <string name="discover_season_empty">本月暂无高发病虫害</string>
+    <string name="discover_nearby_title">附近好物</string>
+    <string name="discover_go_market">逛集市</string>
+    <string name="discover_nearby_empty">附近暂时没有在售商品</string>
+    <string name="discover_seller_distance">%1$s · %2$s km</string>
+    <string name="discover_price_unit"> /%1$s</string>
+
+    <!-- D04 病虫害百科 -->
+    <string name="pests_title">病虫害百科</string>
+    <string name="pests_search_hint">搜索病虫害、症状</string>
+    <string name="pests_search_cd">搜索病虫害</string>
+    <string name="pests_clear_search">清除搜索</string>
+    <string name="pests_filter_all">全部</string>
+    <string name="pests_filter_disease">病害</string>
+    <string name="pests_filter_insect">虫害</string>
+    <string name="pests_filter_physiological">生理性</string>
+    <string name="pests_filter_crop">作物</string>
+    <string name="pests_crop_all">全部作物</string>
+    <string name="pests_banner_label">本季高发</string>
+    <string name="pests_banner_action">了解防治</string>
+    <string name="pests_common_title">常见病虫害</string>
+    <string name="pests_count">共 %1$d 条</string>
+    <string name="pests_no_result_title">没有找到相关病虫害</string>
+    <string name="pests_no_result_desc">换个关键词或筛选条件试试</string>
+    <string name="pests_empty_title">百科暂无内容</string>
+
+    <!-- D05 病害详情 -->
+    <string name="pest_detail_favorite">收藏</string>
+    <string name="pest_detail_unfavorite">取消收藏</string>
+    <string name="pest_detail_share">分享</string>
+    <string name="pest_detail_share_chooser">分享到</string>
+    <string name="pest_detail_share_text">%1$s\n%2$s\n来自禾伴</string>
+    <string name="pest_detail_pathogen">病原</string>
+    <string name="pest_detail_conditions">易发条件</string>
+    <string name="pest_detail_crops">危害作物</string>
+    <string name="pest_detail_symptoms">症状识别</string>
+    <string name="pest_detail_prevention">防治方法</string>
+    <string name="pest_detail_prevention_type">防治类型</string>
+    <string name="pest_detail_agri">农业防治</string>
+    <string name="pest_detail_chem">化学防治</string>
+    <string name="pest_detail_prevention_empty">暂无防治方法</string>
+    <string name="pest_detail_label_reminder">按产品标签用量使用、注意安全间隔期</string>
+    <string name="pest_detail_ask_ai">问问 AI</string>
+    <string name="pest_detail_add_task">加入农事日历</string>
+    <string name="pest_detail_ai_prompt">%1$s怎么防治？</string>
+    <string name="pest_detail_task_title">防治%1$s</string>
+    <string name="pest_detail_not_found">没有找到这条百科</string>
+    <string name="pest_detail_image_cd">%1$s 图片 %2$d</string>
+</resources>

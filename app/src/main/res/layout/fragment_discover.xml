@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D01 发现（原型 Discover.dc.html）：搜索栏、四个功能方块、本季高发、附近好物；「问 AI」按钮由 MainActivity 提供 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.heban.app.ui.discover.DiscoverViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:orientation="vertical">
+
+        <!-- 搜索栏：56dp，圆角 Full，Surface Container High；点击进入 D04 并聚焦搜索框，相机进入 D02 -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/search_bar"
+            style="@style/Widget.Material3.CardView.Filled"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="@dimen/page_margin"
+            android:layout_marginVertical="8dp"
+            android:contentDescription="@string/discover_search_cd"
+            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="4dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_search"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:importantForAccessibility="no"
+                    android:maxLines="1"
+                    android:text="@string/discover_search_hint"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <ImageButton
+                    android:id="@+id/btn_scan"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/discover_scan_cd"
+                    android:src="@drawable/ic_photo_camera"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 底部留出「问 AI」悬浮按钮的位置（56 + 16 + 16） -->
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="88dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="4dp">
+
+                <!-- 功能方块：2 列，间距 12dp -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/page_margin">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/tile_scan"
+                        style="@style/Widget.HeBan.Discover.Tile"
+                        app:cardBackgroundColor="?attr/colorPrimaryContainer">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="18dp"
+                            android:paddingVertical="16dp">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_center_focus_strong"
+                                app:tint="?attr/colorOnPrimaryContainer" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="@string/discover_tile_scan_title"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textColor="?attr/colorOnPrimaryContainer" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="@string/discover_tile_scan_sub"
+                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:textColor="?attr/colorOnPrimaryContainer" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/tile_pests"
+                        style="@style/Widget.HeBan.Discover.Tile"
+                        android:layout_marginStart="@dimen/card_gap"
+                        app:cardBackgroundColor="?attr/colorTertiaryContainer">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="18dp"
+                            android:paddingVertical="16dp">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_menu_book"
+                                app:tint="?attr/colorOnTertiaryContainer" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="@string/discover_tile_pests_title"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textColor="?attr/colorOnTertiaryContainer" />
+
+                            <TextView
+                                android:id="@+id/tv_pests_sub"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="@{@string/discover_tile_pests_sub(safeUnbox(vm.pestCount))}"
+                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:textColor="?attr/colorOnTertiaryContainer"
+                                tools:text="128 种 · 可离线查看" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_gap"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/page_margin">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/tile_market"
+                        style="@style/Widget.HeBan.Discover.Tile"
+                        app:cardBackgroundColor="?attr/colorSecondaryContainer">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="18dp"
+                            android:paddingVertical="16dp">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_storefront"
+                                app:tint="?attr/colorOnSecondaryContainer" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="@string/discover_tile_market_title"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textColor="?attr/colorOnSecondaryContainer" />
+
+                            <TextView
+                                android:id="@+id/tv_market_sub"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="@{@string/discover_tile_market_sub(safeUnbox(vm.marketCount))}"
+                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:textColor="?attr/colorOnSecondaryContainer"
+                                tools:text="附近 36 件在售" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/tile_ledger"
+                        style="@style/Widget.HeBan.Discover.Tile"
+                        android:layout_marginStart="@dimen/card_gap"
+                        app:cardBackgroundColor="?attr/colorWarningContainer">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="18dp"
+                            android:paddingVertical="16dp">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_account_balance_wallet"
+                                app:tint="?attr/colorOnWarningContainer" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="@string/discover_tile_ledger_title"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textColor="?attr/colorOnWarningContainer" />
+
+                            <!-- 游客：「登录后记账」 -->
+                            <TextView
+                                android:id="@+id/tv_ledger_sub"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="@{vm.balance != null ? @string/discover_tile_ledger_sub(vm.balance) : @string/discover_tile_ledger_guest}"
+                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:textColor="?attr/colorOnWarningContainer"
+                                tools:text="本月结余 +¥3,460" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <!-- 本季高发：标题行 32dp「本季高发 江宁区 · 10 月」 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/page_margin">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:accessibilityHeading="true"
+                        android:text="@string/discover_season_title"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <TextView
+                        android:id="@+id/tv_season_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:maxLines="1"
+                        android:text="@{vm.seasonHeader}"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        tools:text="江宁区 · 10 月" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/season_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:paddingHorizontal="@dimen/page_margin"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:visible="@{!safeUnbox(vm.seasonalEmpty)}"
+                    tools:listitem="@layout/discover_item_season" />
+
+                <include
+                    android:id="@+id/season_empty"
+                    layout="@layout/discover_view_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/page_margin"
+                    android:layout_marginTop="8dp"
+                    app:icon="@{@drawable/ic_coronavirus}"
+                    app:text="@{@string/discover_season_empty}"
+                    app:visible="@{safeUnbox(vm.seasonalEmpty)}" />
+
+                <!-- 附近好物：标题行 40dp + 「逛集市 >」 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/page_margin">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:accessibilityHeading="true"
+                        android:text="@string/discover_nearby_title"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_go_market"
+                        style="@style/Widget.HeBan.Button.Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:minWidth="0dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="8dp"
+                        android:text="@string/discover_go_market"
+                        app:icon="@drawable/ic_chevron_right"
+                        app:iconGravity="end"
+                        app:iconPadding="2dp"
+                        app:iconSize="18dp" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/nearby_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    android:paddingHorizontal="@dimen/page_margin"
+                    android:paddingBottom="4dp"
+                    app:visible="@{!safeUnbox(vm.nearbyEmpty)}"
+                    tools:listitem="@layout/discover_item_product" />
+
+                <include
+                    android:id="@+id/nearby_empty"
+                    layout="@layout/discover_view_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/page_margin"
+                    android:layout_marginTop="8dp"
+                    app:icon="@{@drawable/ic_storefront}"
+                    app:text="@{@string/discover_nearby_empty}"
+                    app:visible="@{safeUnbox(vm.nearbyEmpty)}" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

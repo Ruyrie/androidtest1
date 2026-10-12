@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D05 病害详情 -->
+<resources>
+    <dimen name="pest_detail_dot">6dp</dimen>
+    <dimen name="pest_detail_dot_gap">6dp</dimen>
+</resources>

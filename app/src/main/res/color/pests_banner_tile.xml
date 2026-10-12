@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D04 本季高发横幅右侧图标块：Surface Container Lowest 55% 透明度（原型为 55% 白色） -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="0.55" android:color="?attr/colorSurfaceContainerLowest" />
+</selector>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D05 防治方法分段按钮底色：选中 Secondary Container，未选中透明 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="?attr/colorSecondaryContainer" android:state_checked="true" />
+    <item android:color="@android:color/transparent" />
+</selector>

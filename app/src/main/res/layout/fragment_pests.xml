@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D04 病虫害百科（原型 Pests.dc.html）：返回 + 搜索栏固定在顶部；筛选、本季高发横幅、标题和 2 列网格一起滚动 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.heban.app.ui.discover.pest.PestsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="4dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="@dimen/page_margin"
+            android:paddingBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/back"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="?attr/colorOnSurface" />
+
+            <!-- 搜索栏：56dp，圆角 Full，Surface Container High -->
+            <LinearLayout
+                android:id="@+id/search_bar"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/discover_bg_search"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="4dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_search"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:autofillHints="none"
+                    android:background="@null"
+                    android:contentDescription="@string/pests_search_cd"
+                    android:hint="@string/pests_search_hint"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:text="@={vm.search}"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textColorHint="?attr/colorOnSurfaceVariant" />
+
+                <!-- 拍照识别；输入了关键字时变为清除 -->
+                <ImageButton
+                    android:id="@+id/btn_trailing"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/discover_scan_cd"
+                    android:src="@drawable/ic_photo_camera"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingHorizontal="@dimen/page_margin"
+            android:paddingBottom="@dimen/page_margin" />
+    </LinearLayout>
+</layout>

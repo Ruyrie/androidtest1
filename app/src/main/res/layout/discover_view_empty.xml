@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D01 列表空状态（本季高发 / 附近好物）：圆角 16dp 底块，图标 + 一句说明 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="icon"
+            type="android.graphics.drawable.Drawable" />
+
+        <variable
+            name="text"
+            type="String" />
+
+        <variable
+            name="visible"
+            type="boolean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/discover_bg_empty"
+        android:gravity="center"
+        android:minHeight="96dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:visible="@{visible}">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:importantForAccessibility="no"
+            android:src="@{icon}"
+            app:tint="?attr/colorOnSurfaceVariant" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@{text}"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+    </LinearLayout>
+</layout>

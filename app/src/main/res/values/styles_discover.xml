@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D01 发现、D04 病虫害百科、D05 病害详情 -->
+<resources>
+    <!-- D01 功能方块：高 112dp，圆角 28dp，无阴影；底色在布局中按方块设置 -->
+    <style name="Widget.HeBan.Discover.Tile" parent="Widget.Material3.CardView.Filled">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">112dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="cardCornerRadius">@dimen/corner_extra_large</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <!-- 列表卡片（D01 附近好物、D04 病虫害网格）：Surface Container Low，圆角 12dp，Elevated 1 级 -->
+    <style name="Widget.HeBan.Discover.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">?attr/colorSurfaceContainerLow</item>
+        <item name="cardCornerRadius">@dimen/corner_medium</item>
+        <item name="cardElevation">1dp</item>
+    </style>
+
+    <!-- D04 筛选 Chip：未选中左右 15dp（含 1dp 描边），选中时勾 18dp + 8dp -->
+    <style name="Widget.HeBan.Pests.Chip" parent="Widget.HeBan.Chip.Filter">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="chipStartPadding">7dp</item>
+        <item name="iconStartPadding">0dp</item>
+        <item name="iconEndPadding">1dp</item>
+        <item name="textStartPadding">8dp</item>
+        <item name="textEndPadding">8dp</item>
+        <item name="chipEndPadding">7dp</item>
+    </style>
+
+    <!-- D04「作物 ▾」下拉 Chip：左 12dp，右侧下拉箭头 18dp -->
+    <style name="Widget.HeBan.Pests.Chip.Dropdown">
+        <item name="checkedIconVisible">false</item>
+        <item name="closeIconVisible">true</item>
+        <item name="closeIcon">@drawable/ic_arrow_drop_down</item>
+        <item name="closeIconSize">18dp</item>
+        <item name="closeIconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="closeIconStartPadding">2dp</item>
+        <item name="closeIconEndPadding">0dp</item>
+        <item name="chipStartPadding">11dp</item>
+        <item name="textStartPadding">0dp</item>
+        <item name="textEndPadding">0dp</item>
+        <item name="chipEndPadding">5dp</item>
+    </style>
+
+    <!-- D05 防治方法分段按钮：高 40dp，描边 Outline，选中 Secondary Container + 勾 -->
+    <style name="Widget.HeBan.PestDetail.Segment" parent="Widget.HeBan.Button.Outlined">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="android:textColor">@color/pest_detail_segment_fg</item>
+        <item name="iconTint">@color/pest_detail_segment_fg</item>
+        <item name="backgroundTint">@color/pest_detail_segment_bg</item>
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">18dp</item>
+        <item name="iconPadding">8dp</item>
+    </style>
+
+    <!-- D05 底部操作按钮：高 40dp，图标 18dp -->
+    <style name="Widget.HeBan.PestDetail.Action" parent="Widget.HeBan.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">18dp</item>
+        <item name="iconPadding">8dp</item>
+    </style>
+
+    <style name="Widget.HeBan.PestDetail.Action.Tonal" parent="Widget.HeBan.Button.Tonal">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">18dp</item>
+        <item name="iconPadding">8dp</item>
+    </style>
+</resources>

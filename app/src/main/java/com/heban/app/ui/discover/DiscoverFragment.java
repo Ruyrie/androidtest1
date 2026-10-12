@@ -1,41 +1,84 @@
 package com.heban.app.ui.discover;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+
 import com.heban.app.R;
-import com.heban.app.ui.common.PlaceholderFragment;
+import com.heban.app.databinding.FragmentDiscoverBinding;
+import com.heban.app.ui.common.BaseFragment;
+import com.heban.app.ui.common.LoginRequired;
+import com.heban.app.ui.common.NavArgs;
+import com.heban.app.ui.common.Snackbars;
+import com.heban.app.ui.discover.pest.PestsFragment;
 
-/** D01 发现（占位页，M5 阶段实现） */
-public class DiscoverFragment extends PlaceholderFragment {
+/** D01 发现（原型 Discover.dc.html）。 */
+public class DiscoverFragment extends BaseFragment {
+    private FragmentDiscoverBinding binding;
 
+    @Nullable
     @Override
-    protected String pageTitle() {
-        return "D01 发现";
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = FragmentDiscoverBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
-    protected String phase() {
-        return "M5";
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        DiscoverViewModel vm = viewModel(DiscoverViewModel.class);
+        binding.setVm(vm);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+
+        // 搜索栏 → D04 并聚焦搜索框；相机 / 拍照识别 → D02
+        binding.searchBar.setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putBoolean(PestsFragment.ARG_FOCUS_SEARCH, true);
+            nav().navigate(R.id.pestsFragment, args);
+        });
+        binding.btnScan.setOnClickListener(v -> nav().navigate(R.id.scan_graph));
+        binding.tileScan.setOnClickListener(v -> nav().navigate(R.id.scan_graph));
+        binding.tilePests.setOnClickListener(v -> nav().navigate(R.id.pestsFragment));
+        binding.tileMarket.setOnClickListener(v -> nav().navigate(R.id.marketFragment));
+        binding.tileLedger.setOnClickListener(v -> {
+            if (!LoginRequired.check(this)) return;
+            nav().navigate(R.id.ledgerFragment);
+        });
+        binding.btnGoMarket.setOnClickListener(v -> nav().navigate(R.id.marketFragment));
+
+        int gap = getResources().getDimensionPixelSize(R.dimen.chip_gap);
+        DiscoverSeasonAdapter seasonAdapter = new DiscoverSeasonAdapter(p -> {
+            Bundle args = new Bundle();
+            args.putLong(NavArgs.PEST_ID, p.id);
+            nav().navigate(R.id.pestDetailFragment, args);
+        });
+        binding.seasonList.setAdapter(seasonAdapter);
+        binding.seasonList.addItemDecoration(new DiscoverSpacing(gap));
+        vm.seasonal.observe(getViewLifecycleOwner(), seasonAdapter::submitList);
+
+        DiscoverProductAdapter productAdapter = new DiscoverProductAdapter(container().gson, p -> {
+            Bundle args = new Bundle();
+            args.putLong(NavArgs.PRODUCT_ID, p.id);
+            nav().navigate(R.id.productFragment, args);
+        });
+        binding.nearbyList.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        binding.nearbyList.setAdapter(productAdapter);
+        binding.nearbyList.addItemDecoration(
+                new DiscoverSpacing(getResources().getDimensionPixelSize(R.dimen.card_gap)));
+        vm.nearby.observe(getViewLifecycleOwner(), productAdapter::submitList);
+
+        vm.toast.observe(getViewLifecycleOwner(), msg -> Snackbars.show(binding.getRoot(), msg));
     }
 
     @Override
-    protected boolean isTopLevel() {
-        return true;
-    }
-
-    @Override
-    protected Link[] links() {
-        return new Link[]{
-                link("拍照识别（D02）", R.id.scan_graph),
-                link("拍照识别 拍一拍，认（D02）", R.id.scan_graph),
-                link("病虫害百科 种 · 可离线查看（D04）", R.id.pestsFragment),
-                link("农产品集市 附近 件在售（D07）", R.id.marketFragment),
-                link("收支记账 本月（D10）", R.id.ledgerFragment),
-                link("高发 霜霉病 黄瓜 · 白菜（D05）", R.id.pestDetailFragment),
-                link("较高 灰霉病 番茄 · 草莓（D05）", R.id.pestDetailFragment),
-                link("较高 蚜虫 多种蔬菜（D05）", R.id.pestDetailFragment),
-                link("逛集市（D07）", R.id.marketFragment),
-                link("句容红颜草莓 现摘 ¥25 /斤 草…（D08）", R.id.productFragment),
-                link("小型微耕机 九成新 ¥1,800 果…（D08）", R.id.productFragment),
-                link("问 AI（D06）", R.id.aiChatFragment)
-        };
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D05 病害详情（原型 PestDetail.dc.html）：顶栏（返回 / 收藏 / 分享）、名称、图片（Picasso）、特征标签、
+     病原等信息、症状识别、防治方法分段；底部「问问 AI」「加入农事日历」 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="vm"
+            type="com.heban.app.ui.discover.pest.PestDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:orientation="vertical">
+
+        <!-- 顶栏 64dp -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_bar_height"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/back"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="?attr/colorOnSurface" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btn_bookmark"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@{safeUnbox(vm.favorite) ? @string/pest_detail_unfavorite : @string/pest_detail_favorite}"
+                android:src="@{safeUnbox(vm.favorite) ? @drawable/ic_bookmark_fill : @drawable/ic_bookmark}"
+                app:visible="@{safeUnbox(vm.loaded)}"
+                tools:src="@drawable/ic_bookmark" />
+
+            <ImageButton
+                android:id="@+id/btn_share"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/pest_detail_share"
+                android:src="@drawable/ic_share"
+                app:tint="?attr/colorOnSurfaceVariant"
+                app:visible="@{safeUnbox(vm.loaded)}" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="24dp"
+                app:visible="@{safeUnbox(vm.loaded)}">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/page_margin"
+                        android:accessibilityHeading="true"
+                        android:text="@{vm.pest.name}"
+                        android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                        android:textColor="?attr/colorOnSurface"
+                        tools:text="黄瓜霜霉病" />
+
+                    <TextView
+                        android:id="@+id/tv_en_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/page_margin"
+                        android:text="@{vm.pest.enName}"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        app:visible="@{!TextUtils.isEmpty(vm.pest.enName)}"
+                        tools:text="Cucumber downy mildew" />
+
+                    <!-- 图片：248 × 164dp，间距 8dp，按张吸附；超过 2 张时显示页码点 -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/images"
+                        android:layout_width="match_parent"
+                        android:layout_height="164dp"
+                        android:layout_marginTop="12dp"
+                        android:clipToPadding="false"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        android:paddingHorizontal="@dimen/page_margin"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/pest_detail_item_image" />
+
+                    <LinearLayout
+                        android:id="@+id/dots"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:importantForAccessibility="no"
+                        android:orientation="horizontal"
+                        android:visibility="gone" />
+
+                    <!-- 特征标签：类别、部位（Secondary Container）、高发季节（Error Container） -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/page_margin">
+
+                        <TextView
+                            android:id="@+id/chip_category"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:layout_marginEnd="@dimen/chip_gap"
+                            android:background="@drawable/pest_detail_bg_chip"
+                            android:backgroundTint="?attr/colorSecondaryContainer"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingHorizontal="12dp"
+                            android:text="@{vm.pest.category}"
+                            android:textAppearance="?attr/textAppearanceLabelLarge"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            app:visible="@{!TextUtils.isEmpty(vm.pest.category)}"
+                            tools:text="卵菌病害" />
+
+                        <TextView
+                            android:id="@+id/chip_part"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:layout_marginEnd="@dimen/chip_gap"
+                            android:background="@drawable/pest_detail_bg_chip"
+                            android:backgroundTint="?attr/colorSecondaryContainer"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingHorizontal="12dp"
+                            android:text="@{vm.pest.part}"
+                            android:textAppearance="?attr/textAppearanceLabelLarge"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            app:visible="@{!TextUtils.isEmpty(vm.pest.part)}"
+                            tools:text="叶部" />
+
+                        <TextView
+                            android:id="@+id/chip_season"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:background="@drawable/pest_detail_bg_chip"
+                            android:backgroundTint="?attr/colorErrorContainer"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingHorizontal="12dp"
+                            android:text="@{vm.pest.seasonText}"
+                            android:textAppearance="?attr/textAppearanceLabelLarge"
+                            android:textColor="?attr/colorOnErrorContainer"
+                            app:visible="@{!TextUtils.isEmpty(vm.pest.seasonText)}"
+                            tools:text="春秋高发" />
+                    </LinearLayout>
+
+                    <!-- 病原 / 易发条件 / 危害作物：标签列 72dp -->
+                    <LinearLayout
+                        android:id="@+id/info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/page_margin"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/pest_detail_bg_info"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="4dp"
+                        app:visible="@{!TextUtils.isEmpty(vm.pest.pathogen) || !TextUtils.isEmpty(vm.pest.conditions) || !TextUtils.isEmpty(vm.pest.crops)}">
+
+                        <LinearLayout
+                            android:id="@+id/row_pathogen"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="10dp"
+                            app:visible="@{!TextUtils.isEmpty(vm.pest.pathogen)}">
+
+                            <TextView
+                                android:layout_width="72dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/pest_detail_pathogen"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSurfaceVariant" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@{vm.pest.pathogen}"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSurface"
+                                tools:text="古巴假霜霉菌" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorSurfaceVariant"
+                            app:visible="@{!TextUtils.isEmpty(vm.pest.pathogen) &amp;&amp; !TextUtils.isEmpty(vm.pest.conditions)}" />
+
+                        <LinearLayout
+                            android:id="@+id/row_conditions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="10dp"
+                            app:visible="@{!TextUtils.isEmpty(vm.pest.conditions)}">
+
+                            <TextView
+                                android:layout_width="72dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/pest_detail_conditions"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSurfaceVariant" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@{vm.pest.conditions}"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSurface"
+                                tools:text="15–24°C，相对湿度 85% 以上，叶面有水膜" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorSurfaceVariant"
+                            app:visible="@{(!TextUtils.isEmpty(vm.pest.pathogen) || !TextUtils.isEmpty(vm.pest.conditions)) &amp;&amp; !TextUtils.isEmpty(vm.pest.crops)}" />
+
+                        <LinearLayout
+                            android:id="@+id/row_crops"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="10dp"
+                            app:visible="@{!TextUtils.isEmpty(vm.pest.crops)}">
+
+                            <TextView
+                                android:layout_width="72dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/pest_detail_crops"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSurfaceVariant" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@{vm.pest.crops}"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSurface"
+                                tools:text="黄瓜、甜瓜等葫芦科作物" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 症状识别 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/page_margin"
+                        app:visible="@{!TextUtils.isEmpty(vm.pest.symptoms)}">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:accessibilityHeading="true"
+                            android:text="@string/pest_detail_symptoms"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <TextView
+                            android:id="@+id/tv_symptoms"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@{vm.pest.symptoms}"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorOnSurface"
+                            tools:text="叶片正面出现受叶脉限制的黄色多角形病斑；湿度大时，叶背对应位置长出灰黑色霉层，严重时病斑连片、叶片枯焦。" />
+                    </LinearLayout>
+
+                    <!-- 防治方法：分段按钮 农业防治 / 化学防治 + 勾选列表 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/page_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:accessibilityHeading="true"
+                            android:text="@string/pest_detail_prevention"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <com.google.android.material.button.MaterialButtonToggleGroup
+                            android:id="@+id/group_prevention"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
+                            android:contentDescription="@string/pest_detail_prevention_type"
+                            app:selectionRequired="true"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_agri"
+                                style="@style/Widget.HeBan.PestDetail.Segment"
+                                android:text="@string/pest_detail_agri" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_chem"
+                                style="@style/Widget.HeBan.PestDetail.Segment"
+                                android:text="@string/pest_detail_chem" />
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                        <LinearLayout
+                            android:id="@+id/steps"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical" />
+
+                        <TextView
+                            android:id="@+id/tv_steps_empty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/pest_detail_prevention_empty"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <!-- 没有这条百科 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="32dp"
+                app:visible="@{safeUnbox(vm.notFound)}">
+
+                <FrameLayout
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@drawable/pests_bg_circle"
+                    android:backgroundTint="?attr/colorSecondaryContainer"
+                    android:importantForAccessibility="no">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_menu_book"
+                        app:tint="?attr/colorOnSecondaryContainer" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="@string/pest_detail_not_found"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnSurface" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- 底部操作栏 80dp：Surface Container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_nav_height"
+            android:background="?attr/colorSurfaceContainer"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/page_margin"
+            app:visible="@{safeUnbox(vm.loaded)}">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_ask_ai"
+                style="@style/Widget.HeBan.PestDetail.Action.Tonal"
+                android:text="@string/pest_detail_ask_ai"
+                app:icon="@drawable/ic_auto_awesome" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_task"
+                style="@style/Widget.HeBan.PestDetail.Action"
+                android:layout_marginStart="@dimen/card_gap"
+                android:text="@string/pest_detail_add_task"
+                app:icon="@drawable/ic_event_available" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

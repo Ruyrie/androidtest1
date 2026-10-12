@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D01 列表空状态底块：圆角 16dp，Surface Container Low -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="@dimen/corner_large" />
+    <solid android:color="?attr/colorSurfaceContainerLow" />
+</shape>
