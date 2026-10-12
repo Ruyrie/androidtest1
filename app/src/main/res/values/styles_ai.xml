@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D06 农技 AI 助手 / M11 AI 助手设置 页面样式 -->
+<resources>
+    <!-- D06 回答下方的操作按钮：40dp，20dp 图标，On Surface Variant -->
+    <style name="Widget.HeBan.AiChat.ActionButton" parent="">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="tint">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- D06 顶栏 / 输入栏图标按钮：48dp，24dp 图标 -->
+    <style name="Widget.HeBan.AiChat.IconButton" parent="">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="tint">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- D06 建议问题：32dp，Outline Variant 描边，圆角 8dp，14/20 Medium -->
+    <style name="Widget.HeBan.AiChat.Suggestion" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:background">@drawable/ai_chat_bg_chip</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- D06 气泡文字：16/24 -->
+    <style name="Widget.HeBan.AiChat.Bubble" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:breakStrategy">high_quality</item>
+    </style>
+
+    <style name="ShapeAppearance.HeBan.AiChat.Image" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="ShapeAppearance.HeBan.AiChat.Thumb" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <!-- M11 分组标题：14/20 Medium，Primary，内边距 16 16 8 -->
+    <style name="Widget.HeBan.AiSettings.GroupLabel" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceTitleSmall</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <!-- M11 列表项：最小高度 56dp，Surface Container 底，内边距 8 / 16，间距 16 -->
+    <style name="Widget.HeBan.AiSettings.Row" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <!-- 同一组内后续的项：上方 2dp 间隔 -->
+    <style name="Widget.HeBan.AiSettings.Row.Next">
+        <item name="android:layout_marginTop">2dp</item>
+    </style>
+
+    <style name="Widget.HeBan.AiSettings.RowText" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="Widget.HeBan.AiSettings.RowTitle" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Widget.HeBan.AiSettings.RowSub" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?attr/textAppearanceBodySmall</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="Widget.HeBan.AiSettings.RowIcon" parent="">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="tint">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- M11 开关：选中时滑块显示勾（原型 52×32） -->
+    <style name="Widget.HeBan.AiSettings.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="thumbIcon">@drawable/ai_settings_switch_thumb_icon</item>
+        <item name="thumbIconTint">?attr/colorPrimary</item>
+    </style>
+
+    <!-- M11 模型服务表单中的文本框 -->
+    <style name="Widget.HeBan.AiSettings.Field" parent="Widget.HeBan.TextInputLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D06 助手气泡：Surface Container High，圆角 20dp，靠近头像的左上角 4dp（UI 设计文档 5 章） -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="?attr/colorSurfaceContainerHigh" />
+    <corners
+        android:bottomLeftRadius="20dp"
+        android:bottomRightRadius="20dp"
+        android:topLeftRadius="4dp"
+        android:topRightRadius="20dp" />
+</shape>

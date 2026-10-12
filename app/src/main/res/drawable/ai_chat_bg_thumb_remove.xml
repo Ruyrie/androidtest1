@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D06 缩略图右上角的移除按钮：Inverse Surface 圆形 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="?attr/colorSurfaceInverse" />
+</shape>

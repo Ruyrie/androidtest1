@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D06 顶栏：AI 助手设置（tune），溢出菜单「历史会话」 -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/ai_chat_action_settings"
+        android:icon="@drawable/ic_tune"
+        android:title="@string/ai_chat_settings"
+        app:iconTint="?attr/colorOnSurface"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/ai_chat_action_history"
+        android:title="@string/ai_chat_history"
+        app:showAsAction="never" />
+</menu>

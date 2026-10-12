@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D06 农技 AI 助手（原型 AIChat.dc.html / AIChatDark.dc.html）：顶栏、消息列表（贴底排列）、输入栏 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.heban.app.ui.discover.ai.AiChatViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:orientation="vertical">
+
+        <!-- 顶栏：标题 16/24 Medium + 副标题 11/16 Medium（居中），右侧 tune 与溢出菜单 -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.HeBan.Toolbar"
+            android:layout_width="match_parent"
+            android:paddingEnd="4dp"
+            app:contentInsetEndWithActions="0dp"
+            app:menu="@menu/ai_chat_toolbar"
+            app:navigationContentDescription="@string/back"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:subtitle="@string/ai_chat_subtitle"
+            app:subtitleCentered="true"
+            app:subtitleTextAppearance="?attr/textAppearanceLabelSmall"
+            app:subtitleTextColor="?attr/colorOnSurfaceVariant"
+            app:title="@string/ai_chat_title"
+            app:titleCentered="true"
+            app:titleTextAppearance="?attr/textAppearanceTitleMedium" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_messages"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingHorizontal="@dimen/page_margin"
+            android:paddingBottom="8dp"
+            android:scrollbars="none"
+            tools:listitem="@layout/ai_chat_item_assistant" />
+
+        <!-- 待发送的图片：可移除的缩略图，与输入框左侧对齐 -->
+        <FrameLayout
+            android:id="@+id/attachment"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="4dp"
+            app:visible="@{vm.attachedImage != null}">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_attachment"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="bottom|start"
+                android:background="@drawable/ai_chat_bg_thumb"
+                android:contentDescription="@string/ai_chat_photo"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.HeBan.AiChat.Thumb" />
+
+            <ImageButton
+                android:id="@+id/btn_remove_attachment"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="top|end"
+                android:background="@drawable/ai_chat_bg_thumb_remove"
+                android:contentDescription="@string/ai_chat_remove_photo"
+                android:onClick="@{() -> vm.removeImage()}"
+                android:padding="4dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_close"
+                app:tint="?attr/colorOnSurfaceInverse" />
+        </FrameLayout>
+
+        <!-- 输入栏：上传照片、输入框（含语音）、发送 / 停止生成 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="4dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="24dp">
+
+            <ImageButton
+                android:id="@+id/btn_photo"
+                style="@style/Widget.HeBan.AiChat.IconButton"
+                android:contentDescription="@string/ai_chat_add_photo"
+                android:src="@drawable/ic_add_photo_alternate" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/ai_chat_bg_input"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingEnd="8dp">
+
+                <EditText
+                    android:id="@+id/et_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/ai_chat_input_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:maxLines="5"
+                    android:minHeight="48dp"
+                    android:paddingVertical="12dp"
+                    android:text="@={vm.input}"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textColorHint="?attr/colorOnSurfaceVariant" />
+
+                <ImageButton
+                    android:id="@+id/btn_mic"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/ai_chat_voice"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_mic"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btn_send"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/ai_chat_bg_send"
+                android:contentDescription="@string/ai_chat_send"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_arrow_upward"
+                app:tint="@color/ai_chat_send_fg" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

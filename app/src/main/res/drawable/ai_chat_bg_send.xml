@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D06 发送 / 停止生成按钮：Primary 圆形 48dp，不可用时 On Surface 12% -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/ai_chat_send_bg" />
+        </shape>
+    </item>
+</ripple>

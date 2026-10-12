@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- M11 顶部提示：Tertiary Container，圆角 16dp -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="?attr/colorTertiaryContainer" />
+    <corners android:radius="16dp" />
+</shape>

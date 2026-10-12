@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D06 农技 AI 助手、M11 AI 助手设置（原型 AIChat.dc.html / AISettings.dc.html，技术准备文档 9.3–9.8） -->
+<resources>
+    <!-- D06 顶栏 -->
+    <string name="ai_chat_title">农技 AI 助手</string>
+    <string name="ai_chat_subtitle">大模型生成 · 仅供参考</string>
+    <string name="ai_chat_settings">AI 助手设置</string>
+    <string name="ai_chat_history">历史会话</string>
+    <string name="ai_chat_more">更多选项</string>
+
+    <!-- D06 消息 -->
+    <string name="ai_chat_welcome">你好！我是禾伴农技助手，可以帮你诊断病虫害、制定施肥计划。</string>
+    <string name="ai_chat_suggest_1">番茄叶片发黄怎么办？</string>
+    <string name="ai_chat_suggest_2">十月适合种什么菜？</string>
+    <string name="ai_chat_thinking">正在思考…</string>
+    <string name="ai_chat_photo">照片</string>
+    <string name="ai_chat_copy">复制</string>
+    <string name="ai_chat_copied">已复制</string>
+    <string name="ai_chat_like">有帮助</string>
+    <string name="ai_chat_regenerate">重新生成</string>
+    <string name="ai_chat_incomplete">回答未完成</string>
+    <string name="ai_chat_pest_chip">%1$s百科</string>
+    <string name="ai_chat_empty_answer">没有收到回答，请重试</string>
+
+    <!-- D06 输入栏 -->
+    <string name="ai_chat_add_photo">上传照片</string>
+    <string name="ai_chat_remove_photo">移除照片</string>
+    <string name="ai_chat_input_hint">描述作物问题…</string>
+    <string name="ai_chat_voice">语音输入</string>
+    <string name="ai_chat_send">发送</string>
+    <string name="ai_chat_stop">停止生成</string>
+    <string name="ai_chat_photo_failed">图片读取失败，请换一张</string>
+
+    <!-- 历史会话 -->
+    <string name="ai_chat_history_new">新对话</string>
+    <string name="ai_chat_history_empty">还没有对话</string>
+    <string name="ai_chat_history_untitled">新对话</string>
+    <string name="ai_chat_history_delete_title">删除这个对话？</string>
+    <string name="ai_chat_history_delete_message">「%1$s」的全部消息将被删除，无法恢复。</string>
+    <string name="ai_chat_history_deleted">已删除对话</string>
+    <string name="ai_chat_time_today">今天 %1$s</string>
+    <string name="ai_chat_time_yesterday">昨天 %1$s</string>
+    <string name="ai_chat_time_this_year">%1$d月%2$d日</string>
+    <string name="ai_chat_time_other_year">%1$d年%2$d月%3$d日</string>
+
+    <!-- M11 -->
+    <string name="ai_settings_title">AI 助手设置</string>
+    <string name="ai_settings_notice">AI 回答由大模型生成，仅供参考。涉及用药请以农药标签和当地农技部门意见为准。</string>
+    <string name="ai_settings_style">回答风格</string>
+    <string name="ai_settings_style_brief">简洁</string>
+    <string name="ai_settings_style_brief_sub">直接给结论和做法</string>
+    <string name="ai_settings_style_detail">详细</string>
+    <string name="ai_settings_style_detail_sub">说明原因、步骤和注意事项</string>
+    <string name="ai_settings_style_plain">通俗口语</string>
+    <string name="ai_settings_style_plain_sub">少用术语，像农技员当面讲</string>
+    <string name="ai_settings_context">回答时参考</string>
+    <string name="ai_settings_use_crops">我的作物与农事记录</string>
+    <string name="ai_settings_use_crops_sub">品种、生长阶段、最近施肥用药</string>
+    <string name="ai_settings_use_weather">所在地区与天气</string>
+    <string name="ai_settings_use_weather_sub">只用到区县，不上传精确位置</string>
+    <string name="ai_settings_save_history">保存对话到本机</string>
+    <string name="ai_settings_save_history_sub">关闭后退出页面即删除</string>
+    <string name="ai_settings_records">对话记录</string>
+    <string name="ai_settings_history">历史会话</string>
+    <string name="ai_settings_history_stats">%1$d 个对话 · 占用 %2$s</string>
+    <string name="ai_settings_history_none">暂无对话</string>
+    <string name="ai_settings_clear">清空全部对话</string>
+    <string name="ai_settings_clear_sub">清空后无法恢复</string>
+    <string name="ai_settings_cleared">已清空 %1$d 个对话</string>
+    <string name="ai_settings_undo">撤销</string>
+
+    <!-- M11 模型服务（技术准备文档表 9-5） -->
+    <string name="ai_settings_model">模型服务</string>
+    <string name="ai_settings_active_builtin">当前使用：内置配置</string>
+    <string name="ai_settings_active_user">当前使用：我的配置</string>
+    <string name="ai_settings_active_detail">%1$s · %2$s</string>
+    <string name="ai_settings_no_key">未配置 Key，AI 功能不可用</string>
+    <string name="ai_settings_provider">服务商</string>
+    <string name="ai_settings_provider_deepseek">DeepSeek</string>
+    <string name="ai_settings_provider_dashscope">通义千问（阿里云百炼）</string>
+    <string name="ai_settings_provider_custom">自定义</string>
+    <string name="ai_settings_base_url">Base URL</string>
+    <string name="ai_settings_api_key">API Key</string>
+    <string name="ai_settings_api_key_saved">已保存 ••••%1$s</string>
+    <string name="ai_settings_chat_model">问答模型</string>
+    <string name="ai_settings_chat_model_help">需支持流式输出</string>
+    <string name="ai_settings_vision_model">识图模型（可选）</string>
+    <string name="ai_settings_vision_model_help">留空时识图使用内置视觉模型</string>
+    <string name="ai_settings_test">测试连接</string>
+    <string name="ai_settings_testing">正在测试…</string>
+    <string name="ai_settings_test_ok">连接成功 · %1$s</string>
+    <string name="ai_settings_save">保存</string>
+    <string name="ai_settings_use_builtin">使用内置配置</string>
+    <string name="ai_settings_use_builtin_title">使用内置配置？</string>
+    <string name="ai_settings_use_builtin_message">将清除你填写的模型服务配置和 API Key。</string>
+    <string name="ai_settings_saved">已保存，AI 功能将使用我的配置</string>
+    <string name="ai_settings_restored">已恢复使用内置配置</string>
+    <string name="ai_settings_err_base_url_empty">请填写 Base URL</string>
+    <string name="ai_settings_err_base_url_format">请填写以 http:// 或 https:// 开头的地址</string>
+    <string name="ai_settings_err_api_key">请填写 API Key</string>
+    <string name="ai_settings_err_chat_model">请填写问答模型</string>
+</resources>

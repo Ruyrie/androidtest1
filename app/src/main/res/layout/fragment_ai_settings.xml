@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- M11 AI 助手设置（原型 AISettings.dc.html）：提示、回答风格、回答时参考、对话记录，及新增的「模型服务」（技术准备文档表 9-5） -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.heban.app.ui.me.settings.AiSettingsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.HeBan.Toolbar"
+            android:layout_width="match_parent"
+            app:navigationContentDescription="@string/back"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/ai_settings_title" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/page_margin"
+                android:paddingTop="4dp"
+                android:paddingBottom="24dp">
+
+                <!-- 提示：Tertiary Container，圆角 16dp -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ai_settings_bg_banner"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_info"
+                        app:tint="?attr/colorOnTertiaryContainer" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:text="@string/ai_settings_notice"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnTertiaryContainer" />
+                </LinearLayout>
+
+                <!-- 回答风格 -->
+                <TextView
+                    style="@style/Widget.HeBan.AiSettings.GroupLabel"
+                    android:accessibilityHeading="true"
+                    android:text="@string/ai_settings_style" />
+
+                <LinearLayout
+                    android:id="@+id/row_style_brief"
+                    style="@style/Widget.HeBan.AiSettings.Row"
+                    android:background="@drawable/ai_settings_bg_row_top"
+                    android:onClick="@{() -> vm.setStyle(`BRIEF`)}">
+
+                    <ImageView
+                        android:id="@+id/iv_style_brief"
+                        style="@style/Widget.HeBan.AiSettings.RowIcon"
+                        android:importantForAccessibility="no" />
+
+                    <LinearLayout style="@style/Widget.HeBan.AiSettings.RowText">
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowTitle"
+                            android:text="@string/ai_settings_style_brief" />
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowSub"
+                            android:text="@string/ai_settings_style_brief_sub" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/row_style_detail"
+                    style="@style/Widget.HeBan.AiSettings.Row.Next"
+                    android:background="@drawable/ai_settings_bg_row_mid"
+                    android:onClick="@{() -> vm.setStyle(`DETAIL`)}">
+
+                    <ImageView
+                        android:id="@+id/iv_style_detail"
+                        style="@style/Widget.HeBan.AiSettings.RowIcon"
+                        android:importantForAccessibility="no" />
+
+                    <LinearLayout style="@style/Widget.HeBan.AiSettings.RowText">
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowTitle"
+                            android:text="@string/ai_settings_style_detail" />
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowSub"
+                            android:text="@string/ai_settings_style_detail_sub" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/row_style_plain"
+                    style="@style/Widget.HeBan.AiSettings.Row.Next"
+                    android:background="@drawable/ai_settings_bg_row_bottom"
+                    android:onClick="@{() -> vm.setStyle(`PLAIN`)}">
+
+                    <ImageView
+                        android:id="@+id/iv_style_plain"
+                        style="@style/Widget.HeBan.AiSettings.RowIcon"
+                        android:importantForAccessibility="no" />
+
+                    <LinearLayout style="@style/Widget.HeBan.AiSettings.RowText">
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowTitle"
+                            android:text="@string/ai_settings_style_plain" />
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowSub"
+                            android:text="@string/ai_settings_style_plain_sub" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 回答时参考 -->
+                <TextView
+                    style="@style/Widget.HeBan.AiSettings.GroupLabel"
+                    android:accessibilityHeading="true"
+                    android:text="@string/ai_settings_context" />
+
+                <LinearLayout
+                    android:id="@+id/row_use_crops"
+                    style="@style/Widget.HeBan.AiSettings.Row"
+                    android:background="@drawable/ai_settings_bg_row_top">
+
+                    <LinearLayout style="@style/Widget.HeBan.AiSettings.RowText">
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowTitle"
+                            android:text="@string/ai_settings_use_crops" />
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowSub"
+                            android:text="@string/ai_settings_use_crops_sub" />
+                    </LinearLayout>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/sw_use_crops"
+                        style="@style/Widget.HeBan.AiSettings.Switch"
+                        android:contentDescription="@string/ai_settings_use_crops" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/row_use_weather"
+                    style="@style/Widget.HeBan.AiSettings.Row.Next"
+                    android:background="@drawable/ai_settings_bg_row_mid">
+
+                    <LinearLayout style="@style/Widget.HeBan.AiSettings.RowText">
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowTitle"
+                            android:text="@string/ai_settings_use_weather" />
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowSub"
+                            android:text="@string/ai_settings_use_weather_sub" />
+                    </LinearLayout>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/sw_use_weather"
+                        style="@style/Widget.HeBan.AiSettings.Switch"
+                        android:contentDescription="@string/ai_settings_use_weather" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/row_save_history"
+                    style="@style/Widget.HeBan.AiSettings.Row.Next"
+                    android:background="@drawable/ai_settings_bg_row_bottom">
+
+                    <LinearLayout style="@style/Widget.HeBan.AiSettings.RowText">
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowTitle"
+                            android:text="@string/ai_settings_save_history" />
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowSub"
+                            android:text="@string/ai_settings_save_history_sub" />
+                    </LinearLayout>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/sw_save_history"
+                        style="@style/Widget.HeBan.AiSettings.Switch"
+                        android:contentDescription="@string/ai_settings_save_history" />
+                </LinearLayout>
+
+                <!-- 对话记录 -->
+                <TextView
+                    style="@style/Widget.HeBan.AiSettings.GroupLabel"
+                    android:accessibilityHeading="true"
+                    android:text="@string/ai_settings_records" />
+
+                <LinearLayout
+                    android:id="@+id/row_history"
+                    style="@style/Widget.HeBan.AiSettings.Row"
+                    android:background="@drawable/ai_settings_bg_row_top">
+
+                    <LinearLayout style="@style/Widget.HeBan.AiSettings.RowText">
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowTitle"
+                            android:text="@string/ai_settings_history" />
+
+                        <TextView
+                            android:id="@+id/tv_history_sub"
+                            style="@style/Widget.HeBan.AiSettings.RowSub" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="16dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="?attr/colorOnSurfaceVariant" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/row_clear"
+                    style="@style/Widget.HeBan.AiSettings.Row.Next"
+                    android:background="@drawable/ai_settings_bg_row_bottom"
+                    android:onClick="@{() -> vm.requestClear()}">
+
+                    <LinearLayout style="@style/Widget.HeBan.AiSettings.RowText">
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowTitle"
+                            android:text="@string/ai_settings_clear"
+                            android:textColor="?attr/colorError" />
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowSub"
+                            android:text="@string/ai_settings_clear_sub" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 模型服务（新增，原型未画：同上方分组列表样式） -->
+                <TextView
+                    style="@style/Widget.HeBan.AiSettings.GroupLabel"
+                    android:accessibilityHeading="true"
+                    android:text="@string/ai_settings_model" />
+
+                <LinearLayout
+                    android:id="@+id/row_model_status"
+                    style="@style/Widget.HeBan.AiSettings.Row"
+                    android:background="@drawable/ai_settings_bg_row_top">
+
+                    <ImageView
+                        android:id="@+id/iv_model_status"
+                        style="@style/Widget.HeBan.AiSettings.RowIcon"
+                        android:importantForAccessibility="no" />
+
+                    <LinearLayout style="@style/Widget.HeBan.AiSettings.RowText">
+
+                        <TextView
+                            android:id="@+id/tv_model_status"
+                            style="@style/Widget.HeBan.AiSettings.RowTitle" />
+
+                        <TextView
+                            android:id="@+id/tv_model_status_sub"
+                            style="@style/Widget.HeBan.AiSettings.RowSub" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/row_provider"
+                    style="@style/Widget.HeBan.AiSettings.Row.Next"
+                    android:background="@drawable/ai_settings_bg_row_mid">
+
+                    <LinearLayout style="@style/Widget.HeBan.AiSettings.RowText">
+
+                        <TextView
+                            style="@style/Widget.HeBan.AiSettings.RowTitle"
+                            android:text="@string/ai_settings_provider" />
+
+                        <TextView
+                            android:id="@+id/tv_provider"
+                            style="@style/Widget.HeBan.AiSettings.RowSub" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="16dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="?attr/colorOnSurfaceVariant" />
+                </LinearLayout>
+
+                <!-- 表单：Base URL、API Key、问答模型、识图模型，测试连接 / 保存 / 使用内置配置 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/ai_settings_bg_row_bottom"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="16dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_base_url"
+                        style="@style/Widget.HeBan.AiSettings.Field"
+                        android:hint="@string/ai_settings_base_url">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_base_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textUri"
+                            android:maxLines="1"
+                            android:text="@={vm.baseUrl}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_api_key"
+                        style="@style/Widget.HeBan.AiSettings.Field"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/ai_settings_api_key"
+                        app:endIconMode="password_toggle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_api_key"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:text="@={vm.apiKey}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_chat_model"
+                        style="@style/Widget.HeBan.AiSettings.Field"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/ai_settings_chat_model"
+                        app:helperText="@string/ai_settings_chat_model_help">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_chat_model"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:text="@={vm.chatModel}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_vision_model"
+                        style="@style/Widget.HeBan.AiSettings.Field"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/ai_settings_vision_model"
+                        app:helperText="@string/ai_settings_vision_model_help">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_vision_model"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:text="@={vm.visionModel}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tv_test_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_use_builtin"
+                            style="@style/Widget.HeBan.Button.Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-12dp"
+                            android:enabled="@{safeUnbox(vm.userConfigActive)}"
+                            android:text="@string/ai_settings_use_builtin" />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_test"
+                            style="@style/Widget.HeBan.Button.Outlined"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:enabled="@{!safeUnbox(vm.testing)}"
+                            android:onClick="@{() -> vm.testConnection()}"
+                            android:text="@{safeUnbox(vm.testing) ? @string/ai_settings_testing : @string/ai_settings_test}" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_save"
+                            style="@style/Widget.HeBan.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:enabled="@{!safeUnbox(vm.saving)}"
+                            android:text="@string/ai_settings_save" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

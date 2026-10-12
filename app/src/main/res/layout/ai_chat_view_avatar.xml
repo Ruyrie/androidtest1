@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D06 助手头像：32dp Primary Container 圆形 + 18dp auto_awesome（填充） -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="32dp"
+    android:layout_height="32dp"
+    android:background="@drawable/ai_chat_bg_avatar"
+    android:importantForAccessibility="no">
+
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_gravity="center"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_auto_awesome_fill"
+        app:tint="?attr/colorOnPrimaryContainer" />
+</FrameLayout>

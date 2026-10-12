@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D06 助手回答：头像 + 气泡；下方复制 / 有帮助 / 重新生成与百科标签，未完成时显示「回答未完成」+「重新生成」 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <include layout="@layout/ai_chat_view_avatar" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_text"
+            style="@style/Widget.HeBan.AiChat.Bubble"
+            android:background="@drawable/ai_chat_bg_bubble_ai"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp" />
+
+        <LinearLayout
+            android:id="@+id/row_actions"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="-6dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_copy"
+                style="@style/Widget.HeBan.AiChat.ActionButton"
+                android:contentDescription="@string/ai_chat_copy"
+                android:src="@drawable/ic_content_copy" />
+
+            <ImageButton
+                android:id="@+id/btn_like"
+                style="@style/Widget.HeBan.AiChat.ActionButton"
+                android:contentDescription="@string/ai_chat_like"
+                android:src="@drawable/ic_thumb_up" />
+
+            <ImageButton
+                android:id="@+id/btn_refresh"
+                style="@style/Widget.HeBan.AiChat.ActionButton"
+                android:contentDescription="@string/ai_chat_regenerate"
+                android:src="@drawable/ic_refresh" />
+
+            <TextView
+                android:id="@+id/tv_incomplete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/ai_chat_incomplete"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="?attr/colorError" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minWidth="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_regenerate"
+                style="@style/Widget.HeBan.Button.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:paddingHorizontal="12dp"
+                android:text="@string/ai_chat_regenerate"
+                app:icon="@drawable/ic_refresh"
+                app:iconSize="18dp" />
+
+            <LinearLayout
+                android:id="@+id/chip_pest"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/ai_chat_bg_chip"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_menu_book"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_pest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:maxLines="1"
+                    android:textAppearance="?attr/textAppearanceLabelLarge"
+                    android:textColor="?attr/colorOnSurface" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
