@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>消息</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#43483E;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.cat{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;line-height:16px;font-weight:500}
+.cat .c{width:56px;height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;position:relative}
+.bg{position:absolute;top:-4px;right:-6px;min-width:20px;height:20px;padding:0 6px;box-sizing:border-box;border-radius:10px;background:#BA1A1A;color:#FFFFFF;font-size:11px;line-height:20px;font-weight:500;text-align:center;border:2px solid #F8FAF0}
+.cv{display:flex;align-items:center;gap:16px;min-height:72px;padding:0 16px}
+.av{width:48px;height:48px;border-radius:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:500}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="Community.dc.html" class="ib" aria-label="返回" style="color: #191D16"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">消息</h1>
+<button class="ib" aria-label="全部已读" onClick="{{readAll}}"><span class="ms" aria-hidden="true">done_all</span></button>
+<a href="Notify.dc.html" class="ib" aria-label="通知设置"><span class="ms" aria-hidden="true">settings</span></a>
+</header>
+
+<nav aria-label="互动消息" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 12px 8px 20px; flex-shrink: 0">
+<a href="PostDetail.dc.html" class="cat"><span class="c" style="background: #D9E7CB; color: #3E4A35"><span class="ms f" aria-hidden="true">chat_bubble</span><sc-if value="{{unread}}" hint-placeholder-val="{{ true }}"><span class="bg">3</span></sc-if></span>评论回复</a>
+<a href="PostDetail.dc.html" class="cat"><span class="c" style="background: #FFDAD6; color: #93000A"><span class="ms f" aria-hidden="true">favorite</span><sc-if value="{{unread}}" hint-placeholder-val="{{ true }}"><span class="bg">12</span></sc-if></span>赞和收藏</a>
+<a href="Follows.dc.html" class="cat"><span class="c" style="background: #BBEBEC; color: #1E4E4E"><span class="ms f" aria-hidden="true">person_add</span><sc-if value="{{unread}}" hint-placeholder-val="{{ true }}"><span class="bg">2</span></sc-if></span>新增关注</a>
+<a href="Question.dc.html" class="cat"><span class="c" style="background: #FFE08B; color: #241A00"><span class="ms f" aria-hidden="true">notifications</span><sc-if value="{{unread}}" hint-placeholder-val="{{ true }}"><span class="bg">1</span></sc-if></span>系统通知</a>
+</nav>
+
+<div style="height: 8px; background: #F2F5EA; flex-shrink: 0"></div>
+<div style="padding: 16px 16px 4px; font-size: 14px; line-height: 20px; font-weight: 500; color: #43483E">私信</div>
+
+<main style="flex: 1; min-height: 0; overflow: hidden">
+<sc-for list="{{convs}}" as="c" hint-placeholder-count="5">
+<a href="{{c.href}}" class="cv">
+<span class="av" style="background: {{c.avBg}}; color: {{c.avFg}}">{{c.av}}</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+<span style="display: flex; align-items: center; gap: 8px"><span style="flex: 1; font-size: 16px; line-height: 24px; font-weight: {{c.w}}">{{c.name}}</span><span style="font-size: 12px; line-height: 16px; color: #43483E">{{c.time}}</span></span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="flex: 1; min-width: 0; font-size: 14px; line-height: 20px; color: #43483E; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.last}}</span><sc-if value="{{c.show}}" hint-placeholder-val="{{ false }}"><span style="min-width: 20px; height: 20px; padding: 0 6px; box-sizing: border-box; border-radius: 10px; background: #456732; color: #FFFFFF; font-size: 11px; line-height: 20px; font-weight: 500; text-align: center">{{c.n}}</span></sc-if></span>
+</span>
+</a>
+</sc-for>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const read = !!(this.state && this.state.read);
+    const raw = [
+      { name: '草莓姐姐', av: '莓', avBg: '#BBEBEC', avFg: '#1E4E4E', last: '好的，明天上午可以来园里自提', time: '14:32', n: 2 },
+      { name: '禾伴客服', av: '禾', avBg: '#456732', avFg: '#FFFFFF', last: '你兑换的「园艺手套」已到达南京，预计明天送达', time: '08:45', n: 1, href: 'Service.dc.html' },
+      { name: '王农艺师', av: '王', avBg: '#D9E7CB', avFg: '#3E4A35', last: '照片收到了，像是缺镁，先喷一次硫酸镁看看', time: '昨天', n: 0 },
+      { name: '果园阿强', av: '强', avBg: '#FFE08B', avFg: '#241A00', last: '[商品] 小型微耕机 九成新', time: '周四', n: 0 },
+      { name: '禾伴小助手', av: '禾', avBg: '#456732', avFg: '#FFFFFF', last: '你的提问「番茄叶片卷曲发黄」有 3 个新回答', time: '周三', n: 1 },
+      { name: '菜园小周', av: '周', avBg: '#D9E7CB', avFg: '#3E4A35', last: '谢谢老李，种子收到了', time: '10/05', n: 0 }
+    ];
+    return {
+      unread: !read,
+      convs: raw.map((c) => Object.assign({ href: 'Chat.dc.html' }, c, { show: !read && c.n > 0, w: !read && c.n > 0 ? '500' : '400' })),
+      readAll: () => this.setState({ read: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

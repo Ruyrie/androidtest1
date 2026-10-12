@@ -1,0 +1,11 @@
+// Local build environment only: route Maven Central through Google's mirror (shared egress IP is rate-limited).
+def mirror = 'https://maven-central.storage-download.googleapis.com/maven2/'
+def fix = { RepositoryHandler repos ->
+    repos.withType(MavenArtifactRepository).configureEach { r ->
+        if (r.url.toString().contains('repo.maven.apache.org')) r.url = mirror
+    }
+}
+settingsEvaluated { s ->
+    fix(s.pluginManagement.repositories)
+    fix(s.dependencyResolutionManagement.repositories)
+}

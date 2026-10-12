@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>组件规范</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;family=Roboto+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#456732}a:hover{color:#2E4F1C}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.ms.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.pn{background:#F2F5EA;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:14px}
+.h{margin:0;font-size:22px;line-height:28px;font-weight:500}
+.demo{background:#F8FAF0;border-radius:16px;padding:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.spec{display:flex;flex-direction:column;gap:4px;font-size:13px;line-height:20px;color:#43483E}
+.mono{font-family:'Roboto Mono',monospace;font-size:12px;color:#2E4F1C}
+.btn{height:40px;box-sizing:border-box;border-radius:20px;padding:0 24px;display:inline-flex;align-items:center;gap:8px;font:500 14px/20px Roboto,'Noto Sans SC',sans-serif;border:0}
+.ib{width:40px;height:40px;box-sizing:border-box;border-radius:20px;border:0;padding:0;display:inline-flex;align-items:center;justify-content:center}
+.chip{height:32px;box-sizing:border-box;border-radius:8px;display:inline-flex;align-items:center;gap:8px;font:500 14px/20px Roboto,'Noto Sans SC',sans-serif;padding:0 16px}
+.lbl{position:absolute;left:12px;top:-8px;padding:0 4px;background:#F8FAF0;font-size:12px;line-height:16px}
+.tf{height:56px;box-sizing:border-box;border-radius:4px;padding:0 16px;display:flex;align-items:center;font-size:16px;line-height:24px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1600px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; padding: 56px 64px; display: flex; flex-direction: column; gap: 32px; overflow: hidden">
+
+<header>
+<div style="font-size: 14px; line-height: 20px; font-weight: 500; color: #456732">06 · 组件规范</div>
+<h1 style="margin: 4px 0 8px; font-size: 36px; line-height: 44px; font-weight: 500">全部使用 Material Components (MDC) 官方组件</h1>
+<p style="margin: 0; max-width: 960px; font-size: 16px; line-height: 24px; color: #43483E">主题继承 Theme.Material3.DayNight.NoActionBar，下列组件的颜色、圆角、字号都会从主题自动取值，只在需要时覆盖 style。</p>
+</header>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+
+<section class="pn">
+<h2 class="h">按钮 Buttons</h2>
+<div class="demo">
+<button class="btn" style="background: #456732; color: #FFFFFF; padding: 0 24px 0 16px"><span class="ms" aria-hidden="true" style="font-size: 18px">add</span>添加记录</button>
+<button class="btn" style="background: #D9E7CB; color: #3E4A35">问问 AI</button>
+<button class="btn" style="background: transparent; border: 1px solid #74796D; color: #456732">取消</button>
+<button class="btn" style="background: transparent; color: #456732; padding: 0 12px">查看全部</button>
+<span style="flex-basis: 100%; height: 0"></span>
+<button class="ib" aria-label="标准图标按钮" style="background: transparent; color: #43483E"><span class="ms" aria-hidden="true">more_vert</span></button>
+<button class="ib" aria-label="填充图标按钮" style="background: #456732; color: #FFFFFF"><span class="ms" aria-hidden="true">arrow_upward</span></button>
+<button class="ib" aria-label="色调图标按钮" style="background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true">mic</span></button>
+<button class="ib" aria-label="描边图标按钮" style="background: transparent; border: 1px solid #74796D; color: #43483E"><span class="ms" aria-hidden="true">share</span></button>
+</div>
+<div class="spec">
+<span>高 40dp · 圆角 Full · 左右 24dp（带图标 16dp）· Label Large</span>
+<span>主操作 Filled，次操作 Tonal / Outlined，弱操作 Text；一屏只放一个 Filled</span>
+<span class="mono">Widget.Material3.Button / .TonalButton / .OutlinedButton / .TextButton</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">悬浮按钮 FAB</h2>
+<div class="demo" style="gap: 20px">
+<button class="ib" aria-label="添加" style="width: 56px; height: 56px; border-radius: 16px; background: #C5EFAB; color: #2E4F1C; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15)"><span class="ms" aria-hidden="true">add</span></button>
+<button class="ib" aria-label="小号添加" style="border-radius: 12px; background: #C5EFAB; color: #2E4F1C; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15)"><span class="ms" aria-hidden="true">edit</span></button>
+<button style="height: 56px; border: 0; border-radius: 16px; padding: 0 20px 0 16px; background: #C5EFAB; color: #2E4F1C; display: inline-flex; align-items: center; gap: 12px; font: 500 14px/20px Roboto, 'Noto Sans SC', sans-serif; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15)"><span class="ms" aria-hidden="true">auto_awesome</span>问问 AI</button>
+</div>
+<div class="spec">
+<span>FAB 56dp · 圆角 16dp；Small FAB 40dp · 圆角 12dp；Extended 高 56dp</span>
+<span>颜色 Primary Container；位置右下，距底部导航 16dp；列表滚动时 Extended 收起为图标</span>
+<span class="mono">FloatingActionButton · ExtendedFloatingActionButton</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">卡片 Cards</h2>
+<div class="demo" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<div style="height: 96px; border-radius: 12px; background: #F2F5EA; padding: 12px; box-sizing: border-box; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15)"><div style="font-size: 14px; line-height: 20px; font-weight: 500">Elevated</div><div style="font-size: 12px; line-height: 16px; color: #43483E">作物卡片</div></div>
+<div style="height: 96px; border-radius: 12px; background: #E1E4D9; padding: 12px; box-sizing: border-box"><div style="font-size: 14px; line-height: 20px; font-weight: 500">Filled</div><div style="font-size: 12px; line-height: 16px; color: #43483E">统计块</div></div>
+<div style="height: 96px; border-radius: 12px; border: 1px solid #C3C8BB; padding: 11px; box-sizing: border-box"><div style="font-size: 14px; line-height: 20px; font-weight: 500">Outlined</div><div style="font-size: 12px; line-height: 16px; color: #43483E">作物列表项</div></div>
+</div>
+<div class="spec">
+<span>圆角 12dp · 内边距 16dp · 卡片间距 12dp；主信息卡例外：28dp / 20dp</span>
+<span>整张卡可点击时加涟漪（?attr/selectableItemBackground），不要再放「查看」按钮</span>
+<span class="mono">MaterialCardView · Widget.Material3.CardView.Elevated / .Filled / .Outlined</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">标签 Chips</h2>
+<div class="demo">
+<span class="chip" style="border: 1px solid #C3C8BB; padding: 0 16px 0 8px"><span class="ms" aria-hidden="true" style="font-size: 18px; color: #456732">event</span>定植 08/03</span>
+<span class="chip" style="background: #D9E7CB; color: #3E4A35; padding: 0 16px 0 8px"><span class="ms" aria-hidden="true" style="font-size: 18px">check</span>全部</span>
+<span class="chip" style="border: 1px solid #C3C8BB; color: #43483E">大棚</span>
+<span class="chip" style="border: 1px solid #C3C8BB; color: #43483E; padding: 0 8px 0 12px">番茄<span class="ms" aria-hidden="true" style="font-size: 18px">close</span></span>
+<span class="chip" style="border: 1px solid #C3C8BB; color: #43483E">十月适合种什么菜？</span>
+</div>
+<div class="spec">
+<span>高 32dp · 圆角 8dp · 描边 Outline Variant；选中 Secondary Container + 勾</span>
+<span>Assist 信息、Filter 筛选、Input 已选条件、Suggestion AI 推荐问题</span>
+<span class="mono">Chip · Widget.Material3.Chip.Assist / .Filter / .Input / .Suggestion</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">文本框 Text fields</h2>
+<div class="demo" style="flex-direction: column; align-items: stretch; gap: 20px">
+<label style="position: relative; display: block"><span class="lbl" style="color: #43483E">作物名称</span><span class="tf" style="border: 1px solid #74796D">草莓</span></label>
+<label style="position: relative; display: block"><span class="lbl" style="color: #456732">种植面积（亩）</span><span class="tf" style="border: 2px solid #456732; padding: 0 15px">0.3<span style="width: 2px; height: 22px; margin-left: 1px; background: #456732"></span></span></label>
+<div style="display: flex; flex-direction: column; gap: 4px"><label style="position: relative; display: block"><span class="lbl" style="color: #BA1A1A">品种</span><span class="tf" style="border: 2px solid #BA1A1A; padding: 0 12px 0 15px"><span style="flex: 1"></span><span class="ms" aria-hidden="true" style="color: #BA1A1A">error</span></span></label><span style="padding: 0 16px; font-size: 12px; line-height: 16px; color: #BA1A1A">请填写品种</span></div>
+</div>
+<div class="spec">
+<span>高 56dp · 圆角 4dp · 默认 / 聚焦（Primary 2dp）/ 错误（Error 2dp）</span>
+<span class="mono">TextInputLayout · Widget.Material3.TextInputLayout.OutlinedBox(.ExposedDropdownMenu)</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">提示栏 Snackbar · Banner</h2>
+<div class="demo" style="flex-direction: column; align-items: stretch; gap: 10px">
+<div style="background: #2E312B; color: #F0F2E7; border-radius: 4px; min-height: 48px; padding: 0 8px 0 16px; display: flex; align-items: center; font-size: 14px; line-height: 20px"><span style="flex: 1">农事记录已删除</span><span style="padding: 0 12px; font-weight: 500; color: #AAD291">撤销</span></div>
+<div style="background: #2E312B; color: #F0F2E7; border-radius: 4px; padding: 14px 16px 8px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; line-height: 20px"><span>网络不可用，AI 回答发送失败，已保存为草稿</span><span style="align-self: flex-end; padding: 8px 12px; font-weight: 500; color: #AAD291">重试</span></div>
+<div style="background: #FFE08B; color: #241A00; border-radius: 12px; padding: 12px 8px 12px 16px; display: flex; align-items: center; gap: 12px; font-size: 14px; line-height: 20px"><span class="ms" aria-hidden="true">ac_unit</span><span style="flex: 1"><strong style="font-weight: 500">降温预警</strong> 12日起最低 8°C</span><span style="padding: 0 12px; font-weight: 500; color: #745B00">查看</span></div>
+</div>
+<div class="spec">
+<span>Snackbar：圆角 4dp · Inverse Surface · 最多 1 个操作 · LENGTH_LONG，自动消失</span>
+<span>内联提示栏：圆角 12dp · 常驻在页面顶部，颜色按严重程度见「03 用色规范」</span>
+<span class="mono">Snackbar.make(...).setAction(...) · MaterialCardView（提示栏）</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">对话框 Dialog</h2>
+<div class="demo" style="justify-content: center; background: rgba(0, 0, 0, 0.32)">
+<div role="dialog" aria-label="删除确认" style="width: 280px; background: #E7E9DF; border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<span class="ms" aria-hidden="true" style="align-self: center; color: #456732">delete</span>
+<div style="text-align: center; font-size: 24px; line-height: 32px; font-weight: 500">删除这条记录？</div>
+<div style="font-size: 14px; line-height: 20px; color: #43483E">删除后无法恢复，相关提醒也会一起取消。</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button class="btn" style="background: transparent; color: #456732; padding: 0 12px">取消</button><button class="btn" style="background: transparent; color: #456732; padding: 0 12px">删除</button></div>
+</div>
+</div>
+<div class="spec">
+<span>圆角 28dp · Surface Container High · 内边距 24dp · 标题 Headline Small · 遮罩 32%</span>
+<span class="mono">MaterialAlertDialogBuilder · MaterialDatePicker（选日期）</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">导航 Navigation</h2>
+<div class="demo" style="flex-direction: column; align-items: stretch; gap: 14px; padding: 16px">
+<div style="height: 48px; border-radius: 24px; background: #E7E9DF; display: flex; align-items: center; gap: 12px; padding: 0 16px; color: #43483E; font-size: 16px; line-height: 24px"><span class="ms" aria-hidden="true">search</span>搜索作物或地块</div>
+<div style="display: flex; border-bottom: 1px solid #E0E4D6"><span style="flex: 1; height: 44px; display: flex; align-items: center; justify-content: center; color: #456732; font-size: 14px; font-weight: 500; position: relative">农事记录<span style="position: absolute; bottom: 0; left: 50%; width: 56px; margin-left: -28px; height: 3px; border-radius: 3px 3px 0 0; background: #456732"></span></span><span style="flex: 1; height: 44px; display: flex; align-items: center; justify-content: center; color: #43483E; font-size: 14px; font-weight: 500">生长数据</span><span style="flex: 1; height: 44px; display: flex; align-items: center; justify-content: center; color: #43483E; font-size: 14px; font-weight: 500">照片</span></div>
+<div style="height: 72px; background: #EDEFE4; border-radius: 12px; display: flex"><span style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><span style="width: 64px; height: 32px; border-radius: 16px; background: #D9E7CB; color: #3E4A35; display: flex; align-items: center; justify-content: center"><span class="ms f" aria-hidden="true">home</span></span><span style="font-size: 12px; line-height: 16px; font-weight: 500">首页</span></span><span style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #43483E"><span style="height: 32px; display: flex; align-items: center"><span class="ms" aria-hidden="true">potted_plant</span></span><span style="font-size: 12px; line-height: 16px; font-weight: 500">作物</span></span><span style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #43483E"><span style="height: 32px; display: flex; align-items: center"><span class="ms" aria-hidden="true">explore</span></span><span style="font-size: 12px; line-height: 16px; font-weight: 500">发现</span></span></div>
+</div>
+<div class="spec">
+<span>底部导航 80dp · 指示器 64×32 Secondary Container · 选中图标实心；Tab 指示条 3dp</span>
+<span class="mono">BottomNavigationView · TabLayout · SearchBar · MaterialToolbar</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">选择与进度</h2>
+<div class="demo" style="gap: 20px">
+<span role="img" aria-label="开关 开" style="width: 52px; height: 32px; border-radius: 16px; background: #456732; display: inline-flex; align-items: center; justify-content: flex-end; padding: 0 4px; box-sizing: border-box"><span style="width: 24px; height: 24px; border-radius: 12px; background: #FFFFFF; color: #456732; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true" style="font-size: 16px">check</span></span></span>
+<span role="img" aria-label="开关 关" style="width: 52px; height: 32px; border-radius: 16px; background: #E1E4D9; border: 2px solid #74796D; display: inline-flex; align-items: center; padding: 0 6px; box-sizing: border-box"><span style="width: 16px; height: 16px; border-radius: 8px; background: #74796D"></span></span>
+<span class="ms f" aria-label="复选框 已选" style="color: #456732">check_box</span>
+<span class="ms" aria-label="复选框 未选" style="color: #43483E">check_box_outline_blank</span>
+<span class="ms f" aria-label="单选 已选" style="color: #456732">radio_button_checked</span>
+<span style="flex-basis: 100%; height: 0"></span>
+<div role="group" aria-label="分段按钮" style="display: flex; height: 40px; flex: 1"><span style="flex: 1; border: 1px solid #74796D; border-radius: 20px 0 0 20px; background: #D9E7CB; color: #3E4A35; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 500"><span class="ms" aria-hidden="true" style="font-size: 18px">check</span>大棚</span><span style="flex: 1; border: 1px solid #74796D; border-left: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500">露天</span><span style="flex: 1; border: 1px solid #74796D; border-left: 0; border-radius: 0 20px 20px 0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500">盆栽</span></div>
+<span style="flex-basis: 100%; height: 4px; border-radius: 2px; background: #D9E7CB; display: block"><span style="display: block; width: 62%; height: 4px; border-radius: 2px; background: #456732"></span></span>
+</div>
+<div class="spec">
+<span>Switch 52×32 · 复选框 18dp · 分段按钮高 40dp · 进度条高 4dp</span>
+<span class="mono">MaterialSwitch · MaterialCheckBox · MaterialButtonToggleGroup · LinearProgressIndicator</span>
+</div>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>积分规则</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.h2{margin:0;font-size:16px;line-height:24px;font-weight:500}
+.tb{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
+.tb th{text-align:left;font-weight:500;color:#43483E;padding:8px 12px;background:#E7E9DF}
+.tb td{padding:7px 12px;border-top:1px solid #E0E4D6}
+.tb .n{text-align:right;white-space:nowrap}
+.lv{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;line-height:14px;color:#43483E;flex:1}
+.lv .c{width:28px;height:28px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;box-sizing:border-box}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="CheckIn.dc.html" aria-label="返回" style="width: 48px; height: 48px; border-radius: 24px; color: #191D16; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">积分规则</h1>
+</header>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 4px 16px 0; display: flex; flex-direction: column; gap: 14px">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<div style="background: #C5EFAB; color: #2E4F1C; border-radius: 16px; padding: 12px 14px"><div style="display: flex; align-items: center; gap: 6px; font-size: 15px; line-height: 22px; font-weight: 500"><span class="ms f" aria-hidden="true" style="font-size: 18px">toll</span>积分</div><div style="font-size: 12px; line-height: 17px; margin-top: 4px">可以花：兑换商品、集市置顶、问答悬赏</div></div>
+<div style="background: #FFE08B; color: #241A00; border-radius: 16px; padding: 12px 14px"><div style="display: flex; align-items: center; gap: 6px; font-size: 15px; line-height: 22px; font-weight: 500"><span class="ms f" aria-hidden="true" style="font-size: 18px">trending_up</span>成长值</div><div style="font-size: 12px; line-height: 17px; margin-top: 4px">决定等级，只增不减；花积分不会降级</div></div>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 8px">
+<h2 class="h2">怎么获得</h2>
+<div style="border-radius: 12px; overflow: hidden; border: 1px solid #E0E4D6">
+<table class="tb">
+<thead><tr><th>行为</th><th class="n">积分</th><th class="n">成长值</th></tr></thead>
+<tbody>
+<tr><td>每日签到</td><td class="n">+10</td><td class="n">+5</td></tr>
+<tr><td>连续签到满 7 天（当天额外）</td><td class="n">+20</td><td class="n">+10</td></tr>
+<tr><td>发布动态（每天 2 次）</td><td class="n">+5</td><td class="n">+3</td></tr>
+<tr><td>回答问题（每天 3 次）</td><td class="n">+10</td><td class="n">+5</td></tr>
+<tr><td>回答被采纳</td><td class="n">悬赏 +20</td><td class="n">+20</td></tr>
+<tr><td>完成今日农事（每天 1 次）</td><td class="n">+5</td><td class="n">+3</td></tr>
+<tr><td>记一笔账（每天 1 次）</td><td class="n">+2</td><td class="n">+1</td></tr>
+</tbody>
+</table>
+</div>
+<span style="font-size: 12px; line-height: 16px; color: #43483E">每天通过任务最多获得 100 积分，悬赏积分不计入上限。</span>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 8px">
+<h2 class="h2">怎么使用</h2>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; line-height: 19px">
+<a href="PointsMall.dc.html" style="display: flex; gap: 10px; align-items: center"><span class="ms" aria-hidden="true" style="font-size: 20px; color: #456732">redeem</span><span style="flex: 1"><strong style="font-weight: 500">积分商城</strong>：兑换种子、农具等实物（官方发货、包邮），或头像框等装扮</span><span class="ms" aria-hidden="true" style="font-size: 18px; color: #43483E">chevron_right</span></a>
+<div style="display: flex; gap: 10px; align-items: center"><span class="ms" aria-hidden="true" style="font-size: 20px; color: #456732">vertical_align_top</span><span><strong style="font-weight: 500">集市置顶</strong>：100 积分置顶一件商品 24 小时</span></div>
+<div style="display: flex; gap: 10px; align-items: center"><span class="ms" aria-hidden="true" style="font-size: 20px; color: #456732">paid</span><span><strong style="font-weight: 500">问答悬赏</strong>：10–100 积分，7 天无人回答自动退回</span></div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 class="h2">等级 <span style="font-size: 12px; font-weight: 400; color: #43483E">按成长值升级，Lv.4 起获得「种植能手」称号</span></h2>
+<div style="display: flex">
+<div class="lv"><span class="c" style="background: #456732; color: #FFFFFF">1</span>0</div>
+<div class="lv"><span class="c" style="background: #456732; color: #FFFFFF">2</span>100</div>
+<div class="lv"><span class="c" style="background: #456732; color: #FFFFFF">3</span>300</div>
+<div class="lv"><span class="c" style="background: #FFE08B; color: #241A00; border: 2px solid #745B00">4</span><strong style="color: #191D16">800 · 我</strong></div>
+<div class="lv"><span class="c" style="border: 1px solid #74796D">5</span>1,500</div>
+<div class="lv"><span class="c" style="border: 1px solid #74796D">6</span>3,000</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h2 class="h2">其他说明</h2>
+<ul style="margin: 0; padding-left: 18px; font-size: 13px; line-height: 20px; color: #43483E">
+<li>积分长期有效，注销账号后清零</li>
+<li>刷屏、作弊等违规获得的积分会被扣回</li>
+<li>兑换成功后积分不退，商品质量问题可联系禾伴客服处理</li>
+</ul>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

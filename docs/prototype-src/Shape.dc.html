@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>圆角 间距 层级</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;family=Roboto+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#456732}a:hover{color:#2E4F1C}
+.shp{display:flex;flex-direction:column;gap:6px}
+.tile{width:96px;height:96px;background:#C5EFAB;border:2px solid #456732;box-sizing:border-box}
+.nm{font-size:16px;line-height:24px;font-weight:500}
+.dp{font-family:'Roboto Mono',monospace;font-size:13px;line-height:18px;color:#456732}
+.us{font-size:13px;line-height:18px;color:#43483E}
+.sr{display:grid;grid-template-columns:56px 140px minmax(0,1fr);gap:12px;align-items:center;padding:7px 0;border-top:1px solid #E0E4D6;font-size:14px;line-height:20px}
+.el{height:72px;border-radius:12px;background:#F2F5EA;display:flex;flex-direction:column;justify-content:center;padding:0 14px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1100px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; padding: 56px 64px; display: flex; flex-direction: column; gap: 32px; overflow: hidden">
+
+<header>
+<div style="font-size: 14px; line-height: 20px; font-weight: 500; color: #456732">05 · 圆角 · 间距 · 层级</div>
+<h1 style="margin: 4px 0 8px; font-size: 36px; line-height: 44px; font-weight: 500">7 级圆角，4dp 网格，色调分层</h1>
+<p style="margin: 0; max-width: 900px; font-size: 16px; line-height: 24px; color: #43483E">圆角沿用 M3 Shape Scale；所有尺寸取 4 的倍数；层级优先用 Surface Container 的深浅区分，阴影只留给需要浮起来的元素。</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 500">圆角 Shape scale</h2>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 24px">
+<div class="shp"><span class="tile" style="border-radius: 0"></span><span class="nm">None</span><span class="dp">0dp</span><span class="us">底部导航栏、全屏页面</span></div>
+<div class="shp"><span class="tile" style="border-radius: 4px"></span><span class="nm">Extra Small</span><span class="dp">4dp</span><span class="us">文本框、Snackbar、分组列表内角</span></div>
+<div class="shp"><span class="tile" style="border-radius: 8px"></span><span class="nm">Small</span><span class="dp">8dp</span><span class="us">Chip、状态标签、缩略图</span></div>
+<div class="shp"><span class="tile" style="border-radius: 12px"></span><span class="nm">Medium</span><span class="dp">12dp</span><span class="us">卡片、内联提示栏</span></div>
+<div class="shp"><span class="tile" style="border-radius: 16px"></span><span class="nm">Large</span><span class="dp">16dp</span><span class="us">FAB、扩展 FAB、相册大图</span></div>
+<div class="shp"><span class="tile" style="border-radius: 28px"></span><span class="nm">Extra Large</span><span class="dp">28dp</span><span class="us">天气主卡、对话框、底部弹窗、分组列表外角</span></div>
+<div class="shp"><span class="tile" style="border-radius: 48px"></span><span class="nm">Full</span><span class="dp">高度 / 2</span><span class="us">按钮、搜索栏、导航指示器、头像、Switch</span></div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #43483E">特殊：聊天气泡 20dp，靠近发送方头像的一角 4dp。XML 中通过 shapeAppearanceCornerSmall / Medium / Large 等主题属性统一配置。</p>
+</section>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 48px">
+
+<section style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0 0 4px; font-size: 22px; line-height: 28px; font-weight: 500">间距与尺寸 <span style="font-size: 14px; font-weight: 400; color: #43483E">4dp 网格</span></h2>
+<div style="display: flex; gap: 32px; align-items: flex-start">
+<div style="width: 206px; height: 458px; flex-shrink: 0; border-radius: 24px; border: 2px solid #74796D; overflow: hidden; display: flex; flex-direction: column; background: #F8FAF0; position: relative">
+<div style="height: 32px; background: #EDEFE4; font-size: 10px; line-height: 32px; text-align: center; color: #43483E">顶栏 64dp</div>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 8px; border-left: 8px solid rgba(186, 26, 26, 0.12); border-right: 8px solid rgba(186, 26, 26, 0.12)">
+<div style="height: 90px; border-radius: 14px; background: #C5EFAB"></div>
+<div style="height: 36px; border-radius: 6px; background: #FFE08B"></div>
+<div style="height: 84px; border-radius: 6px; background: #F2F5EA; border: 1px solid #C3C8BB"></div>
+<div style="height: 70px; border-radius: 6px; background: #F2F5EA; border: 1px solid #C3C8BB"></div>
+</div>
+<div style="height: 40px; background: #EDEFE4; font-size: 10px; line-height: 40px; text-align: center; color: #43483E">底部导航 80dp</div>
+<span style="position: absolute; left: 2px; top: 230px; font-size: 9px; line-height: 10px; color: #BA1A1A; writing-mode: vertical-rl">16dp</span>
+</div>
+<div style="flex: 1; min-width: 0">
+<div class="sr" style="border-top: 0"><span class="dp">16</span><span>页面左右边距</span><span class="us">所有页面统一；红色区域示意</span></div>
+<div class="sr"><span class="dp">16</span><span>卡片内边距</span><span class="us">主信息卡 20；紧凑卡片 12</span></div>
+<div class="sr"><span class="dp">12</span><span>卡片之间</span><span class="us">同一分区内的卡片、提示栏</span></div>
+<div class="sr"><span class="dp">24</span><span>分区之间</span><span class="us">「今日农事」与「我的作物」</span></div>
+<div class="sr"><span class="dp">8</span><span>Chip 之间</span><span class="us">筛选 Chip、建议 Chip</span></div>
+<div class="sr"><span class="dp">16</span><span>图标与文字</span><span class="us">列表项；按钮内为 8</span></div>
+<div class="sr"><span class="dp">56/72</span><span>列表项高度</span><span class="us">单行 56；双行 72</span></div>
+<div class="sr"><span class="dp">64</span><span>顶栏高度</span><span class="us">大标题顶栏 112</span></div>
+<div class="sr"><span class="dp">80</span><span>底部导航高度</span><span class="us">指示器 64 × 32</span></div>
+<div class="sr"><span class="dp">48</span><span>最小触控区域</span><span class="us">图标按钮视觉 24，点击区 48 × 48</span></div>
+<div class="sr"><span class="dp">40/56</span><span>按钮 / FAB 高度</span><span class="us">按钮左右内边距 24（带图标 16）</span></div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0 0 4px; font-size: 22px; line-height: 28px; font-weight: 500">层级 Elevation</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px">
+<div class="el" style="background: #F8FAF0; border: 1px solid #C3C8BB"><span class="nm">Level 0 · 0dp</span><span class="us">页面背景、Filled / Outlined 卡片</span></div>
+<div class="el" style="box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15)"><span class="nm">Level 1 · 1dp</span><span class="us">Elevated 卡片（作物卡片）</span></div>
+<div class="el" style="background: #EDEFE4"><span class="nm">Level 2 · 3dp</span><span class="us">滚动后的顶栏：只换色，不加阴影</span></div>
+<div class="el" style="background: #C5EFAB; color: #2E4F1C; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15)"><span class="nm">Level 3 · 6dp</span><span class="us" style="color: #2E4F1C">FAB、扩展 FAB、Snackbar</span></div>
+<div class="el" style="background: #E7E9DF; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3), 0 6px 10px 4px rgba(0, 0, 0, 0.15)"><span class="nm">Level 4 · 8dp</span><span class="us">FAB 按下 / 拖拽中</span></div>
+<div class="el" style="background: #E7E9DF"><span class="nm">对话框 · 底部弹窗</span><span class="us">Surface Container High + 遮罩 Scrim 32%</span></div>
+</div>
+<div style="background: #F2F5EA; border-radius: 16px; padding: 16px 20px; font-size: 14px; line-height: 20px; margin-top: 8px">深色模式下阴影几乎不可见，层级完全靠 Surface Container 由深到浅：Lowest #0C0F09 → Highest #32362F。所以卡片背景一定用颜色角色，不要只靠阴影。</div>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

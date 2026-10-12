@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>收支记账</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#43483E;display:flex;align-items:center;justify-content:center}
+.seg{flex:1;border:1px solid #74796D;display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;line-height:20px;font-weight:500;cursor:pointer}
+.col{flex:1;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;cursor:default}
+.it{display:flex;align-items:center;gap:16px;height:64px;padding:0 16px}
+.ic{width:40px;height:40px;flex-shrink:0;border-radius:20px;display:flex;align-items:center;justify-content:center}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="Discover.dc.html" class="ib" aria-label="返回" style="color: #191D16"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">收支记账</h1>
+<button class="ib" aria-label="上个月"><span class="ms" aria-hidden="true">chevron_left</span></button>
+<span style="font-size: 14px; line-height: 20px; font-weight: 500">2026年10月</span>
+<button class="ib" aria-label="下个月"><span class="ms" aria-hidden="true">chevron_right</span></button>
+</header>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 4px 16px 0; display: flex; flex-direction: column; gap: 14px">
+
+<section aria-label="本月汇总" style="background: #C5EFAB; color: #2E4F1C; border-radius: 28px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<div><div style="font-size: 14px; line-height: 20px">本月结余</div><div style="font-size: 36px; line-height: 44px">+¥3,460</div></div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; border-top: 1px solid rgba(46, 79, 28, 0.2); padding-top: 12px">
+<div><div style="font-size: 12px; line-height: 16px">收入</div><div style="font-size: 18px; line-height: 24px; font-weight: 500">¥5,200</div></div>
+<div><div style="font-size: 12px; line-height: 16px">支出</div><div style="font-size: 18px; line-height: 24px; font-weight: 500">¥1,740</div></div>
+</div>
+</section>
+
+<div role="group" aria-label="统计视图" style="display: flex; height: 40px; flex-shrink: 0">
+<span role="button" aria-pressed="{{isTrend}}" class="seg" style="border-radius: 20px 0 0 20px; background: {{trendBg}}; color: {{trendFg}}" onClick="{{showTrend}}"><sc-if value="{{isTrend}}" hint-placeholder-val="{{ true }}"><span class="ms" aria-hidden="true" style="font-size: 18px">check</span></sc-if>结余趋势</span>
+<span role="button" aria-pressed="{{isMix}}" class="seg" style="border-left: 0; border-radius: 0 20px 20px 0; background: {{mixBg}}; color: {{mixFg}}" onClick="{{showMix}}"><sc-if value="{{isMix}}" hint-placeholder-val="{{ false }}"><span class="ms" aria-hidden="true" style="font-size: 18px">check</span></sc-if>支出构成</span>
+</div>
+
+<sc-if value="{{isTrend}}" hint-placeholder-val="{{ true }}">
+<figure role="img" aria-label="近 6 个月结余：5月 820 元，6月 1960 元，7月 3120 元，8月 280 元，9月 1450 元，10月 3460 元" style="margin: 0; height: 176px; flex-shrink: 0; display: flex; flex-direction: column">
+<div style="flex: 1; display: flex; gap: 12px; align-items: flex-end; border-bottom: 1px solid #C3C8BB; padding: 0 4px">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="6">
+<div class="col" onMouseEnter="{{b.enter}}" onMouseLeave="{{b.leave}}">
+<span style="font-size: 12px; line-height: 16px; font-weight: 500; color: #191D16; white-space: nowrap; visibility: {{b.vis}}">{{b.text}}</span>
+<span style="width: 28px; border-radius: 4px 4px 0 0; height: {{b.h}}; background: {{b.c}}"></span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; gap: 12px; padding: 6px 4px 0">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="6"><span style="flex: 1; text-align: center; font-size: 12px; line-height: 16px; color: #43483E">{{b.m}}</span></sc-for>
+</div>
+</figure>
+</sc-if>
+
+<sc-if value="{{isMix}}" hint-placeholder-val="{{ false }}">
+<div style="height: 176px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; gap: 14px">
+<sc-for list="{{mix}}" as="x" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: 44px minmax(0, 1fr) 96px; gap: 12px; align-items: center; font-size: 14px; line-height: 20px">
+<span>{{x.name}}</span>
+<span style="height: 12px; border-radius: 0 4px 4px 0; background: #E1E4D9; display: block"><span style="display: block; height: 12px; border-radius: 0 4px 4px 0; background: #456732; width: {{x.w}}"></span></span>
+<span style="text-align: right; color: #43483E">¥{{x.v}} · {{x.p}}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<section aria-label="明细" style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; align-items: center; height: 32px"><h2 style="margin: 0; flex: 1; font-size: 14px; line-height: 20px; font-weight: 500; color: #43483E">今天 · 10月10日</h2><span style="font-size: 12px; color: #43483E">收 960 · 支 60</span></div>
+<div style="background: #F2F5EA; border-radius: 16px; overflow: hidden">
+<div class="it"><span class="ic" style="background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true">sell</span></span><span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 16px; line-height: 24px">樱桃番茄 120 斤</span><span style="font-size: 12px; line-height: 16px; color: #43483E">销售 · 番茄 · 1号大棚</span></span><span style="font-size: 16px; font-weight: 500; color: #456732">+960</span></div>
+<div class="it" style="border-top: 1px solid #E0E4D6"><span class="ic" style="background: #E1E4D9; color: #43483E"><span class="ms" aria-hidden="true">compost</span></span><span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 16px; line-height: 24px">硫酸钾 5 kg</span><span style="font-size: 12px; line-height: 16px; color: #43483E">化肥 · 番茄 · 来自农事记录</span></span><span style="font-size: 16px; font-weight: 500">−60</span></div>
+</div>
+</section>
+</main>
+
+<a href="AddEntry.dc.html" style="position: absolute; right: 16px; bottom: 24px; height: 56px; padding: 0 20px 0 16px; border-radius: 16px; background: #C5EFAB; color: #2E4F1C; display: flex; align-items: center; gap: 12px; font-size: 14px; line-height: 20px; font-weight: 500; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15)"><span class="ms" aria-hidden="true">edit</span>记一笔</a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const view = st.view || 'trend';
+    const hov = st.hov === undefined ? -1 : st.hov;
+    const data = [['5月', 820], ['6月', 1960], ['7月', 3120], ['8月', 280], ['9月', 1450], ['10月', 3460]];
+    const max = 3460;
+    const bars = data.map(([m, v], i) => {
+      const cur = i === data.length - 1;
+      const show = hov === -1 ? cur : hov === i;
+      return {
+        m, text: '+' + v.toLocaleString('en-US'),
+        h: Math.max(4, Math.round(v / max * 120)) + 'px',
+        c: cur || hov === i ? '#456732' : '#759B5F',
+        vis: show ? 'visible' : 'hidden',
+        enter: () => this.setState({ hov: i }),
+        leave: () => this.setState({ hov: -1 })
+      };
+    });
+    const mixRaw = [['化肥', 720], ['农药', 410], ['人工', 400], ['其他', 210]];
+    const mix = mixRaw.map(([name, v]) => ({ name, v, w: Math.round(v / 720 * 100) + '%', p: Math.round(v / 1740 * 100) + '%' }));
+    const trend = view === 'trend';
+    return {
+      bars, mix, isTrend: trend, isMix: !trend,
+      trendBg: trend ? '#D9E7CB' : 'transparent', trendFg: trend ? '#3E4A35' : '#191D16',
+      mixBg: !trend ? '#D9E7CB' : 'transparent', mixFg: !trend ? '#3E4A35' : '#191D16',
+      showTrend: () => this.setState({ view: 'trend' }),
+      showMix: () => this.setState({ view: 'mix' })
+    };
+  }
+}
+</script>
+</body>
+</html>

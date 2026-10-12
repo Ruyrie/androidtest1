@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>禾伴客服</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button,input{font-family:Roboto,'Noto Sans SC',sans-serif}
+input::placeholder{color:#43483E}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#43483E;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.av{width:32px;height:32px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500}
+.qc{height:32px;box-sizing:border-box;border:1px solid #C3C8BB;background:#F8FAF0;border-radius:8px;padding:0 12px;font-size:13px;line-height:20px;font-weight:500;color:#43483E;white-space:nowrap;cursor:pointer;flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="Messages.dc.html" class="ib" aria-label="返回" style="color: #191D16"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<span class="av" style="width: 40px; height: 40px; border-radius: 20px; font-size: 16px; background: #456732; color: #FFFFFF; position: relative">禾<span class="ms f" aria-hidden="true" style="position: absolute; right: -4px; bottom: -4px; font-size: 16px; color: #386666; background: #F8FAF0; border-radius: 8px">verified</span></span>
+<span style="flex: 1; min-width: 0; margin-left: 8px; display: flex; flex-direction: column"><span style="font-size: 16px; line-height: 24px; font-weight: 500">禾伴客服</span><span style="font-size: 12px; line-height: 16px; color: #43483E">官方账号 · 自动回复，人工服务暂未开放</span></span>
+</header>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 8px 16px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px">
+<div style="align-self: center; font-size: 12px; line-height: 16px; color: #43483E">今天 10:20</div>
+<a href="Logistics.dc.html" style="align-self: stretch; display: flex; align-items: center; gap: 12px; border: 1px solid #C3C8BB; border-radius: 12px; padding: 8px 12px 8px 8px; background: #F8FAF0">
+<span style="width: 44px; height: 44px; border-radius: 8px; background: #E1E4D9; color: #74796D; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">back_hand</span></span>
+<span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px; line-height: 20px">加厚园艺手套 2 双</span><span style="font-size: 12px; line-height: 16px; color: #386666; font-weight: 500">运输中 · 预计明天送达</span></span>
+<span style="font-size: 13px; font-weight: 500; color: #456732">查看物流</span>
+</a>
+<sc-for list="{{msgs}}" as="m" hint-placeholder-count="3">
+<div style="display: flex; gap: 8px; align-items: flex-end; flex-direction: {{m.dir}}">
+<span class="av" style="background: {{m.avBg}}; color: {{m.avFg}}">{{m.av}}</span>
+<span style="max-width: 270px; padding: 10px 14px; font-size: 15px; line-height: 22px; background: {{m.bg}}; color: {{m.fg}}; border-radius: {{m.rad}}">{{m.text}}</span>
+</div>
+</sc-for>
+<sc-if value="{{typing}}" hint-placeholder-val="{{ false }}"><div style="font-size: 12px; line-height: 16px; color: #43483E; padding-left: 40px">客服正在输入…</div></sc-if>
+</main>
+
+<div role="group" aria-label="常见问题" style="flex-shrink: 0; display: flex; gap: 8px; padding: 8px 16px 0; overflow: hidden; flex-wrap: wrap">
+<sc-for list="{{quick}}" as="q" hint-placeholder-count="5"><button class="qc" onClick="{{q.ask}}">{{q.label}}</button></sc-for>
+</div>
+
+<div style="flex-shrink: 0; padding: 8px 12px 20px 16px; display: flex; align-items: center; gap: 8px">
+<label style="flex: 1; min-width: 0; height: 48px; border-radius: 24px; background: #E7E9DF; display: flex; align-items: center; padding: 0 20px">
+<input aria-label="输入问题" placeholder="描述你遇到的问题…" value="{{draft}}" onChange="{{onDraft}}" style="flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; line-height: 24px; color: #191D16">
+</label>
+<button onClick="{{send}}" aria-label="发送" style="width: 48px; height: 48px; flex-shrink: 0; border: 0; padding: 0; border-radius: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: {{sendBg}}; color: {{sendFg}}"><span class="ms" aria-hidden="true">send</span></button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  componentWillUnmount() {
+    if (this.t) clearTimeout(this.t);
+  }
+  renderVals() {
+    const st = this.state || {};
+    const draft = st.draft || '';
+    const answers = {
+      '什么时候发货': '积分兑换的实物会在兑换后 3 个工作日内由禾伴官方仓发货，发货后可在「兑换记录」里查看物流。',
+      '物流不更新': '物流信息一般每 24 小时更新一次。超过 48 小时没有变化，请留言订单号，我们会联系快递核实。',
+      '修改收货地址': '订单「待发货」时，可在兑换记录里点「修改地址」；已发货的订单暂不支持修改。',
+      '商品有问题': '很抱歉！请在签收后 7 天内，拍下商品和外包装照片发给我们，核实后为你补发或退回积分。',
+      '转人工': '人工客服暂未开放。你的问题已记录，开放后会第一时间回复你。'
+    };
+    const base = [{ me: false, text: '你好，我是禾伴客服，可以帮你处理积分兑换、物流和账号问题。点下方的常见问题，或直接留言。' }];
+    const all = base.concat(st.extra || []);
+    const msgs = all.slice(-5).map((m) => ({
+      text: m.text, dir: m.me ? 'row-reverse' : 'row',
+      av: m.me ? '李' : '禾', avBg: '#456732', avFg: '#FFFFFF',
+      bg: m.me ? '#456732' : '#E7E9DF', fg: m.me ? '#FFFFFF' : '#191D16',
+      rad: m.me ? '20px 4px 20px 20px' : '4px 20px 20px 20px'
+    }));
+    const reply = (q, a) => {
+      const extra = (st.extra || []).concat([{ me: true, text: q }]);
+      this.setState({ extra, typing: true, draft: '' });
+      if (this.t) clearTimeout(this.t);
+      this.t = setTimeout(() => {
+        const cur = (this.state && this.state.extra) || extra;
+        this.setState({ extra: cur.concat([{ me: false, text: a }]), typing: false });
+      }, 700);
+    };
+    const has = draft.trim().length > 0;
+    return {
+      msgs, draft, typing: !!st.typing,
+      quick: Object.keys(answers).map((k) => ({ label: k, ask: () => reply(k, answers[k]) })),
+      onDraft: (e) => this.setState({ draft: e.target.value }),
+      sendBg: has ? '#456732' : '#E1E4D9', sendFg: has ? '#FFFFFF' : '#74796D',
+      send: () => { if (has) reply(draft.trim(), '已收到你的留言（自动回复）。常见问题可以先点上方按钮查看，人工客服开放后会回复你。'); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+package com.heban.app.tmpcheck;
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.view.View;
+
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+
+import com.heban.app.R;
+import com.heban.app.ui.MainActivity;
+import com.heban.app.ui.common.NavRoutes;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+import org.robolectric.annotation.GraphicsMode;
+import org.robolectric.shadows.ShadowLooper;
+
+import java.io.File;
+import java.io.FileOutputStream;
+
+/**
+ * Local-only screenshot check (this directory is git-excluded; Robolectric comes from ~/.gradle/init.d).
+ * Run: ANDROID_HOME=/opt/android-sdk bash gradlew :app:testMockDebugUnitTest --tests 'com.heban.app.tmpcheck.*'
+ * Output PNGs are 1236x2745 (412x915dp @3x); prototypes are /…/scratchpad/render/out/*.png (824x1830 @2x).
+ */
+@RunWith(RobolectricTestRunner.class)
+@Config(sdk = 36, qualifiers = "w412dp-h915dp-xxhdpi")   // dark: "w412dp-h915dp-night-xxhdpi"
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+public class PageScreenshotTest {
+
+    static void shot(Activity a, String file) throws Exception {
+        ShadowLooper.idleMainLooper();
+        View root = a.getWindow().getDecorView().getRootView();
+        root.measure(View.MeasureSpec.makeMeasureSpec(1236, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(2745, View.MeasureSpec.EXACTLY));
+        root.layout(0, 0, 1236, 2745);
+        Bitmap bmp = Bitmap.createBitmap(1236, 2745, Bitmap.Config.ARGB_8888);
+        root.draw(new Canvas(bmp));
+        new File(file).getParentFile().mkdirs();
+        try (FileOutputStream out = new FileOutputStream(file)) {
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
+        }
+    }
+
+    static NavController nav(MainActivity a) {
+        NavHostFragment host = (NavHostFragment) a.getSupportFragmentManager().findFragmentById(R.id.nav_host);
+        return host.getNavController();
+    }
+
+    @Test
+    public void example() throws Exception {
+        // Fresh install: not logged in, so the app starts at auth_graph (A02 onboarding).
+        MainActivity a = Robolectric.buildActivity(MainActivity.class).setup().get();
+        NavController nav = nav(a);
+        nav.navigate(R.id.loginFragment);                 // destinations inside auth_graph are reachable directly
+        shot(a, "/tmp/shots/A03_login.png");
+        // For pages outside auth_graph: NavRoutes.enterHome(nav); then nav.navigate(R.id.xxx)
+        // Interact: a.findViewById(R.id.some_button).performClick(); ShadowLooper.idleMainLooper();
+    }
+}

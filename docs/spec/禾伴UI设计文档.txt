@@ -1,0 +1,391 @@
+禾伴 · 智慧种植助手
+UI 设计文档
+Android App（Material 3 · Pixel 风格）
+版本 v2.0　·　2026 年 10 月 10 日
+课程：Android 企业框架技术
+Primary#456732 | Primary Container#C5EFAB | Warning Container#FFE08B | Tertiary Container#BBEBEC
+目　录
+1 项目概述3
+1.1 产品定位3
+1.2 基本信息3
+1.3 设计原则3
+1.4 信息架构3
+1.5 原型交互范围4
+2 色彩系统6
+2.1 生成方法6
+2.2 色调板6
+2.3 颜色角色6
+2.4 自定义预警色与动态取色7
+3 用色规范9
+3.1 标题9
+3.2 信息框9
+3.3 提示栏9
+3.4 配色原则10
+4 字体与字号11
+4.1 字体11
+4.2 中文排版规则11
+4.3 字号阶梯11
+5 圆角 · 间距 · 层级13
+5.1 圆角13
+5.2 间距与尺寸13
+5.3 层级14
+6 组件规范15
+7 业务组件与页面状态16
+8 核心流程17
+9 技术实现18
+9.1 架构分层18
+9.2 模块与技术点18
+9.3 关键代码示例19
+9.4 大模型 API Key 管理20
+附录 A 页面清单21
+1 项目概述
+1.1 产品定位
+禾伴是一款面向种植户、家庭园艺爱好者和农技人员的智慧种植助手，主线是「农事管理 + 农友社区」：用户在 App 里管理自己的作物、地块、农事记录和收支，遇到问题可以拍照识别、问 AI 农技助手，也可以到农友圈提问、交流经验和买卖农产品。
+本期只设计和实现 App 端的全部界面；后端接口后续接入。现阶段的数据由本地数据库和模拟数据提供，界面层不依赖具体的数据来源（见第 9 章）。
+1.2 基本信息
+表 1-1 项目基本信息
+项目 | 内容
+平台 | Android 8.0+
+设计基准 | Pixel 8 · 412 × 915 dp
+设计语言 | Material 3（Material You）
+种子色 | #4C8C2B（嫩芽绿）
+界面实现 | XML + DataBinding
+主题模式 | 浅色 / 深色 / 跟随系统；Android 12+ 支持动态取色
+页面规模 | 64 页 · 8 个模块（账号、首页、作物、发现、农友圈、我的、积分、深色示例）
+1.3 设计原则
+表 1-2 设计原则
+原则 | 说明
+贴近 Pixel 原生 | 只用 Material 3 官方组件、色彩角色和字号；设置页采用 Pixel 分组列表样式。
+种植 + 社交双主线 | 自己的作物数据是核心，农友圈、问答、集市都能关联到作物记录。
+离线优先 | 作物、农事、记账、百科存本地；社交内容联网后同步，弱网有缓存。
+界面简洁 | 一屏只放一个主操作，一屏只有一个主信息卡；功能多但层级浅，二级页面全屏打开，左上角返回。
+1.4 信息架构
+底部导航有 5 个一级入口：首页、作物、发现、农友圈、我的。首页、作物、发现三个页面右下角有全局悬浮按钮「问 AI」，进入 D06 AI 助手；首页铃铛和农友圈信封进入 S08 消息。页面编号与原型图一一对应。
+表 1-3 信息架构
+入口 | 页面（编号）
+启动前 · 账号 | A01 闪屏 → A02 引导页 → A03 密码登录 / A04 验证码登录 → A05 注册 → A06 完善资料；A07 忘记密码 → A08 设置新密码；A09 手机号已停用 · 申诉换绑
+首页 | H01 首页；H02 天气详情 · 农事指数；H03 农事日历；H04 新建农事；H05 签到与成就
+作物 | C01 我的作物；C02 作物详情；C03 添加 / 编辑作物；C04 添加农事记录；C05 地块管理
+发现 | D01 发现；D02 拍照识别；D03 识别结果；D04 病虫害百科；D05 病害详情；D06 AI 助手；D07 农产品集市；D08 商品详情；D09 发布商品；D10 收支记账；D11 记一笔
+农友圈 | S01 农友圈；S02 动态详情 · 评论；S03 发布动态 / 提问；S04 问答；S05 问题详情 · 采纳；S06 农友主页；S07 关注与粉丝；S08 消息；S09 私信聊天
+我的 | M01 我的；M02 我的主页；M03 编辑资料；M04 我的收藏；M05 设置；M06 账号与安全；M07 修改密码；M08 换绑手机号；M09 消息通知；M10 隐私设置；M11 AI 助手设置；M12 显示与通用；M13 关于禾伴
+积分体系 | H05 签到 · 任务 → P03 积分商城 → P04 商品详情 → P05 确认兑换 / P06 收货地址 → P07 兑换记录 → P08 物流详情；P01 积分明细；P02 积分规则；P09 禾伴客服
+图 1-1 五个一级页面：首页、作物、发现、农友圈、我的
+1.5 原型交互范围
+原型图中可以直接操作的内容：
+•  底部导航与全部页面之间的跳转；
+•  点赞、收藏、关注 / 回关；发表评论、发私信（对方会自动回复）；问答采纳；
+•  签到领积分；引导页翻页；密码显示 / 隐藏与强度校验；验证码倒计时；
+•  集市、问答、收藏的筛选；记一笔的数字键盘；各类开关和单选框；
+•  退出登录、注销账号的确认对话框；清理缓存提示栏；
+•  修改密码、换绑手机号与申诉换绑的分步流程；
+•  积分商城兑换、新增收货地址、复制运单号、客服快捷问答。
+2 色彩系统
+2.1 生成方法
+以嫩芽绿 #4C8C2B 为种子色，用 Material Theme Builder 的 Tonal Spot 方案生成 6 组色调板（每组 0–100 共 13 个色阶），再映射成浅色、深色两套颜色角色。界面里只引用角色名（如 colorPrimaryContainer），不直接写死色值。
+2.2 色调板
+表 2-1 色调板（种子色 #4C8C2B · Tonal Spot）
+色阶 | Primary主色 | Secondary辅色 | Tertiary第三色 | Neutral中性色 | NeutralVariant | Error错误色
+0 | #000000 | #000000 | #000000 | #000000 | #000000 | #000000
+10 | #072100 | #131F0D | #002020 | #191D16 | #181D15 | #410002
+20 | #173807 | #283420 | #003737 | #2E312B | #2D3229 | #690005
+30 | #2E4F1C | #3E4A35 | #1E4E4E | #444840 | #43483E | #93000A
+40 | #456732 | #55624C | #386666 | #5C5F57 | #5B6055 | #BA1A1A
+50 | #5D8148 | #6E7B63 | #517F7F | #757870 | #74796D | #DE3730
+60 | #759B5F | #87957C | #6B9999 | #8F9289 | #8D9286 | #FF5449
+70 | #8FB678 | #A2B095 | #85B4B4 | #A9ACA3 | #A8ADA0 | #FF897D
+80 | #AAD291 | #BDCBB0 | #A0CFCF | #C5C8BE | #C3C8BB | #FFB4AB
+90 | #C5EFAB | #D9E7CB | #BBEBEC | #E1E4D9 | #E0E4D6 | #FFDAD6
+95 | #D3FDB8 | #E7F6D8 | #C9FAFA | #F0F2E7 | #EEF3E4 | #FFEDEA
+99 | #F7FFEC | #F7FFEC | #F1FFFE | #FBFDF3 | #FAFEF0 | #FFFBFF
+100 | #FFFFFF | #FFFFFF | #FFFFFF | #FFFFFF | #FFFFFF | #FFFFFF
+2.3 颜色角色
+每个角色都有浅色和深色两个色值；「On」开头的角色是放在对应颜色上的文字和图标色。下表中的 XML 属性在布局里以 ?attr/ 引用。
+表 2-2 颜色角色（浅色 / 深色）
+角色 | XML 属性 | 浅色 | 深色
+Primary | colorPrimary | #456732 | #AAD291
+On Primary | colorOnPrimary | #FFFFFF | #173807
+Primary Container | colorPrimaryContainer | #C5EFAB | #2E4F1C
+On Primary Container | colorOnPrimaryContainer | #2E4F1C | #C5EFAB
+Secondary | colorSecondary | #55624C | #BDCBB0
+On Secondary | colorOnSecondary | #FFFFFF | #283420
+Secondary Container | colorSecondaryContainer | #D9E7CB | #3E4A35
+On Secondary Container | colorOnSecondaryContainer | #3E4A35 | #D9E7CB
+Tertiary | colorTertiary | #386666 | #A0CFCF
+On Tertiary | colorOnTertiary | #FFFFFF | #003737
+Tertiary Container | colorTertiaryContainer | #BBEBEC | #1E4E4E
+On Tertiary Container | colorOnTertiaryContainer | #1E4E4E | #BBEBEC
+Error | colorError | #BA1A1A | #FFB4AB
+On Error | colorOnError | #FFFFFF | #690005
+Error Container | colorErrorContainer | #FFDAD6 | #93000A
+On Error Container | colorOnErrorContainer | #93000A | #FFDAD6
+Warning（自定义） | colorWarning | #745B00 | #EAC246
+On Warning | colorOnWarning | #FFFFFF | #3D2F00
+Warning Container | colorWarningContainer | #FFE08B | #584400
+On Warning Container | colorOnWarningContainer | #241A00 | #FFE08B
+Surface | colorSurface | #F8FAF0 | #11140E
+On Surface | colorOnSurface | #191D16 | #E1E4D9
+On Surface Variant | colorOnSurfaceVariant | #43483E | #C3C8BB
+Surface Dim | colorSurfaceDim | #D9DBD1 | #11140E
+Surface Bright | colorSurfaceBright | #F8FAF0 | #373A33
+Surface Container Lowest | colorSurfaceContainerLowest | #FFFFFF | #0C0F09
+Surface Container Low | colorSurfaceContainerLow | #F2F5EA | #191D16
+Surface Container | colorSurfaceContainer | #EDEFE4 | #1D211A
+Surface Container High | colorSurfaceContainerHigh | #E7E9DF | #282B24
+Surface Container Highest | colorSurfaceContainerHighest | #E1E4D9 | #32362F
+Inverse Surface | colorSurfaceInverse | #2E312B | #E1E4D9
+Inverse On Surface | colorOnSurfaceInverse | #F0F2E7 | #2E312B
+Inverse Primary | colorPrimaryInverse | #AAD291 | #456732
+Outline | colorOutline | #74796D | #8D9286
+Outline Variant | colorOutlineVariant | #C3C8BB | #43483E
+Scrim | — | #000000 | #000000
+2.4 自定义预警色与动态取色
+Warning 是自定义扩展色（种子色 #E0A030，已与主色做 harmonize 协调），用于降温、干旱等天气预警。它不在 Material 3 的标准角色里，需要在 attrs.xml 中声明 colorWarning、colorWarningContainer 等属性，再在浅色、深色主题中分别赋值。
+开启「动态取色」（Android 12 及以上）时，系统按壁纸重新生成全部颜色角色；关闭或系统低于 Android 12 时使用本色板。由于界面只引用角色名，两种情况都不需要改布局。
+图 2-1 深色模式示例：首页、农友圈、AI 助手
+3 用色规范
+标题、信息框、提示栏三类元素各自对应固定的颜色角色。色值列为浅色 / 深色；XML 中引用 ?attr/ 后的属性名，切换深色模式时自动替换。
+3.1 标题
+表 3-1 标题用色
+场景 | 颜色角色 | XML 属性 | 浅色 | 深色
+页面标题 | On Surface | colorOnSurface | #191D16 | #E1E4D9
+顶栏背景 | Surface | colorSurface | #F8FAF0 | #11140E
+顶栏（滚动后） | Surface Container | colorSurfaceContainer | #EDEFE4 | #1D211A
+副标题 / 说明 | On Surface Variant | colorOnSurfaceVariant | #43483E | #C3C8BB
+标题旁操作 / 链接 | Primary | colorPrimary | #456732 | #AAD291
+顶栏图标 | On Surface Variant | colorOnSurfaceVariant | #43483E | #C3C8BB
+3.2 信息框
+表 3-2 信息框用色
+场景 | 颜色角色 | XML 属性 | 浅色 | 深色
+主信息卡（天气） | Primary Container | colorPrimaryContainer | #C5EFAB | #2E4F1C
+列表卡片 Elevated | Surface Container Low | colorSurfaceContainerLow | #F2F5EA | #191D16
+统计块 Filled | Surface Container Highest | colorSurfaceContainerHighest | #E1E4D9 | #32362F
+描边卡片 Outlined | Outline Variant（描边） | colorOutlineVariant | #C3C8BB | #43483E
+标签 / 选中态 | Secondary Container | colorSecondaryContainer | #D9E7CB | #3E4A35
+知识 / 小贴士 | Tertiary Container | colorTertiaryContainer | #BBEBEC | #1E4E4E
+3.3 提示栏
+表 3-3 提示栏用色
+场景 | 颜色角色 | XML 属性 | 浅色 | 深色
+Snackbar 背景 | Inverse Surface | colorSurfaceInverse | #2E312B | #E1E4D9
+Snackbar 操作 | Inverse Primary | colorPrimaryInverse | #AAD291 | #456732
+天气预警 | Warning Container | colorWarningContainer | #FFE08B | #584400
+病害预警 / 错误 | Error Container | colorErrorContainer | #FFDAD6 | #93000A
+完成 / 成功 | Primary Container | colorPrimaryContainer | #C5EFAB | #2E4F1C
+信息 / 离线 | Tertiary Container | colorTertiaryContainer | #BBEBEC | #1E4E4E
+3.4 配色原则
+1.  主信息卡一屏只放一个。 Primary Container 是最醒目的面，只给天气这种核心信息；其他卡片用 Surface Container 系列，按层级由浅到深。
+2.  提示栏按严重程度选色。 信息 → Tertiary，警告 → Warning，错误 / 病害 → Error，完成 → Primary Container。操作后的临时反馈统一用 Snackbar。
+3.  布局里不写死色值。 XML 只引用 ?attr/colorXxx，色值集中写在 values/ 与 values-night/ 的 colors.xml，深色模式和动态取色都能自动生效。
+图 3-1 用色示例：首页天气主卡与预警栏、签到页积分卡、识别结果页
+4 字体与字号
+不额外打包字体：中文使用系统的思源黑体，西文和数字使用 Roboto，和 Pixel 上大多数应用一致。字号沿用 Material 3 的 15 个级别，用 textAppearance 统一引用。
+4.1 字体
+表 4-1 字体
+用途 | 字体 | 说明
+中文 | Noto Sans CJK SC（思源黑体） | 系统默认；使用 Regular 400、Medium 500、Bold 700 三种字重
+西文与数字 | Roboto | Material 3 默认；用于温度、面积、天数等数字
+图标 | Material Symbols Rounded | 标准 24dp，按钮内 18dp；通过 Android Studio → Vector Asset 导入
+4.2 中文排版规则
+1.  字号单位一律用 sp，跟随系统字体缩放；不要写死 TextView 高度。
+2.  中文 letterSpacing 设为 0，Material 3 的英文字距不要套到中文上。
+3.  标题类（Title 及以上）中文用 Medium 500，否则显得发虚。
+4.  最小 12sp；11sp 只给数字、角标和免责说明。
+5.  长段落（百科、AI 回答）用 Body Large 16/24。
+4.3 字号阶梯
+表 4-2 字号阶梯（Material 3 Type Scale）
+Token | 字号 / 行高 | 字重 | 示例 | App 中的用途
+Display Large | 57 / 64 sp | 400 | 24° | 天气卡温度
+Display Medium | 45 / 52 sp | 400 | 春种秋收 | 本项目不使用
+Display Small | 36 / 44 sp | 400 | 春种秋收 | 本项目不使用
+Headline Large | 32 / 40 sp | 400 · 中文 500 | 还没有作物 | 空状态标题
+Headline Medium | 28 / 36 sp | 400 · 中文 500 | 黄瓜霜霉病 | 大标题顶栏（详情页名称）
+Headline Small | 24 / 32 sp | 400 · 中文 500 | 下午好，农友 | 首页问候、作物名、统计数字
+Title Large | 22 / 28 sp | 400 · 中文 500 | 我的作物 | 标准顶栏标题、用户名
+Title Medium | 16 / 24 sp | 500 | 今日农事 | 分区标题、卡片标题
+Title Small | 14 / 20 sp | 500 | 降温预警 | 提示栏标题、卡片小标题
+Body Large | 16 / 24 sp | 400 | 叶片正面出现黄色多角形病斑 | 列表主文本、输入框、聊天气泡
+Body Medium | 14 / 20 sp | 400 | 1号大棚 · 0.5 亩 | 列表副文本、说明文字
+Body Small | 12 / 16 sp | 400 | 结果期 · 第 68 天 | 卡片辅助信息、输入框提示
+Label Large | 14 / 20 sp | 500 | 添加记录 | 按钮、Chip、Tab
+Label Medium | 12 / 16 sp | 500 | 首页 · 作物 · 百科 | 底部导航标签、状态标签
+Label Small | 11 / 16 sp | 500 | 68/110 天 · 仅供参考 | 进度数字、AI 免责说明
+5 圆角 · 间距 · 层级
+圆角沿用 Material 3 Shape Scale，共 7 级；所有尺寸取 4 的倍数（4dp 网格）；层级优先用 Surface Container 的深浅区分，阴影只留给需要浮起来的元素。
+5.1 圆角
+表 5-1 圆角级别
+级别 | 圆角 | 应用场景
+None | 0dp | 底部导航栏、全屏页面
+Extra Small | 4dp | 文本框、Snackbar、分组列表内角
+Small | 8dp | Chip、状态标签、缩略图
+Medium | 12dp | 卡片、内联提示栏
+Large | 16dp | FAB、扩展 FAB、相册大图
+Extra Large | 28dp | 天气主卡、对话框、底部弹窗、分组列表外角
+Full | 高度 / 2 | 按钮、搜索栏、导航指示器、头像、Switch
+特殊情况：聊天气泡圆角 20dp，靠近发送方头像的一角为 4dp。XML 中通过 shapeAppearanceCornerSmall / Medium / Large 等主题属性统一配置。
+5.2 间距与尺寸
+表 5-2 间距与尺寸（4dp 网格）
+项目 | 数值 | 说明
+页面左右边距 | 16dp | 所有页面统一
+卡片内边距 | 16dp | 主信息卡 20dp；紧凑卡片 12dp
+卡片之间 | 12dp | 同一分区内的卡片、提示栏
+分区之间 | 24dp | 如「今日农事」与「我的作物」之间
+Chip 之间 | 8dp | 筛选 Chip、建议 Chip
+图标与文字 | 16dp | 列表项；按钮内为 8dp
+列表项高度 | 56 / 72dp | 单行 56dp；双行 72dp
+顶栏高度 | 64dp | 大标题顶栏 112dp
+底部导航高度 | 80dp | 指示器 64 × 32dp
+最小触控区域 | 48dp | 图标按钮视觉 24dp，点击区 48 × 48dp
+按钮 / FAB 高度 | 40 / 56dp | 按钮左右内边距 24dp（带图标 16dp）
+5.3 层级
+表 5-3 层级（Elevation）
+级别 | 应用
+Level 0 · 0dp | 页面背景、Filled / Outlined 卡片
+Level 1 · 1dp | Elevated 卡片（作物卡片）
+Level 2 · 3dp | 滚动后的顶栏：只换色，不加阴影
+Level 3 · 6dp | FAB、扩展 FAB、Snackbar
+Level 4 · 8dp | FAB 按下 / 拖拽中
+对话框 · 底部弹窗 | Surface Container High + 遮罩 Scrim 32%
+深色模式下阴影几乎不可见，层级完全靠 Surface Container 由深到浅区分：Lowest #0C0F09 → Highest #32362F。所以卡片背景一定要用颜色角色，不要只靠阴影。
+6 组件规范
+全部使用 Material Components（MDC）官方组件。主题继承 Theme.Material3.DayNight.NoActionBar，下列组件的颜色、圆角、字号都会从主题自动取值，只在需要时覆盖 style。
+表 6-1 组件规范
+组件 | 规格 | 使用规则 | 对应控件
+按钮Buttons | 高 40dp · 圆角 Full · 左右内边距 24dp（带图标 16dp）· Label Large | 主操作 Filled，次操作 Tonal / Outlined，弱操作 Text；一屏只放一个 Filled | Widget.Material3.Button / .TonalButton / .OutlinedButton / .TextButton
+悬浮按钮FAB | FAB 56dp · 圆角 16dp；Small FAB 40dp · 圆角 12dp；Extended 高 56dp | 颜色 Primary Container；位于右下，距底部导航 16dp；列表滚动时 Extended 收起为图标 | FloatingActionButton · ExtendedFloatingActionButton
+卡片Cards | 圆角 12dp · 内边距 16dp · 卡片间距 12dp；主信息卡 28dp / 20dp | Elevated：作物卡片；Filled：统计块；Outlined：作物列表项。整张卡可点击时加涟漪，不再放「查看」按钮 | MaterialCardView · Widget.Material3.CardView.Elevated / .Filled / .Outlined
+标签Chips | 高 32dp · 圆角 8dp · 描边 Outline Variant；选中为 Secondary Container + 勾 | Assist：信息；Filter：筛选；Input：已选条件；Suggestion：AI 推荐问题 | Chip · Widget.Material3.Chip.Assist / .Filter / .Input / .Suggestion
+文本框Text fields | 高 56dp · 圆角 4dp；聚焦 Primary 2dp；错误 Error 2dp | 统一用描边样式；下拉选择用 ExposedDropdownMenu；错误提示写在框下方 | TextInputLayout · Widget.Material3.TextInputLayout.OutlinedBox(.ExposedDropdownMenu)
+提示栏Snackbar · Banner | Snackbar：圆角 4dp · Inverse Surface · 最多 1 个操作；内联提示栏：圆角 12dp | Snackbar 用于操作后的临时反馈（LENGTH_LONG，自动消失）；内联提示栏常驻页面顶部，颜色按严重程度（见第 3 章） | Snackbar.make(...).setAction(...) · MaterialCardView
+对话框Dialog | 圆角 28dp · Surface Container High · 内边距 24dp · 标题 Headline Small · 遮罩 32% | 删除、退出登录、注销、换绑等需要确认的操作；选日期用日期选择器 | MaterialAlertDialogBuilder · MaterialDatePicker
+导航Navigation | 底部导航 80dp · 指示器 64 × 32 Secondary Container · 选中图标实心；Tab 指示条 3dp | 底部导航 5 个一级入口；详情页内用 Tab 切换内容；列表页顶部用搜索栏 | BottomNavigationView · TabLayout · SearchBar · MaterialToolbar
+选择与进度 | Switch 52 × 32 · 复选框 18dp · 分段按钮高 40dp · 进度条高 4dp | 设置项开关、勾选完成农事、种植方式单选、作物生长进度 | MaterialSwitch · MaterialCheckBox · MaterialButtonToggleGroup · LinearProgressIndicator
+7 业务组件与页面状态
+以下业务组件没有现成的 MDC 控件，统一用卡片、Chip、按钮组合而成。每个列表页都要设计空、加载、错误三种状态，保证真实用户使用时不出现白屏。
+表 7-1 业务组件
+组件 | 规范
+头像与身份标识 | 尺寸：评论区 24 · 评论 32 · 动态卡片 40 · 列表 48 · 个人页 72 / 88。无头像时用昵称首字 + 容器色，按用户 ID 固定取色，不随机。身份徽标（如「Lv.4 种植能手」「农技专家」「官方」）高 20–22dp、圆角 6dp；一行最多显示 1 个等级 + 1 个身份。
+动态卡片 | ① 作者行：头像 40 + 昵称 / 徽标 + 关注按钮；② 正文最多 3 行，超出省略，点击进详情；③ 图片 1 张通栏，2–3 张等分，更多显示 +N；④ 话题 Chip 左对齐，操作栏右对齐，触控区 40dp。
+互动按钮 | 点赞用 Error 色实心图标，数字 +1；收藏切换为「已收藏」。采用乐观更新：先改界面再提交，失败回滚并弹 Snackbar。
+关注关系 | 四种状态：关注 / 已关注 / 回关 / 互相关注。个人主页的主按钮用 Filled，列表里用描边或 Tonal，避免满屏绿色。
+问答状态 | 待解决、已解决、悬赏、已采纳。AI 参考答案固定用 Tertiary Container，与农友回答区分来源；只有提问者看得到「采纳」按钮，采纳后其余按钮隐藏，积分转给回答者。
+商品卡 · 记账条目 | 价格用 Primary 色 + Title 字号，单位用 Body Small 辅助色。收入写「+」并用 Primary 色，支出写「−」用正文色，不只靠颜色区分。
+角标与未读 | 小红点 6–8dp：有新内容但不计数（导航、铃铛）；数字角标高 16dp，超过 99 显示 99+；会话列表未读用 Primary 色。
+表 7-2 页面状态
+状态 | 规范
+空状态 | 图标 64（圆形底）+ 标题 + 一句说明 + 一个主操作，不放插画大图。例：「还没有作物 · 添加第一块地和作物，禾伴会按生长阶段提醒你 · 添加作物」。
+加载中 | 列表首屏用骨架屏（Surface Container Highest）；按钮内的操作用 CircularProgressIndicator；下拉刷新用 SwipeRefreshLayout。
+网络错误 · 离线 | 有缓存时只在顶部显示离线提示栏（Tertiary Container）；没有缓存才整页报错并提供「重试」；本地数据（作物、记账）始终可用。
+8 核心流程
+以下 11 条关键路径都能在原型图中点通，编号对应原型图画板。
+表 8-1 核心流程
+流程 | 路径 | 分支与说明
+首次使用 | A01 闪屏 → A02 引导页（3 屏）→ A05 注册（验证手机 + 设密码）→ A06 完善资料（选作物）→ H01 首页 | 引导页「已有账号」→ A03 登录；完善资料可跳过
+登录 | A03 密码登录 ⇄ A04 验证码登录 → 勾选协议 → H01 首页 | 游客浏览可看内容，点赞、发布、私信时引导登录；未勾选协议点登录会提示
+找回密码 | A03 忘记密码 → A07 验证手机（短信验证码）→ A08 设置新密码（强度校验）→ 重置成功，其他设备下线 → A03 重新登录 | 用于未登录时，需要手动输入手机号
+修改密码 · 注销 | M01 我的 → M05 设置 → M06 账号与安全 → M07 短信验证绑定手机 → 设置新密码 → A03 重新登录 | 修改密码不需要原密码，自动带出绑定手机号（1385678）；注销需二次确认，勾选「我已了解以上后果」才能点击，7 天内可撤销
+识别诊断 | H01 / D01 → D02 拍照识别 → D03 识别结果（匹配度）→ D05 防治方法 → H04 加入农事日历 | 拿不准：D03 → D06 问 AI，或 S03 发到问答请农友帮忙；结果可存入 C04 作物记录
+农事闭环 | C02 作物详情 → C04 添加记录（同步记账）→ D10 收支统计；H03 农事日历 → H04 新建农事 → 到点推送提醒 | 记录、提醒、算账三件事打通
+社交互动 | S01 农友圈 → S02 动态详情（点赞 / 评论 / 收藏）→ S06 农友主页 → 关注 → S09 私信 | 对方收到：S08 消息 → 新增关注 / 评论回复 → S07 回关；自己的展示：M02 我的主页 → M03 编辑资料
+问答求助 | S03 提问（悬赏积分）→ AI 先给参考答案 → S05 农友回答 → 提问者采纳 → 回答者获得积分（H05） | 悬赏 10–100 积分，7 天无人回答自动退回
+集市交易 | D07 集市（分类筛选）→ D08 商品详情（收藏）→ S09 联系卖家 → 线下验货交易 | 买卖不经过 App 支付；卖家在 D09 发布商品，可附种植记录，可花 100 积分置顶 24 小时；详情页和聊天页都提示「当面验货，谨防诈骗」
+积分兑换 | H05 签到 / 每日任务 → P03 积分商城 → P04 商品详情（选数量）→ P05 确认兑换（选地址）→ P07 兑换记录 → P08 物流 → 签收 | 实物由禾伴官方统一发货、包邮，装扮类即时到账；有问题找 P09 禾伴客服（自动回复，人工暂未开放）；积分流水看 P01，规则看 P02
+换绑手机号 | M06 账号与安全 → M08 输入新手机号 → 新号验证码 → 确认对话框 → 用新手机号登录 | 原手机号不需要接收验证码。未登录、忘记密码且手机号停用：A07 → A09 填原手机号 → 验证新手机号 → 提交人工审核（1–3 个工作日）→ 短信通知结果
+9 技术实现
+采用 MVVM 架构。界面层只依赖 Repository 接口：现阶段用本地 Room + 模拟数据实现，后端完成后新增 Retrofit 实现类替换即可，页面和 ViewModel 不用改。
+9.1 架构分层
+表 9-1 架构分层
+层 | 内容
+View 层 | Activity / Fragment · XML · DataBinding（单向 @{}、双向 @={}）· MDC 组件
+ViewModel 层 | Jetpack ViewModel + LiveData；Navigation 管理跳转；登录态保存在 SessionManager
+Repository 接口 | UserRepo · CropRepo · PostRepo · MarketRepo · ChatRepo 等；用 RxJava 返回 Flowable / Single / Completable
+数据实现：现阶段 Mock | Room 存作物、农事、记账、草稿；农友、动态、商品读取 assets 里的 JSON，加 300ms 延迟模拟网络
+数据实现：后端接入后 Remote | Retrofit + OkHttp 调接口；Room 降级为离线缓存；拦截器统一添加 Token、处理 401
+第三方与基础能力 | 第三方 API：天气、AI 大模型；图片：Glide 列表缓存、Picasso 大图；后台：WorkManager 提醒；设置：DataStore
+9.2 模块与技术点
+表 9-2 模块与技术点
+模块 | 技术点
+账号A01–A08 | SplashScreen API；表单双向绑定 + 实时校验密码强度；验证码倒计时 Observable.interval；Token 存 EncryptedSharedPreferences
+首页H01–H05 | Observable.zip 合并天气与今日农事；WorkManager 定时提醒；签到写 Room，按连续天数计算积分
+作物C01–C05 | RecyclerView + ListAdapter + item DataBinding；Room @Relation；保存农事记录时用 @Transaction 同步写一笔记账
+识别 · 百科D02–D05 | CameraX 拍照；本地 TFLite 模型或后端识别接口（二选一）；百科 JSON 首次启动导入 Room；Picasso fit().centerCrop() + 圆角 Transformation
+AI 助手D06 | Retrofit + OkHttp 调用大模型（SSE 流式）；RxJava Flowable 逐字追加；请求时带上作物与天气上下文；会话存 Room
+集市 · 记账D07–D11 | Paging 3 分页；Glide override + RoundedCorners；上传前压缩图片；记账用 Room SUM … GROUP BY，柱状图用 Canvas 自绘
+农友圈S01–S09 | 点赞、关注乐观更新：先改界面再提交，失败回滚并提示；throttleFirst 防重复点击；评论框双向绑定；私信后期接 WebSocket，现阶段模拟回复
+积分 · 换绑P01–P09 · M08 · A09 | 积分流水表计算余额，成长值单独累计；兑换用 @Transaction 同时扣积分、生成订单；客服先按关键词自动回复，后端接入后改为人工会话；换绑与申诉走短信验证接口
+我的 · 设置M01–M13 | AppCompatDelegate.setDefaultNightMode；DynamicColors；Glide.get(ctx).clearDiskCache() 放在 io 线程；设置项存 DataStore
+9.3 关键代码示例
+Repository：先 Mock，后端就绪后替换
+public interface PostRepository {    Flowable<List<Post>> feed(String tab);    Completable like(long postId, boolean liked);} // 现阶段：本地模拟public class MockPostRepository implements PostRepository {    public Flowable<List<Post>> feed(String tab) {        return Flowable            .fromCallable(() -> MockData.posts(tab))            .delay(300, TimeUnit.MILLISECONDS);    }    public Completable like(long id, boolean on) {        return postDao.updateLike(id, on);    }}// 后端接入：新增 RemotePostRepository，在依赖注入处切换即可
+res/values/themes.xml
+<style name="Theme.HeBan" parent="Theme.Material3.DayNight.NoActionBar">  <item name="colorPrimary">@color/md_primary</item>  <item name="colorPrimaryContainer">@color/md_primary_container</item>  <item name="colorSurface">@color/md_surface</item>  <item name="colorWarningContainer">@color/md_warning_container</item>  <!-- 其余角色同理 -->  <item name="textAppearanceTitleLarge">@style/Text.HeBan.TitleLarge</item></style><!-- 深色色值写在 values-night/colors.xml --><!-- colorWarningContainer 需在 attrs.xml 声明 -->
+Glide 缓存配置
+@GlideModulepublic final class HeBanGlideModule extends AppGlideModule {  @Override  public void applyOptions(Context ctx, GlideBuilder b) {    // 内存 20MB，磁盘 250MB    b.setMemoryCache(new LruResourceCache(20L * 1024 * 1024));    b.setDiskCache(new InternalCacheDiskCacheFactory(ctx, 250L * 1024 * 1024));    b.setDefaultRequestOptions(new RequestOptions()        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)        .placeholder(R.drawable.ph_image));  }}
+9.4 大模型 API Key 管理
+后端接入前，课程演示可以临时把 Key 存在本机（EncryptedSharedPreferences），不写进代码、不提交 Git；后端就绪后改由服务端转发请求，App 里不再保存任何 Key。
+附录 A 页面清单
+表 A-1 原型页面清单（共 64 页）
+编号 | 页面 | 模块 | 原型图文件
+A01 | 闪屏 | 账号 | A01_Splash.png
+A02 | 引导页 | 账号 | A02_Onboarding.png
+A03 | 密码登录 | 账号 | A03_Login.png
+A04 | 验证码登录 | 账号 | A04_LoginSms.png
+A05 | 注册 | 账号 | A05_Register.png
+A06 | 完善资料 | 账号 | A06_ProfileSetup.png
+A07 | 忘记密码 · 验证手机 | 账号 | A07_ForgotPwd.png
+A08 | 设置新密码 | 账号 | A08_ResetPwd.png
+A09 | 手机号已停用 · 申诉换绑 | 账号 | A09_PhoneAppeal.png
+H01 | 首页 | 首页 | H01_Main.png
+H02 | 天气详情 | 首页 | H02_Weather.png
+H03 | 农事日历 | 首页 | H03_Calendar.png
+H04 | 新建农事 | 首页 | H04_AddTask.png
+H05 | 签到与成就 | 首页 | H05_CheckIn.png
+C01 | 我的作物 | 作物 | C01_Crops.png
+C02 | 作物详情 | 作物 | C02_CropDetail.png
+C03 | 添加作物 | 作物 | C03_AddCrop.png
+C04 | 添加农事记录 | 作物 | C04_AddRecord.png
+C05 | 地块管理 | 作物 | C05_Plots.png
+D01 | 发现 | 发现 | D01_Discover.png
+D02 | 拍照识别 | 发现 | D02_Scan.png
+D03 | 识别结果 | 发现 | D03_ScanResult.png
+D04 | 病虫害百科 | 发现 | D04_Pests.png
+D05 | 病害详情 | 发现 | D05_PestDetail.png
+D06 | AI 助手 | 发现 | D06_AIChat.png
+D07 | 农产品集市 | 发现 | D07_Market.png
+D08 | 商品详情 | 发现 | D08_Product.png
+D09 | 发布商品 | 发现 | D09_AddProduct.png
+D10 | 收支记账 | 发现 | D10_Ledger.png
+D11 | 记一笔 | 发现 | D11_AddEntry.png
+S01 | 农友圈 | 农友圈 | S01_Community.png
+S02 | 动态详情 | 农友圈 | S02_PostDetail.png
+S03 | 发布动态 / 提问 | 农友圈 | S03_Publish.png
+S04 | 问答 | 农友圈 | S04_QA.png
+S05 | 问题详情 | 农友圈 | S05_Question.png
+S06 | 农友主页 | 农友圈 | S06_UserProfile.png
+S07 | 关注与粉丝 | 农友圈 | S07_Follows.png
+S08 | 消息 | 农友圈 | S08_Messages.png
+S09 | 私信聊天 | 农友圈 | S09_Chat.png
+M01 | 我的 | 我的 | M01_Profile.png
+M02 | 我的主页 | 我的 | M02_MyHome.png
+M03 | 编辑资料 | 我的 | M03_EditProfile.png
+M04 | 我的收藏 | 我的 | M04_Favorites.png
+M05 | 设置 | 我的 | M05_Settings.png
+M06 | 账号与安全 | 我的 | M06_Security.png
+M07 | 修改密码 | 我的 | M07_ChangePwd.png
+M08 | 换绑手机号 | 我的 | M08_ChangePhone.png
+M09 | 消息通知 | 我的 | M09_Notify.png
+M10 | 隐私设置 | 我的 | M10_Privacy.png
+M11 | AI 助手设置 | 我的 | M11_AISettings.png
+M12 | 显示与通用 | 我的 | M12_General.png
+M13 | 关于禾伴 | 我的 | M13_About.png
+P01 | 积分明细 | 积分 | P01_PointsDetail.png
+P02 | 积分规则 | 积分 | P02_PointsRules.png
+P03 | 积分商城 | 积分 | P03_PointsMall.png
+P04 | 兑换商品详情 | 积分 | P04_MallItem.png
+P05 | 确认兑换 | 积分 | P05_MallConfirm.png
+P06 | 收货地址 | 积分 | P06_Address.png
+P07 | 兑换记录 | 积分 | P07_Orders.png
+P08 | 物流详情 | 积分 | P08_Logistics.png
+P09 | 禾伴客服 | 积分 | P09_Service.png
+H01 | 首页 · 深色 | 深色示例 | H01_HomeDark.png
+S01 | 农友圈 · 深色 | 深色示例 | S01_CommunityDark.png
+D06 | AI 助手 · 深色 | 深色示例 | D06_AIChatDark.png

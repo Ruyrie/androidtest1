@@ -1,0 +1,14 @@
+// Local verification only (not part of the project): Robolectric screenshots / smoke tests.
+allprojects { p ->
+    p.plugins.withId('com.android.application') {
+        p.android.testOptions.unitTests.includeAndroidResources = true
+        p.dependencies {
+            testImplementation 'org.robolectric:robolectric:4.17'
+            testImplementation 'androidx.test:core:1.7.0'
+        }
+        p.tasks.withType(Test).configureEach {
+            systemProperty 'robolectric.dependency.repo.url', 'https://maven-central.storage-download.googleapis.com/maven2'
+            jvmArgs '--add-opens=java.base/jdk.internal.access=ALL-UNNAMED', '--add-opens=java.base/java.io=ALL-UNNAMED'
+        }
+    }
+}

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>发布商品</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button,input,textarea{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#191D16;display:flex;align-items:center;justify-content:center}
+.fld{position:relative;display:block}
+.fl{position:absolute;left:12px;top:-8px;padding:0 4px;background:#F8FAF0;font-size:12px;line-height:16px;color:#43483E}
+.fb{height:56px;box-sizing:border-box;border:1px solid #74796D;border-radius:4px;padding:0 12px 0 16px;display:flex;align-items:center;gap:8px;font-size:16px;line-height:24px}
+.ph{width:88px;height:88px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative}
+.chip{height:32px;box-sizing:border-box;border-radius:8px;display:inline-flex;align-items:center;gap:6px;font-size:14px;line-height:20px;font-weight:500;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 16px 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="Market.dc.html" class="ib" aria-label="关闭"><span class="ms" aria-hidden="true">close</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">发布商品</h1>
+<a href="Product.dc.html" style="height: 40px; padding: 0 20px; border-radius: 20px; background: #456732; color: #FFFFFF; display: flex; align-items: center; font-size: 14px; font-weight: 500">发布</a>
+</header>
+
+<form style="flex: 1; min-height: 0; overflow: hidden; padding: 8px 16px 0; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; gap: 8px">
+<span class="ph" style="background: #E1E4D9; color: #74796D"><span class="ms" aria-hidden="true">image</span><span style="position: absolute; left: 4px; bottom: 4px; height: 20px; padding: 0 6px; border-radius: 6px; background: #456732; color: #FFFFFF; font-size: 11px; line-height: 20px">封面</span></span>
+<span class="ph" style="background: #E1E4D9; color: #74796D"><span class="ms" aria-hidden="true">image</span></span>
+<span class="ph" style="background: #E1E4D9; color: #74796D"><span class="ms" aria-hidden="true">videocam</span></span>
+<button type="button" class="ph" aria-label="添加图片或视频" style="border: 1px dashed #74796D; background: transparent; color: #456732; padding: 0; box-sizing: border-box; flex-direction: column; gap: 2px; font-size: 12px">
+<span class="ms" aria-hidden="true">add_photo_alternate</span>3/9</button>
+</div>
+<span style="font-size: 12px; line-height: 16px; color: #43483E">第一张为封面，建议拍清楚实物和产地</span>
+</div>
+
+<label class="fld"><span class="fl">标题</span><span class="fb"><span style="flex: 1">句容红颜草莓 当天现摘</span><span style="font-size: 12px; color: #43483E">11/30</span></span></label>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<label class="fld"><span class="fl">分类</span><span class="fb"><span style="flex: 1">农产品 · 水果</span><span class="ms" aria-hidden="true" style="color: #43483E">arrow_drop_down</span></span></label>
+<label class="fld"><span class="fl">起售量</span><span class="fb">10 斤</span></label>
+</div>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 128px; gap: 12px">
+<label class="fld"><span class="fl">价格（元）</span><span class="fb"><span style="color: #43483E">¥</span>25</span></label>
+<label class="fld"><span class="fl">单位</span><span class="fb"><span style="flex: 1">斤</span><span class="ms" aria-hidden="true" style="color: #43483E">arrow_drop_down</span></span></label>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; line-height: 20px; font-weight: 500">交易方式 <span style="font-weight: 400; color: #43483E">可多选</span></span>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{ways}}" as="w" hint-placeholder-count="4">
+<span role="button" aria-pressed="{{w.on}}" class="chip" style="background: {{w.bg}}; color: {{w.fg}}; border: {{w.bd}}; padding: {{w.pad}}" onClick="{{w.toggle}}"><sc-if value="{{w.on}}" hint-placeholder-val="{{ false }}"><span class="ms" aria-hidden="true" style="font-size: 18px">check</span></sc-if>{{w.name}}</span>
+</sc-for>
+</div>
+</div>
+
+<label class="fld"><span class="fl">交易地点</span><span class="fb"><span class="ms" aria-hidden="true" style="color: #456732; font-size: 20px">location_on</span><span style="flex: 1">江苏省 句容市 白兔镇</span><span class="ms" aria-hidden="true" style="color: #43483E">chevron_right</span></span></label>
+
+<label class="fld"><span class="fl">描述</span><textarea style="display: block; width: 100%; box-sizing: border-box; height: 88px; resize: none; border: 1px solid #74796D; border-radius: 4px; padding: 16px; background: transparent; font-size: 16px; line-height: 24px; color: #191D16; outline: 0">大棚种植，膜下滴灌，每天早上现摘，2 斤一盒。</textarea></label>
+
+<div style="display: flex; align-items: center; gap: 12px; background: #FFE08B; color: #241A00; border-radius: 12px; padding: 12px 16px">
+<span class="ms" aria-hidden="true">vertical_align_top</span>
+<span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 16px; line-height: 24px">置顶 24 小时</span><span style="font-size: 12px; line-height: 16px">{{topText}}</span></span>
+<button type="button" role="switch" aria-checked="{{top}}" aria-label="置顶 24 小时" onClick="{{toggleTop}}" style="width: 52px; height: 32px; flex-shrink: 0; box-sizing: border-box; border-radius: 16px; display: flex; align-items: center; cursor: pointer; padding: {{tPad}}; background: {{tBg}}; border: {{tBd}}; justify-content: {{tJust}}"><span style="border-radius: 12px; display: flex; align-items: center; justify-content: center; width: {{tTh}}; height: {{tTh}}; background: {{tThBg}}; color: #456732"><sc-if value="{{top}}" hint-placeholder-val="{{ false }}"><span class="ms" aria-hidden="true" style="font-size: 16px">check</span></sc-if></span></button>
+</div>
+
+<div style="display: flex; align-items: center; gap: 12px; background: #F2F5EA; border-radius: 12px; padding: 12px 16px">
+<span class="ms" aria-hidden="true" style="color: #456732">history_edu</span>
+<span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 16px; line-height: 24px">附上种植记录</span><span style="font-size: 12px; line-height: 16px; color: #43483E">展示「草莓 · 2号大棚」的施肥用药记录，买家更放心</span></span>
+<span role="img" aria-label="已开启" style="width: 52px; height: 32px; flex-shrink: 0; border-radius: 16px; background: #456732; display: flex; align-items: center; justify-content: flex-end; padding: 0 4px; box-sizing: border-box"><span style="width: 24px; height: 24px; border-radius: 12px; background: #FFFFFF; color: #456732; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true" style="font-size: 16px">check</span></span></span>
+</div>
+</form>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const sel = (this.state && this.state.sel) || { '自提': true, '同城配送': true };
+    const top = !!(this.state && this.state.top);
+    return {
+      top,
+      topText: top ? '发布时扣除 100 积分，剩余 1,180；排在集市列表最前' : '100 积分，排在集市列表最前（我的积分 1,280）',
+      toggleTop: () => this.setState({ top: !top }),
+      tBg: top ? '#456732' : '#E1E4D9', tBd: top ? '0' : '2px solid #74796D', tJust: top ? 'flex-end' : 'flex-start', tPad: top ? '0 4px' : '0 6px',
+      tTh: top ? '24px' : '16px', tThBg: top ? '#FFFFFF' : '#74796D',
+      ways: ['自提', '同城配送', '快递', '面议'].map((n) => {
+        const on = !!sel[n];
+        return {
+          name: n, on,
+          bg: on ? '#D9E7CB' : 'transparent', fg: on ? '#3E4A35' : '#43483E',
+          bd: on ? '1px solid #D9E7CB' : '1px solid #C3C8BB', pad: on ? '0 16px 0 8px' : '0 16px',
+          toggle: () => { const next = Object.assign({}, sel); next[n] = !on; this.setState({ sel: next }); }
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

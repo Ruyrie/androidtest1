@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>问题详情</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#43483E;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.av{border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:500}
+.st{height:24px;padding:0 8px;border-radius:8px;font-size:12px;line-height:24px;font-weight:500;display:inline-flex;align-items:center;gap:4px}
+.ans{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-top:1px solid #E0E4D6}
+.mini{height:32px;border:0;background:transparent;padding:0 8px;border-radius:16px;display:inline-flex;align-items:center;gap:4px;font-size:13px;color:#43483E;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="QA.dc.html" class="ib" aria-label="返回" style="color: #191D16"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">问题详情</h1>
+<button class="ib" aria-label="分享"><span class="ms" aria-hidden="true">share</span></button>
+<button class="ib" aria-label="更多"><span class="ms" aria-hidden="true">more_vert</span></button>
+</header>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 0 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+<span class="st" style="background: {{sBg}}; color: {{sFg}}"><span class="ms" aria-hidden="true" style="font-size: 14px">{{sIcon}}</span>{{status}}</span>
+<span class="st" style="background: #FFE08B; color: #241A00"><span class="ms" aria-hidden="true" style="font-size: 14px">paid</span>悬赏 20 积分</span>
+<span class="st" style="background: #D9E7CB; color: #3E4A35">#番茄</span>
+</div>
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 500">番茄叶片卷曲发黄，是缺什么肥？</h2>
+<div style="display: flex; gap: 12px">
+<p style="margin: 0; flex: 1; font-size: 15px; line-height: 22px">1号大棚的樱桃番茄，中下部叶片从边缘开始卷曲发黄，叶脉还是绿的。最近追过一次钾肥，浇水正常。</p>
+<span style="width: 80px; height: 80px; flex-shrink: 0; border-radius: 8px; background: #E1E4D9; color: #74796D; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">image</span></span>
+</div>
+<div style="font-size: 12px; line-height: 16px; color: #43483E">老李种菜（我）· 3 小时前 · 浏览 326 · 9 人关注</div>
+
+<section aria-label="AI 参考答案" style="background: #BBEBEC; color: #1E4E4E; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 8px"><span class="ms f" aria-hidden="true" style="font-size: 20px">auto_awesome</span><span style="flex: 1; font-size: 14px; line-height: 20px; font-weight: 500">AI 参考答案</span><span style="font-size: 11px; line-height: 16px">仅供参考</span></div>
+<p style="margin: 0; font-size: 14px; line-height: 21px">从描述看更像<strong style="font-weight: 700">缺镁</strong>：老叶叶脉间失绿、叶脉保持绿色。钾肥施用过多会抑制作物对镁的吸收。</p>
+<sc-if value="{{expanded}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 14px; line-height: 21px">建议：叶面喷施 0.5% 硫酸镁溶液，7 天一次，连喷 2–3 次；后续钾肥适当减量。若新叶也发黄，需排查根系问题。</p>
+</sc-if>
+<button onClick="{{toggle}}" style="align-self: flex-start; height: 32px; border: 0; background: transparent; padding: 0; display: flex; align-items: center; gap: 2px; color: #386666; font-size: 14px; font-weight: 500; cursor: pointer">{{toggleText}}<span class="ms" aria-hidden="true" style="font-size: 18px">{{toggleIcon}}</span></button>
+</section>
+
+<div style="display: flex; align-items: center"><h3 style="margin: 0; flex: 1; font-size: 16px; line-height: 24px; font-weight: 500">农友回答 3</h3><span style="font-size: 12px; color: #43483E">{{hint}}</span></div>
+
+<div>
+<sc-for list="{{answers}}" as="a" hint-placeholder-count="3">
+<article class="ans">
+<div style="display: flex; align-items: center; gap: 10px">
+<a href="UserProfile.dc.html" class="av" style="width: 32px; height: 32px; font-size: 13px; background: {{a.avBg}}; color: {{a.avFg}}">{{a.av}}</a>
+<span style="flex: 1; display: flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; font-weight: 500">{{a.name}}<span class="st" style="height: 20px; line-height: 20px; padding: 0 6px; font-size: 11px; background: {{a.bBg}}; color: {{a.bFg}}">{{a.badge}}</span></span>
+<sc-if value="{{a.isAccepted}}" hint-placeholder-val="{{ false }}"><span class="st" style="background: #C5EFAB; color: #2E4F1C"><span class="ms f" aria-hidden="true" style="font-size: 14px">verified</span>已采纳</span></sc-if>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 22px">{{a.text}}</p>
+<div style="display: flex; align-items: center; margin-left: -8px">
+<span class="mini"><span class="ms" aria-hidden="true" style="font-size: 18px">thumb_up</span>{{a.up}}</span>
+<span class="mini"><span class="ms" aria-hidden="true" style="font-size: 18px">chat_bubble</span>回复</span>
+<span style="flex: 1; font-size: 12px; color: #43483E; padding-left: 8px">{{a.time}}</span>
+<sc-if value="{{a.canAccept}}" hint-placeholder-val="{{ true }}"><button onClick="{{a.accept}}" style="height: 32px; border: 1px solid #74796D; background: transparent; border-radius: 16px; padding: 0 14px; color: #456732; font-size: 14px; font-weight: 500; cursor: pointer">采纳</button></sc-if>
+</div>
+</article>
+</sc-for>
+</div>
+</main>
+
+<div style="height: 80px; flex-shrink: 0; box-sizing: border-box; background: #EDEFE4; padding: 0 16px; display: flex; align-items: center; gap: 12px">
+<a href="Publish.dc.html" style="flex: 1; height: 40px; border-radius: 20px; background: #D9E7CB; color: #3E4A35; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 500"><span class="ms" aria-hidden="true" style="font-size: 18px">edit</span>补充描述</a>
+<button style="flex: 1; height: 40px; border: 0; border-radius: 20px; background: #456732; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 500"><span class="ms" aria-hidden="true" style="font-size: 18px">person_add</span>邀请专家回答</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const acc = st.acc || 0;
+    const expanded = !!st.exp;
+    const raw = [
+      { id: 1, name: '王农艺师', av: '王', avBg: '#D9E7CB', avFg: '#3E4A35', badge: '农技专家', bBg: '#BBEBEC', bFg: '#1E4E4E', text: '叶脉绿、叶肉黄，而且从中下部老叶开始，是典型的缺镁。钾和镁有拮抗，钾肥一多镁就吸收不进去。先叶面喷 0.5% 硫酸镁，一周一次，连喷两三次，后面钾肥减量。', up: 23, time: '2 小时前' },
+      { id: 2, name: '草莓姐姐', av: '莓', avBg: '#BBEBEC', avFg: '#1E4E4E', badge: '种植能手', bBg: '#FFE08B', bFg: '#241A00', text: '我家去年番茄也这样，喷了两次硫酸镁就缓过来了。记得避开中午高温喷，傍晚效果好。', up: 8, time: '1 小时前' },
+      { id: 3, name: '菜园小周', av: '周', avBg: '#D9E7CB', avFg: '#3E4A35', badge: 'Lv.2', bBg: '#E1E4D9', bFg: '#43483E', text: '也看看根，最近要是连着阴天又浇水多，根系受伤也会黄叶。', up: 2, time: '40 分钟前' }
+    ];
+    const answers = raw.map((a) => Object.assign({}, a, {
+      isAccepted: acc === a.id,
+      canAccept: acc === 0,
+      accept: () => this.setState({ acc: a.id })
+    }));
+    if (acc) answers.sort((x, y) => (y.id === acc) - (x.id === acc));
+    return {
+      answers, expanded,
+      toggle: () => this.setState({ exp: !expanded }),
+      toggleText: expanded ? '收起' : '展开全部', toggleIcon: expanded ? 'expand_less' : 'expand_more',
+      status: acc ? '已解决' : '待解决', sIcon: acc ? 'check_circle' : 'pending',
+      sBg: acc ? '#C5EFAB' : '#E1E4D9', sFg: acc ? '#2E4F1C' : '#43483E',
+      hint: acc ? '已采纳，20 积分已发放给回答者' : '你是提问者，可采纳一个回答'
+    };
+  }
+}
+</script>
+</body>
+</html>

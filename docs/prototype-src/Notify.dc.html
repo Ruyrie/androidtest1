@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>消息通知</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.it{min-height:56px;box-sizing:border-box;background:#EDEFE4;padding:8px 16px;display:flex;align-items:center;gap:16px}
+.tx{flex:1;min-width:0;display:flex;flex-direction:column}
+.t1{font-size:16px;line-height:24px}
+.t2{font-size:12px;line-height:16px;color:#43483E}
+.gl{margin:0;padding:16px 16px 8px;font-size:14px;line-height:20px;font-weight:500;color:#456732}
+.sw{width:52px;height:32px;flex-shrink:0;box-sizing:border-box;border-radius:16px;display:flex;align-items:center;cursor:pointer;padding:0}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="Settings.dc.html" aria-label="返回" style="width: 48px; height: 48px; border-radius: 24px; color: #191D16; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">消息通知</h1>
+</header>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 4px 16px 0">
+<div style="display: flex; align-items: center; gap: 16px; min-height: 72px; border-radius: 28px; padding: 8px 20px; background: {{masterBg}}">
+<span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 18px; line-height: 24px; font-weight: 500">接收通知</span><span style="font-size: 12px; line-height: 16px; color: #43483E">{{masterText}}</span></span>
+<button type="button" role="switch" aria-checked="{{master}}" aria-label="接收通知" class="sw" style="background: {{m.bg}}; border: {{m.bd}}; justify-content: {{m.just}}; padding: {{m.pad}}" onClick="{{toggleMaster}}"><span style="border-radius: 12px; display: flex; align-items: center; justify-content: center; width: {{m.th}}; height: {{m.th}}; background: {{m.thBg}}; color: #456732"><sc-if value="{{master}}" hint-placeholder-val="{{ true }}"><span class="ms" aria-hidden="true" style="font-size: 16px">check</span></sc-if></span></button>
+</div>
+
+<div style="opacity: {{dim}}">
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="2">
+<h2 class="gl">{{g.title}}</h2>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<sc-for list="{{g.rows}}" as="r" hint-placeholder-count="3">
+<div class="it" style="border-radius: {{r.rad}}">
+<span class="ms" aria-hidden="true" style="color: #456732">{{r.icon}}</span>
+<span class="tx"><span class="t1">{{r.name}}</span><span class="t2">{{r.sub}}</span></span>
+<button type="button" role="switch" aria-checked="{{r.on}}" aria-label="{{r.name}}" class="sw" style="background: {{r.bg}}; border: {{r.bd}}; justify-content: {{r.just}}; padding: {{r.pad}}" onClick="{{r.toggle}}"><span style="border-radius: 12px; display: flex; align-items: center; justify-content: center; width: {{r.th}}; height: {{r.th}}; background: {{r.thBg}}; color: #456732"><sc-if value="{{r.on}}" hint-placeholder-val="{{ true }}"><span class="ms" aria-hidden="true" style="font-size: 16px">check</span></sc-if></span></button>
+</div>
+</sc-for>
+</div>
+</sc-for>
+<h2 class="gl">免打扰</h2>
+<div class="it" style="border-radius: 28px"><span class="ms" aria-hidden="true" style="color: #456732">bedtime</span><span class="tx"><span class="t1">免打扰时段</span><span class="t2">22:00 – 次日 06:30，预警类通知除外</span></span><span class="ms" aria-hidden="true" style="color: #43483E">chevron_right</span></div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const master = st.master !== undefined ? st.master : true;
+    const sw = st.sw || { task: true, weather: true, pest: true, comment: true, like: false, follow: true, dm: true };
+    const swStyle = (on) => ({ bg: on ? '#456732' : '#E1E4D9', bd: on ? '0' : '2px solid #74796D', just: on ? 'flex-end' : 'flex-start', pad: on ? '0 4px' : '0 6px', th: on ? '24px' : '16px', thBg: on ? '#FFFFFF' : '#74796D' });
+    const defs = [
+      ['农事提醒', [['task', 'task_alt', '农事任务提醒', '按日历时间提醒，每天 07:00 汇总'], ['weather', 'thunderstorm', '天气预警', '降温、大风、暴雨等，免打扰时段也会提醒'], ['pest', 'pest_control', '病虫害高发提醒', '结合所在地区和在种作物推送']]],
+      ['互动消息', [['comment', 'chat_bubble', '评论和回答', '动态评论、问答新回答'], ['like', 'favorite', '赞和收藏', '关闭后仍可在消息页查看'], ['follow', 'person_add', '新增关注', ''], ['dm', 'mail', '私信', '包括集市买家咨询']]]
+    ];
+    const groups = defs.map(([title, rows]) => ({
+      title,
+      rows: rows.map(([id, icon, name, sub], i) => {
+        const on = !!sw[id];
+        const first = i === 0, last = i === rows.length - 1;
+        return Object.assign({ icon, name, sub, on, rad: first ? '28px 28px 4px 4px' : (last ? '4px 4px 28px 28px' : '4px'), toggle: () => { if (!master) return; const n = Object.assign({}, sw); n[id] = !on; this.setState({ sw: n }); } }, swStyle(on));
+      })
+    }));
+    return {
+      master, m: swStyle(master), groups,
+      masterBg: master ? '#C5EFAB' : '#E1E4D9',
+      masterText: master ? '已开启 · 也可在系统设置中管理' : '已关闭，你将错过农事和预警提醒',
+      dim: master ? '1' : '0.38',
+      toggleMaster: () => this.setState({ master: !master })
+    };
+  }
+}
+</script>
+</body>
+</html>

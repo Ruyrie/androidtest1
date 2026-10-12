@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>设置新密码</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button,input{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#191D16;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.fld{position:relative;display:block}
+.fl{position:absolute;left:12px;top:-8px;padding:0 4px;background:#F8FAF0;font-size:12px;line-height:16px;color:#43483E}
+.fb{height:56px;box-sizing:border-box;border:1px solid #74796D;border-radius:4px;padding:0 4px 0 16px;display:flex;align-items:center;gap:8px;font-size:16px;line-height:24px}
+.fb input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:16px;line-height:24px;color:#191D16;padding:0}
+.cta{height:56px;width:100%;box-sizing:border-box;border:0;border-radius:28px;background:#456732;color:#FFFFFF;font-size:16px;line-height:24px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.stp{width:28px;height:28px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;flex-shrink:0}
+.rule{display:flex;align-items:center;gap:8px;font-size:14px;line-height:20px}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<sc-if value="{{editing}}" hint-placeholder-val="{{ true }}">
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="ForgotPwd.dc.html" class="ib" aria-label="返回"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">设置新密码</h1>
+</header>
+
+<form style="padding: 16px 24px 0; display: flex; flex-direction: column; gap: 24px">
+<ol aria-label="步骤" style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 8px">
+<li style="display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: #43483E"><span class="stp" style="background: #C5EFAB; color: #2E4F1C"><span class="ms" aria-hidden="true" style="font-size: 18px">check</span></span>验证手机</li>
+<li aria-hidden="true" style="flex: 1; height: 1px; background: #456732"></li>
+<li style="display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 500"><span class="stp" style="background: #456732; color: #FFFFFF">2</span>设置新密码</li>
+</ol>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label class="fld"><span class="fl">新密码</span><span class="fb"><input type="{{pwType}}" value="Heban@2026" aria-label="新密码"><button type="button" class="ib" aria-label="{{eyeLabel}}" onClick="{{toggleEye}}" style="color: #43483E"><span class="ms" aria-hidden="true">{{eyeIcon}}</span></button></span></label>
+<div style="display: flex; align-items: center; gap: 8px; padding: 0 4px">
+<div style="flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px"><span style="height: 4px; border-radius: 2px; background: #456732"></span><span style="height: 4px; border-radius: 2px; background: #456732"></span><span style="height: 4px; border-radius: 2px; background: #456732"></span></div>
+<span style="font-size: 12px; line-height: 16px; font-weight: 500; color: #456732">强度：强</span>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<label class="fld"><span class="fl">确认新密码</span><span class="fb" style="padding-right: 12px"><input type="password" value="Heban@2026" aria-label="确认新密码"><span class="ms f" aria-hidden="true" style="color: #456732">check_circle</span></span></label>
+<span style="padding: 0 16px; font-size: 12px; line-height: 16px; color: #456732">两次输入一致</span>
+</div>
+
+<div style="background: #F2F5EA; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+<span class="rule" style="color: #456732"><span class="ms f" aria-hidden="true" style="font-size: 18px">check_circle</span><span style="color: #191D16">8–20 位</span></span>
+<span class="rule" style="color: #456732"><span class="ms f" aria-hidden="true" style="font-size: 18px">check_circle</span><span style="color: #191D16">同时包含字母和数字</span></span>
+<span class="rule" style="color: #456732"><span class="ms f" aria-hidden="true" style="font-size: 18px">check_circle</span><span style="color: #191D16">与最近使用过的密码不同</span></span>
+</div>
+
+<button type="button" class="cta" onClick="{{finish}}">完成</button>
+</form>
+</sc-if>
+
+<sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+<div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 0 32px; text-align: center">
+<span style="width: 96px; height: 96px; border-radius: 48px; background: #C5EFAB; color: #2E4F1C; display: flex; align-items: center; justify-content: center"><span class="ms f" aria-hidden="true" style="font-size: 56px">lock_reset</span></span>
+<div>
+<h1 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 500">密码已重置</h1>
+<p style="margin: 8px 0 0; font-size: 16px; line-height: 24px; color: #43483E">其他设备上的登录已失效，请使用新密码重新登录。</p>
+</div>
+</div>
+<div style="padding: 0 24px 40px"><a href="Login.dc.html" class="cta">去登录</a></div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const show = !!st.show;
+    const done = !!st.done;
+    return {
+      editing: !done, done,
+      pwType: show ? 'text' : 'password',
+      eyeIcon: show ? 'visibility_off' : 'visibility', eyeLabel: show ? '隐藏密码' : '显示密码',
+      toggleEye: () => this.setState({ show: !show }),
+      finish: () => this.setState({ done: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

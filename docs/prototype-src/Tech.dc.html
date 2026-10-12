@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>技术实现映射</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;family=Roboto+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#456732}a:hover{color:#2E4F1C}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.ly{border-radius:16px;padding:12px 16px;display:flex;flex-direction:column;gap:2px}
+.lt{font-size:16px;line-height:24px;font-weight:500}
+.ld{font-size:13px;line-height:19px}
+.arw{align-self:center;color:#74796D;font-size:20px}
+.mono{font-family:'Roboto Mono',monospace;font-size:12px;color:#2E4F1C}
+.tr{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;padding:9px 0;border-top:1px solid #E0E4D6;font-size:14px;line-height:20px}
+.pg{font-weight:500}
+.pg span{display:block;font-size:11px;line-height:16px;color:#456732}
+pre{margin:0;font-family:'Roboto Mono',monospace;font-size:12px;line-height:18px;white-space:pre;color:#191D16}
+.code{background:#E1E4D9;border-radius:16px;padding:16px 18px;overflow:hidden}
+.cap{font-size:14px;line-height:20px;font-weight:500;margin-bottom:8px;font-family:Roboto,'Noto Sans SC',sans-serif}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1500px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; padding: 56px 64px; display: flex; flex-direction: column; gap: 28px; overflow: hidden">
+
+<header>
+<div style="font-size: 14px; line-height: 20px; font-weight: 500; color: #456732">07 · 技术实现映射</div>
+<h1 style="margin: 4px 0 8px; font-size: 36px; line-height: 44px; font-weight: 500">先做 App 端，后端接入时只换数据实现</h1>
+<p style="margin: 0; max-width: 1000px; font-size: 16px; line-height: 24px; color: #43483E">MVVM 架构。界面层只依赖 Repository 接口：现阶段用本地 Room + 模拟数据实现，后端完成后新增 Retrofit 实现类替换即可，页面和 ViewModel 不用改。</p>
+</header>
+
+<div style="display: flex; gap: 48px; align-items: flex-start">
+
+<section style="width: 520px; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0 0 8px; font-size: 22px; line-height: 28px; font-weight: 500">架构分层</h2>
+<div class="ly" style="background: #C5EFAB; color: #2E4F1C"><span class="lt">View 层</span><span class="ld">Activity / Fragment · XML · DataBinding（单向 @{}、双向 @={}）· MDC 组件</span></div>
+<span class="ms arw" aria-hidden="true">arrow_downward</span>
+<div class="ly" style="background: #D9E7CB; color: #3E4A35"><span class="lt">ViewModel 层</span><span class="ld">Jetpack ViewModel + LiveData；Navigation 管理跳转；登录态保存在 SessionManager</span></div>
+<span class="ms arw" aria-hidden="true">arrow_downward</span>
+<div class="ly" style="background: #BBEBEC; color: #1E4E4E"><span class="lt">Repository 接口</span><span class="ld">UserRepo · CropRepo · PostRepo · MarketRepo · ChatRepo …… RxJava 返回 Flowable / Single / Completable</span></div>
+<span class="ms arw" aria-hidden="true">arrow_downward</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<div class="ly" style="background: #F2F5EA; border: 1px solid #C3C8BB"><span class="lt">现阶段：Mock 实现</span><span class="ld" style="color: #43483E">Room 存作物、农事、记账、草稿；农友、动态、商品读 assets 里的 JSON，加 300ms 延迟模拟网络</span></div>
+<div class="ly" style="border: 1px dashed #74796D"><span class="lt">后端接入后：Remote 实现</span><span class="ld" style="color: #43483E">Retrofit + OkHttp 调接口；Room 降级为离线缓存；拦截器统一加 Token、处理 401</span></div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 4px">
+<div class="ly" style="background: #F2F5EA"><span class="lt" style="font-size: 14px">第三方 API</span><span class="ld" style="color: #43483E">天气、AI 大模型</span></div>
+<div class="ly" style="background: #F2F5EA"><span class="lt" style="font-size: 14px">图片</span><span class="ld" style="color: #43483E">Glide 列表缓存；Picasso 大图</span></div>
+<div class="ly" style="background: #F2F5EA"><span class="lt" style="font-size: 14px">后台</span><span class="ld" style="color: #43483E">WorkManager 提醒；DataStore 设置</span></div>
+</div>
+</section>
+
+<section style="flex: 1; min-width: 0">
+<h2 style="margin: 0 0 8px; font-size: 22px; line-height: 28px; font-weight: 500">模块 → 技术点</h2>
+<div class="tr"><span class="pg">账号<span>A01–A08</span></span><span>SplashScreen API；表单双向绑定 + 实时校验密码强度；验证码倒计时 <span class="mono">Observable.interval</span>；Token 存 EncryptedSharedPreferences</span></div>
+<div class="tr"><span class="pg">首页<span>H01–H05</span></span><span><span class="mono">Observable.zip</span> 合并天气与今日农事；WorkManager 定时提醒；签到写 Room，按连续天数计算积分</span></div>
+<div class="tr"><span class="pg">作物<span>C01–C05</span></span><span>RecyclerView + ListAdapter + item DataBinding；Room <span class="mono">@Relation</span>；保存农事记录时用 <span class="mono">@Transaction</span> 同步写一笔记账</span></div>
+<div class="tr"><span class="pg">识别 · 百科<span>D02–D05</span></span><span>CameraX 拍照；本地 TFLite 模型或后端识别接口（二选一）；百科 JSON 首启导入 Room；Picasso <span class="mono">fit().centerCrop()</span> + 圆角 Transformation</span></div>
+<div class="tr"><span class="pg">AI 助手<span>D06</span></span><span>Retrofit + OkHttp 调用大模型（SSE 流式）；RxJava <span class="mono">Flowable</span> 逐字追加；请求时带上作物与天气上下文；会话存 Room</span></div>
+<div class="tr"><span class="pg">集市 · 记账<span>D07–D11</span></span><span>Paging 3 分页；Glide <span class="mono">override + RoundedCorners</span>；上传前压缩图片；记账用 Room <span class="mono">SUM … GROUP BY</span>，柱状图用 Canvas 自绘</span></div>
+<div class="tr"><span class="pg">农友圈<span>S01–S09</span></span><span>点赞、关注乐观更新：先改界面再提交，失败回滚并提示；<span class="mono">throttleFirst</span> 防重复点击；评论框双向绑定；私信后期接 WebSocket，现阶段模拟回复</span></div>
+<div class="tr"><span class="pg">积分 · 换绑<span>P01–P09 · M08 · A09</span></span><span>积分流水表算余额，成长值单独累计；兑换用 <span class="mono">@Transaction</span> 同时扣积分、生成订单；客服先按关键词自动回复，后端接入后改人工会话；换绑与申诉走短信验证接口</span></div>
+<div class="tr"><span class="pg">我的 · 设置<span>M01–M13</span></span><span><span class="mono">AppCompatDelegate.setDefaultNightMode</span>；<span class="mono">DynamicColors</span>；<span class="mono">Glide.get(ctx).clearDiskCache()</span> 放 io 线程；设置项存 DataStore</span></div>
+</section>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 500">关键代码示例</h2>
+<div style="display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1fr); gap: 20px">
+<div class="code"><div class="cap">Repository：先 Mock，后端就绪后替换</div><pre>public interface PostRepository {
+    Flowable&lt;List&lt;Post&gt;&gt; feed(String tab);
+    Completable like(long postId, boolean liked);
+}
+
+// 现阶段：本地模拟
+public class MockPostRepository
+        implements PostRepository {
+    public Flowable&lt;List&lt;Post&gt;&gt; feed(String tab) {
+        return Flowable
+            .fromCallable(() -&gt; MockData.posts(tab))
+            .delay(300, TimeUnit.MILLISECONDS);
+    }
+    public Completable like(long id, boolean on) {
+        return postDao.updateLike(id, on);
+    }
+}
+// 后端接入：新增 RemotePostRepository，
+// 在依赖注入处切换即可</pre></div>
+<div class="code"><div class="cap">res/values/themes.xml</div><pre>&lt;style name="Theme.HeBan"
+    parent="Theme.Material3.DayNight.NoActionBar"&gt;
+  &lt;item name="colorPrimary"&gt;@color/md_primary&lt;/item&gt;
+  &lt;item name="colorPrimaryContainer"&gt;
+      @color/md_primary_container&lt;/item&gt;
+  &lt;item name="colorSurface"&gt;@color/md_surface&lt;/item&gt;
+  &lt;item name="colorWarningContainer"&gt;
+      @color/md_warning_container&lt;/item&gt;
+  &lt;!-- 其余角色同理 --&gt;
+  &lt;item name="textAppearanceTitleLarge"&gt;
+      @style/Text.HeBan.TitleLarge&lt;/item&gt;
+&lt;/style&gt;
+&lt;!-- 深色色值写在 values-night/colors.xml --&gt;
+&lt;!-- colorWarningContainer 需在 attrs.xml 声明 --&gt;</pre></div>
+<div class="code"><div class="cap">Glide 缓存配置</div><pre>@GlideModule
+public final class HeBanGlideModule
+        extends AppGlideModule {
+  @Override
+  public void applyOptions(Context ctx,
+                           GlideBuilder b) {
+    // 内存 20MB，磁盘 250MB
+    b.setMemoryCache(
+        new LruResourceCache(20L * 1024 * 1024));
+    b.setDiskCache(
+        new InternalCacheDiskCacheFactory(
+            ctx, 250L * 1024 * 1024));
+    b.setDefaultRequestOptions(
+        new RequestOptions()
+            .diskCacheStrategy(
+                DiskCacheStrategy.AUTOMATIC)
+            .placeholder(R.drawable.ph_image));
+  }
+}</pre></div>
+</div>
+</section>
+
+<div role="note" style="background: #FFE08B; color: #241A00; border-radius: 12px; padding: 14px 18px; display: flex; gap: 12px; font-size: 14px; line-height: 20px">
+<span class="ms" aria-hidden="true">key</span>
+<span><strong style="font-weight: 500">关于大模型 API Key：</strong>后端接入前，课程演示可临时把 Key 存在本机（EncryptedSharedPreferences，不写进代码、不提交 Git）；后端就绪后改由服务端转发请求，App 里不再保存任何 Key。</span>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

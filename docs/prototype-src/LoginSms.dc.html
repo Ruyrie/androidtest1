@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>验证码登录</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button,input{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.fld{position:relative;display:block}
+.fl{position:absolute;left:12px;top:-8px;padding:0 4px;background:#F8FAF0;font-size:12px;line-height:16px;color:#43483E}
+.fb{height:56px;box-sizing:border-box;border:1px solid #74796D;border-radius:4px;padding:0 4px 0 16px;display:flex;align-items:center;gap:8px;font-size:16px;line-height:24px}
+.fb input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:16px;line-height:24px;color:#191D16;padding:0}
+.cta{height:56px;width:100%;box-sizing:border-box;border:0;border-radius:28px;background:#456732;color:#FFFFFF;font-size:16px;line-height:24px;font-weight:500;display:flex;align-items:center;justify-content:center}
+.tab{flex:1;height:48px;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:20px;font-weight:500;position:relative}
+.code{height:40px;border:0;background:transparent;border-radius:20px;padding:0 12px;font-size:14px;line-height:20px;font-weight:500;white-space:nowrap;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<div style="height: 64px; flex-shrink: 0; display: flex; align-items: center; justify-content: flex-end; padding: 0 8px">
+<a href="Main.dc.html" style="height: 40px; padding: 0 12px; border-radius: 20px; display: flex; align-items: center; color: #456732; font-size: 14px; font-weight: 500">游客浏览</a>
+</div>
+
+<div style="padding: 8px 24px 0; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span style="width: 56px; height: 56px; border-radius: 18px; background: #456732; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><span class="ms f" aria-hidden="true" style="font-size: 32px">psychiatry</span></span>
+<div>
+<h1 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 500">验证码登录</h1>
+<p style="margin: 4px 0 0; font-size: 16px; line-height: 24px; color: #43483E">未注册的手机号验证后将自动创建账号</p>
+</div>
+</div>
+
+<div role="tablist" aria-label="登录方式" style="display: flex; border-bottom: 1px solid #E0E4D6">
+<a role="tab" aria-selected="false" href="Login.dc.html" class="tab" style="color: #43483E">密码登录</a>
+<span role="tab" aria-selected="true" class="tab" style="color: #456732">验证码登录<span style="position: absolute; left: 50%; bottom: 0; width: 56px; margin-left: -28px; height: 3px; border-radius: 3px 3px 0 0; background: #456732"></span></span>
+</div>
+
+<label class="fld"><span class="fl">手机号</span><span class="fb"><span style="display: flex; align-items: center; color: #43483E">+86<span class="ms" aria-hidden="true" style="font-size: 20px">arrow_drop_down</span></span><span style="width: 1px; height: 24px; background: #C3C8BB"></span><input type="tel" value="138 0000 5678" aria-label="手机号"></span></label>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<label class="fld"><span class="fl">验证码</span><span class="fb"><input inputmode="numeric" placeholder="6 位数字" aria-label="验证码"><span style="width: 1px; height: 24px; background: #C3C8BB"></span>
+<sc-if value="{{canSend}}" hint-placeholder-val="{{ true }}"><button type="button" class="code" style="color: #456732" onClick="{{send}}">获取验证码</button></sc-if>
+<sc-if value="{{counting}}" hint-placeholder-val="{{ false }}"><span class="code" style="display: flex; align-items: center; color: #74796D; cursor: default">{{left}}s 后重发</span></sc-if>
+</span></label>
+<sc-if value="{{counting}}" hint-placeholder-val="{{ false }}"><span style="padding: 0 16px; font-size: 12px; line-height: 16px; color: #43483E">验证码已发送至 138****5678，5 分钟内有效</span></sc-if>
+</div>
+
+<label style="display: flex; align-items: flex-start; gap: 12px; font-size: 14px; line-height: 20px; color: #43483E">
+<input type="checkbox" checked style="accent-color: #456732; width: 18px; height: 18px; margin: 1px 0 0; flex-shrink: 0">
+<span>我已阅读并同意 <a href="About.dc.html" style="color: #456732; font-weight: 500">《用户协议》</a> 和 <a href="About.dc.html" style="color: #456732; font-weight: 500">《隐私政策》</a></span>
+</label>
+
+<a href="Main.dc.html" class="cta">登录 / 注册</a>
+
+<div style="display: flex; align-items: center; gap: 12px; color: #74796D; font-size: 12px; line-height: 16px; margin-top: 8px"><span style="flex: 1; height: 1px; background: #E0E4D6"></span>收不到验证码？<span style="flex: 1; height: 1px; background: #E0E4D6"></span></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #43483E; text-align: center">请确认号码正确、短信未被拦截；也可以改用 <a href="Login.dc.html" style="color: #456732; font-weight: 500">密码登录</a></p>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  componentWillUnmount() {
+    if (this.timer) clearInterval(this.timer);
+  }
+  renderVals() {
+    const left = (this.state && this.state.left) || 0;
+    return {
+      left,
+      counting: left > 0,
+      canSend: left <= 0,
+      send: () => {
+        if (this.timer) clearInterval(this.timer);
+        this.setState({ left: 60 });
+        this.timer = setInterval(() => {
+          const n = ((this.state && this.state.left) || 0) - 1;
+          this.setState({ left: n > 0 ? n : 0 });
+          if (n <= 0) clearInterval(this.timer);
+        }, 1000);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

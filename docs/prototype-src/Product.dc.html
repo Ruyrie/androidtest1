@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>商品详情</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ov{width:40px;height:40px;border:0;padding:0;border-radius:20px;background:rgba(248,250,240,.9);color:#191D16;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.tag{height:28px;padding:0 10px;border-radius:8px;display:inline-flex;align-items:center;gap:4px;font-size:12px;line-height:16px;font-weight:500;background:#F2F5EA;color:#43483E}
+.row{display:grid;grid-template-columns:72px minmax(0,1fr);padding:8px 0;font-size:14px;line-height:20px}
+.bi{width:56px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;line-height:16px;font-weight:500;color:#43483E;border:0;background:transparent;padding:0;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<div style="height: 300px; flex-shrink: 0; background: #E1E4D9; color: #74796D; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px">
+<span class="ms" aria-hidden="true" style="font-size: 56px">image</span><span style="font-size: 12px; line-height: 16px">商品图片（Glide · 可左右滑动）</span>
+<div style="position: absolute; left: 0; right: 0; top: 0; height: 64px; padding: 0 12px; display: flex; align-items: center; gap: 8px">
+<a href="Market.dc.html" class="ov" aria-label="返回"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<span style="flex: 1"></span>
+<button class="ov" aria-label="分享"><span class="ms" aria-hidden="true">share</span></button>
+</div>
+<span style="position: absolute; right: 16px; bottom: 16px; height: 24px; padding: 0 10px; border-radius: 12px; background: rgba(46, 49, 43, 0.8); color: #F0F2E7; font-size: 12px; line-height: 24px">1 / 4</span>
+</div>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+<div>
+<div style="display: flex; align-items: baseline; gap: 8px">
+<span style="font-size: 28px; line-height: 36px; font-weight: 500; color: #456732">¥25</span><span style="font-size: 14px; color: #43483E">/斤 · 10 斤起</span>
+<span style="flex: 1"></span><span style="font-size: 12px; line-height: 16px; color: #43483E">{{wantText}} · 浏览 418</span>
+</div>
+<h1 style="margin: 4px 0 0; font-size: 22px; line-height: 28px; font-weight: 500">句容红颜草莓 当天现摘</h1>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<span class="tag"><span class="ms" aria-hidden="true" style="font-size: 16px; color: #456732">verified</span>产地直供</span>
+<span class="tag"><span class="ms" aria-hidden="true" style="font-size: 16px; color: #456732">storefront</span>可自提</span>
+<span class="tag"><span class="ms" aria-hidden="true" style="font-size: 16px; color: #456732">local_shipping</span>同城配送</span>
+<span class="tag"><span class="ms" aria-hidden="true" style="font-size: 16px; color: #456732">history_edu</span>附种植记录</span>
+</div>
+
+<a href="UserProfile.dc.html" style="display: flex; align-items: center; gap: 12px; border: 1px solid #C3C8BB; border-radius: 12px; padding: 12px">
+<span style="width: 44px; height: 44px; border-radius: 22px; background: #BBEBEC; color: #1E4E4E; font-size: 18px; font-weight: 500; display: flex; align-items: center; justify-content: center">莓</span>
+<span style="flex: 1; display: flex; flex-direction: column"><span style="display: flex; align-items: center; gap: 6px; font-size: 16px; line-height: 24px; font-weight: 500">草莓姐姐<span class="ms f" aria-hidden="true" style="font-size: 16px; color: #386666">verified</span></span><span style="font-size: 12px; line-height: 16px; color: #43483E">句容白兔镇 · 种植 8 年 · 好评 98%</span></span>
+<span style="height: 32px; padding: 0 12px; border-radius: 16px; border: 1px solid #74796D; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: #456732">主页</span>
+</a>
+
+<section style="display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 500">商品描述</h2>
+<p style="margin: 0; font-size: 14px; line-height: 22px">大棚种植，膜下滴灌，坐果期只用生物农药。每天早上 6 点采摘，2 斤一盒泡沫箱打包。支持来园自提，江宁、句容可当天配送。</p>
+</section>
+<div style="border-top: 1px solid #E0E4D6">
+<div class="row"><span style="color: #43483E">发货地</span><span>江苏省 句容市 白兔镇</span></div>
+<div class="row"><span style="color: #43483E">规格</span><span>2 斤 / 盒，单果 20–30 g</span></div>
+<div class="row"><span style="color: #43483E">采摘日期</span><span>每日现摘，库存约 300 斤</span></div>
+</div>
+<div role="note" style="background: #FFE08B; color: #241A00; border-radius: 12px; padding: 10px 14px; display: flex; gap: 10px; font-size: 13px; line-height: 20px">
+<span class="ms" aria-hidden="true" style="font-size: 20px">shield</span>
+<span>禾伴不提供在线支付，请当面验货交易，谨防要求预付定金的诈骗。</span>
+</div>
+</main>
+
+<div style="height: 80px; flex-shrink: 0; box-sizing: border-box; background: #EDEFE4; padding: 0 16px 0 8px; display: flex; align-items: center; gap: 4px">
+<button class="bi" onClick="{{toggleFav}}" aria-pressed="{{fav}}"><span class="ms {{favCls}}" aria-hidden="true" style="color: {{favColor}}">favorite</span>{{favText}}</button>
+<a href="Chat.dc.html" class="bi"><span class="ms" aria-hidden="true">chat_bubble</span>私信</a>
+<a href="Chat.dc.html" style="flex: 1; margin-left: 8px; height: 48px; border-radius: 24px; background: #456732; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; line-height: 24px; font-weight: 500"><span class="ms" aria-hidden="true" style="font-size: 20px">call</span>联系卖家</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const fav = !!(this.state && this.state.fav);
+    return {
+      fav, favCls: fav ? 'f' : '', favColor: fav ? '#BA1A1A' : '#43483E', favText: fav ? '已收藏' : '收藏',
+      wantText: (fav ? 24 : 23) + ' 人想要',
+      toggleFav: () => this.setState({ fav: !fav })
+    };
+  }
+}
+</script>
+</body>
+</html>

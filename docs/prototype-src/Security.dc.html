@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>账号与安全</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.it{min-height:64px;box-sizing:border-box;background:#EDEFE4;padding:10px 12px 10px 16px;display:flex;align-items:center;gap:16px}
+.tx{flex:1;min-width:0;display:flex;flex-direction:column}
+.t1{font-size:16px;line-height:24px}
+.t2{font-size:14px;line-height:20px;color:#43483E}
+.gl{margin:0;padding:16px 16px 8px;font-size:14px;line-height:20px;font-weight:500;color:#456732}
+.grp{display:flex;flex-direction:column;gap:2px}
+.ch{color:#43483E}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="Settings.dc.html" aria-label="返回" style="width: 48px; height: 48px; border-radius: 24px; color: #191D16; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">账号与安全</h1>
+</header>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 4px 16px 0">
+<div style="background: #C5EFAB; color: #2E4F1C; border-radius: 28px; padding: 20px; display: flex; align-items: center; gap: 16px">
+<span style="width: 56px; height: 56px; border-radius: 28px; background: rgba(255,255,255,0.55); display: flex; align-items: center; justify-content: center"><span class="ms f" aria-hidden="true" style="font-size: 32px">verified_user</span></span>
+<div style="flex: 1">
+<div style="font-size: 22px; line-height: 28px; font-weight: 500">安全等级：较高</div>
+<div style="font-size: 14px; line-height: 20px">已绑定手机、已设置密码；完成实名认证可提升到「高」</div>
+</div>
+</div>
+
+<h2 class="gl">登录方式</h2>
+<div class="grp">
+<a href="ChangePhone.dc.html" class="it" style="border-radius: 28px 28px 4px 4px"><span class="ms" aria-hidden="true" style="color: #456732">smartphone</span><span class="tx"><span class="t1">手机号</span><span class="t2">138****5678 · 用于登录和找回密码</span></span><span style="font-size: 14px; font-weight: 500; color: #456732; padding: 0 4px">换绑</span><span class="ms ch" aria-hidden="true">chevron_right</span></a>
+<a href="ChangePwd.dc.html" class="it" style="border-radius: 4px 4px 28px 28px"><span class="ms" aria-hidden="true" style="color: #456732">password</span><span class="tx"><span class="t1">修改密码</span><span class="t2">短信验证后设置新密码，无需原密码</span></span><span class="ms ch" aria-hidden="true">chevron_right</span></a>
+</div>
+
+<h2 class="gl">设备与认证</h2>
+<div class="grp">
+<div class="it" style="border-radius: 28px 28px 4px 4px"><span class="ms" aria-hidden="true" style="color: #456732">devices</span><span class="tx"><span class="t1">登录设备管理</span><span class="t2">Pixel 8（本机）、平板 · 共 2 台</span></span><span class="ms ch" aria-hidden="true">chevron_right</span></div>
+<div class="it" style="border-radius: 4px"><span class="ms" aria-hidden="true" style="color: #456732">badge</span><span class="tx"><span class="t1">实名认证</span><span class="t2">认证后可在集市显示「实名」标识</span></span><span style="height: 24px; padding: 0 8px; border-radius: 8px; background: #E1E4D9; color: #43483E; font-size: 12px; line-height: 24px; font-weight: 500">未认证</span></div>
+<div class="it" style="border-radius: 4px 4px 28px 28px"><span class="ms" aria-hidden="true" style="color: #456732">history</span><span class="tx"><span class="t1">登录记录</span><span class="t2">最近一次：今天 08:12 · 南京</span></span><span class="ms ch" aria-hidden="true">chevron_right</span></div>
+</div>
+
+<div class="grp" style="margin-top: 24px">
+<button onClick="{{ask}}" class="it" style="border: 0; width: 100%; text-align: left; border-radius: 28px; cursor: pointer"><span class="ms" aria-hidden="true" style="color: #BA1A1A">person_remove</span><span class="tx"><span class="t1" style="color: #BA1A1A">注销账号</span><span class="t2">删除账号及全部云端数据，无法恢复</span></span><span class="ms ch" aria-hidden="true">chevron_right</span></button>
+</div>
+</main>
+
+<sc-if value="{{dialog}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.32); display: flex; align-items: center; justify-content: center; padding: 0 32px">
+<div role="dialog" aria-modal="true" aria-labelledby="del-title" style="width: 100%; background: #E7E9DF; border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<span class="ms" aria-hidden="true" style="align-self: center; color: #BA1A1A">warning</span>
+<h2 id="del-title" style="margin: 0; text-align: center; font-size: 24px; line-height: 32px; font-weight: 500">确定注销账号？</h2>
+<ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 22px; color: #43483E">
+<li>动态、问答、集市商品将被删除</li>
+<li>积分、等级、徽章全部清零</li>
+<li>7 天内重新登录可撤销注销</li>
+</ul>
+<label style="display: flex; align-items: center; gap: 12px; font-size: 14px; line-height: 20px; cursor: pointer"><input type="checkbox" checked="{{confirm}}" onChange="{{toggleConfirm}}" style="accent-color: #BA1A1A; width: 18px; height: 18px; margin: 0">我已了解以上后果</label>
+<div style="display: flex; justify-content: flex-end; gap: 8px">
+<button onClick="{{cancel}}" style="height: 40px; border: 0; background: transparent; border-radius: 20px; padding: 0 12px; color: #456732; font-size: 14px; font-weight: 500; cursor: pointer">取消</button>
+<sc-if value="{{confirm}}" hint-placeholder-val="{{ false }}"><a href="Login.dc.html" style="height: 40px; border-radius: 20px; padding: 0 16px; display: flex; align-items: center; background: #BA1A1A; color: #FFFFFF; font-size: 14px; font-weight: 500">注销</a></sc-if>
+<sc-if value="{{notConfirm}}" hint-placeholder-val="{{ true }}"><span aria-disabled="true" style="height: 40px; border-radius: 20px; padding: 0 16px; display: flex; align-items: center; background: rgba(25, 29, 22, 0.12); color: rgba(25, 29, 22, 0.38); font-size: 14px; font-weight: 500">注销</span></sc-if>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const confirm = !!st.confirm;
+    return {
+      dialog: !!st.dialog, confirm, notConfirm: !confirm,
+      ask: () => this.setState({ dialog: true, confirm: false }),
+      cancel: () => this.setState({ dialog: false }),
+      toggleConfirm: () => this.setState({ confirm: !confirm })
+    };
+  }
+}
+</script>
+</body>
+</html>

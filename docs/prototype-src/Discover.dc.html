@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>发现</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+input{font-family:Roboto,'Noto Sans SC',sans-serif}
+input::placeholder{color:#43483E}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.nv{height:80px;flex-shrink:0;background:#EDEFE4;display:flex}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;padding-top:12px;gap:4px;color:#43483E}
+.pl{width:64px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative}
+.on{color:#191D16}.on .pl{background:#D9E7CB;color:#3E4A35}
+.lb{font-size:12px;line-height:16px;font-weight:500}
+.dot{position:absolute;width:8px;height:8px;border-radius:4px;background:#BA1A1A}
+.fab{position:absolute;right:16px;bottom:96px;height:56px;padding:0 20px 0 16px;border-radius:16px;background:#C5EFAB;color:#2E4F1C;display:flex;align-items:center;gap:12px;font-size:14px;line-height:20px;font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.3),0 4px 8px 3px rgba(0,0,0,.15)}
+.ft{height:112px;box-sizing:border-box;border-radius:28px;padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between}
+.ft .t{font-size:16px;line-height:24px;font-weight:500}
+.ft .s{font-size:12px;line-height:16px}
+.hot{flex:0 0 150px;background:#F2F5EA;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.pd{background:#F2F5EA;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(0,0,0,.3),0 1px 3px 1px rgba(0,0,0,.15)}
+.pd .im{height:104px;background:#E1E4D9;color:#74796D;display:flex;align-items:center;justify-content:center}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative">
+
+<header style="flex-shrink: 0; padding: 8px 16px">
+<label style="height: 56px; border-radius: 28px; background: #E7E9DF; display: flex; align-items: center; gap: 16px; padding: 0 4px 0 16px; color: #43483E">
+<span class="ms" aria-hidden="true">search</span>
+<input type="search" aria-label="搜索" placeholder="搜索病虫害、农产品、问题" style="flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; line-height: 24px; color: #191D16">
+<a href="Scan.dc.html" aria-label="拍照识别" style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">photo_camera</span></a>
+</label>
+</header>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 4px 16px 0; display: flex; flex-direction: column; gap: 16px">
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<a href="Scan.dc.html" class="ft" style="background: #C5EFAB; color: #2E4F1C"><span class="ms" aria-hidden="true" style="font-size: 32px">center_focus_strong</span><span><span class="t" style="display: block">拍照识别</span><span class="s" style="display: block">拍一拍，认出病虫害</span></span></a>
+<a href="Pests.dc.html" class="ft" style="background: #BBEBEC; color: #1E4E4E"><span class="ms" aria-hidden="true" style="font-size: 32px">menu_book</span><span><span class="t" style="display: block">病虫害百科</span><span class="s" style="display: block">128 种 · 可离线查看</span></span></a>
+<a href="Market.dc.html" class="ft" style="background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true" style="font-size: 32px">storefront</span><span><span class="t" style="display: block">农产品集市</span><span class="s" style="display: block">附近 36 件在售</span></span></a>
+<a href="Ledger.dc.html" class="ft" style="background: #FFE08B; color: #241A00"><span class="ms" aria-hidden="true" style="font-size: 32px">account_balance_wallet</span><span><span class="t" style="display: block">收支记账</span><span class="s" style="display: block">本月结余 +¥3,460</span></span></a>
+</div>
+
+<section aria-label="本季高发" style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; height: 32px">
+<h2 style="margin: 0; flex: 1; font-size: 16px; line-height: 24px; font-weight: 500">本季高发 <span style="font-size: 14px; font-weight: 400; color: #43483E">江宁区 · 10 月</span></h2>
+</div>
+<div style="display: flex; gap: 8px">
+<a href="PestDetail.dc.html" class="hot"><span style="display: flex; align-items: center; justify-content: space-between"><span class="ms" aria-hidden="true" style="color: #BA1A1A">coronavirus</span><span style="height: 20px; padding: 0 6px; border-radius: 6px; background: #FFDAD6; color: #93000A; font-size: 11px; line-height: 20px; font-weight: 500">高发</span></span><span style="font-size: 14px; line-height: 20px; font-weight: 500">霜霉病</span><span style="font-size: 12px; line-height: 16px; color: #43483E">黄瓜 · 白菜</span></a>
+<a href="PestDetail.dc.html" class="hot"><span style="display: flex; align-items: center; justify-content: space-between"><span class="ms" aria-hidden="true" style="color: #745B00">blur_on</span><span style="height: 20px; padding: 0 6px; border-radius: 6px; background: #FFE08B; color: #241A00; font-size: 11px; line-height: 20px; font-weight: 500">较高</span></span><span style="font-size: 14px; line-height: 20px; font-weight: 500">灰霉病</span><span style="font-size: 12px; line-height: 16px; color: #43483E">番茄 · 草莓</span></a>
+<a href="PestDetail.dc.html" class="hot"><span style="display: flex; align-items: center; justify-content: space-between"><span class="ms" aria-hidden="true" style="color: #745B00">bug_report</span><span style="height: 20px; padding: 0 6px; border-radius: 6px; background: #FFE08B; color: #241A00; font-size: 11px; line-height: 20px; font-weight: 500">较高</span></span><span style="font-size: 14px; line-height: 20px; font-weight: 500">蚜虫</span><span style="font-size: 12px; line-height: 16px; color: #43483E">多种蔬菜</span></a>
+</div>
+</section>
+
+<section aria-label="集市好物" style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; height: 40px">
+<h2 style="margin: 0; flex: 1; font-size: 16px; line-height: 24px; font-weight: 500">附近好物</h2>
+<a href="Market.dc.html" style="height: 40px; padding: 0 8px 0 12px; border-radius: 20px; display: flex; align-items: center; gap: 2px; color: #456732; font-size: 14px; line-height: 20px; font-weight: 500">逛集市<span class="ms" aria-hidden="true" style="font-size: 18px">chevron_right</span></a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<a href="Product.dc.html" class="pd"><span class="im"><span class="ms" aria-hidden="true" style="font-size: 32px">image</span></span><span style="padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; line-height: 20px; font-weight: 500">句容红颜草莓 现摘</span><span style="font-size: 16px; line-height: 24px; font-weight: 500; color: #456732">¥25<span style="font-size: 12px; font-weight: 400; color: #43483E"> /斤</span></span><span style="font-size: 12px; line-height: 16px; color: #43483E">草莓姐姐 · 12 km</span></span></a>
+<a href="Product.dc.html" class="pd"><span class="im"><span class="ms" aria-hidden="true" style="font-size: 32px">image</span></span><span style="padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; line-height: 20px; font-weight: 500">小型微耕机 九成新</span><span style="font-size: 16px; line-height: 24px; font-weight: 500; color: #456732">¥1,800</span><span style="font-size: 12px; line-height: 16px; color: #43483E">果园阿强 · 6 km</span></span></a>
+</div>
+</section>
+</main>
+
+<a href="AIChat.dc.html" class="fab"><span class="ms" aria-hidden="true">auto_awesome</span>问 AI</a>
+
+<nav aria-label="主导航" class="nv">
+<a href="Main.dc.html" class="ni"><span class="pl"><span class="ms" aria-hidden="true">home</span></span><span class="lb">首页</span></a>
+<a href="Crops.dc.html" class="ni"><span class="pl"><span class="ms" aria-hidden="true">potted_plant</span></span><span class="lb">作物</span></a>
+<a href="Discover.dc.html" class="ni on" aria-current="page"><span class="pl"><span class="ms f" aria-hidden="true">explore</span></span><span class="lb">发现</span></a>
+<a href="Community.dc.html" class="ni"><span class="pl"><span class="ms" aria-hidden="true">forum</span><span class="dot" style="top: 2px; right: 16px"></span></span><span class="lb">农友圈</span></a>
+<a href="Profile.dc.html" class="ni"><span class="pl"><span class="ms" aria-hidden="true">person</span></span><span class="lb">我的</span></a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

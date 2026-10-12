@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>用色规范</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;family=Roboto+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#456732}a:hover{color:#2E4F1C}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.ex{border:1px solid #C3C8BB;border-radius:16px;background:#F8FAF0;overflow:hidden;display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;align-items:center;padding:9px 0;border-top:1px solid #E0E4D6}
+.sw{width:20px;height:20px;border-radius:10px;border:1px solid rgba(116,121,109,.35);box-sizing:border-box}
+.mono{font-family:'Roboto Mono',monospace;font-size:12px;line-height:16px;color:#43483E}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1200px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; padding: 56px 64px; display: flex; flex-direction: column; gap: 32px; overflow: hidden">
+
+<header>
+<div style="font-size: 14px; line-height: 20px; font-weight: 500; color: #456732">03 · 用色规范</div>
+<h1 style="margin: 4px 0 8px; font-size: 36px; line-height: 44px; font-weight: 500">标题、信息框、提示栏怎么配色</h1>
+<p style="margin: 0; max-width: 900px; font-size: 16px; line-height: 24px; color: #43483E">每个场景对应一个颜色角色。色值列为「浅色 / 深色」，XML 中引用 ?attr/ 后的属性名，切换深色模式时自动替换。</p>
+</header>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px">
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 500">标题</h2>
+<div class="ex">
+<div style="height: 64px; padding: 0 16px; display: flex; align-items: center; gap: 12px; font-size: 22px; line-height: 28px; font-weight: 500"><span style="flex: 1">我的作物</span><span class="ms" aria-hidden="true" style="color: #43483E">more_vert</span></div>
+<div style="height: 64px; padding: 0 16px; display: flex; align-items: center; gap: 16px; background: #EDEFE4; font-size: 22px; line-height: 28px; font-weight: 500"><span class="ms" aria-hidden="true">arrow_back</span><span style="flex: 1">黄瓜霜霉病</span><span style="font-size: 12px; line-height: 16px; font-weight: 400; color: #43483E">滚动后</span></div>
+<div style="padding: 16px; display: flex; align-items: center"><span style="flex: 1; font-size: 16px; line-height: 24px; font-weight: 500">今日农事 <span style="font-size: 14px; font-weight: 400; color: #43483E">3 项</span></span><span style="font-size: 14px; line-height: 20px; font-weight: 500; color: #456732">农事日历 ›</span></div>
+<div style="padding: 0 16px 16px"><div style="font-size: 14px; line-height: 20px; color: #43483E">10月10日 周六 · 南京 江宁</div><div style="font-size: 24px; line-height: 32px; font-weight: 500">下午好，农友</div></div>
+</div>
+<div>
+<sc-for list="{{titles}}" as="r" hint-placeholder-count="6">
+<div class="row"><span style="display: flex"><span class="sw" style="background: {{r.l}}"></span><span class="sw" style="margin-left: -4px; background: {{r.d}}"></span></span><span style="display: flex; flex-direction: column"><span style="font-size: 14px; line-height: 20px; font-weight: 500">{{r.use}} <span style="font-weight: 400; color: #43483E">· {{r.role}}</span></span><span class="mono">{{r.attr}} · {{r.l}} / {{r.d}}</span></span></div>
+</sc-for>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 500">信息框</h2>
+<div class="ex" style="padding: 16px; gap: 10px">
+<div style="background: #C5EFAB; color: #2E4F1C; border-radius: 28px; padding: 14px 20px; display: flex; align-items: center; gap: 12px"><span style="font-size: 36px; line-height: 44px">24°</span><span style="flex: 1; font-size: 14px; line-height: 20px">多云转晴 · 适宜喷药</span><span class="ms" aria-hidden="true" style="font-size: 32px">partly_cloudy_day</span></div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<div style="background: #F2F5EA; border-radius: 12px; padding: 12px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15)"><div style="font-size: 14px; line-height: 20px; font-weight: 500">番茄</div><div style="font-size: 12px; line-height: 16px; color: #43483E">Elevated 卡片</div></div>
+<div style="background: #E1E4D9; border-radius: 12px; padding: 12px"><div style="font-size: 14px; line-height: 20px; font-weight: 500">在种 6</div><div style="font-size: 12px; line-height: 16px; color: #43483E">Filled 统计块</div></div>
+<div style="border: 1px solid #C3C8BB; border-radius: 12px; padding: 11px"><div style="font-size: 14px; line-height: 20px; font-weight: 500">冬小麦</div><div style="font-size: 12px; line-height: 16px; color: #43483E">Outlined 卡片</div></div>
+<div style="background: #D9E7CB; color: #3E4A35; border-radius: 12px; padding: 12px"><div style="font-size: 14px; line-height: 20px; font-weight: 500">结果期</div><div style="font-size: 12px; line-height: 16px">标签 / 选中态</div></div>
+</div>
+<div style="background: #BBEBEC; color: #1E4E4E; border-radius: 12px; padding: 12px 16px; display: flex; gap: 10px; font-size: 14px; line-height: 20px"><span class="ms" aria-hidden="true" style="font-size: 20px">tips_and_updates</span>霜降前后注意防霜冻</div>
+</div>
+<div>
+<sc-for list="{{infos}}" as="r" hint-placeholder-count="6">
+<div class="row"><span style="display: flex"><span class="sw" style="background: {{r.l}}"></span><span class="sw" style="margin-left: -4px; background: {{r.d}}"></span></span><span style="display: flex; flex-direction: column"><span style="font-size: 14px; line-height: 20px; font-weight: 500">{{r.use}} <span style="font-weight: 400; color: #43483E">· {{r.role}}</span></span><span class="mono">{{r.attr}} · {{r.l}} / {{r.d}}</span></span></div>
+</sc-for>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 500">提示栏</h2>
+<div class="ex" style="padding: 16px; gap: 10px">
+<div style="background: #2E312B; color: #F0F2E7; border-radius: 4px; min-height: 48px; padding: 0 8px 0 16px; display: flex; align-items: center; font-size: 14px; line-height: 20px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15)"><span style="flex: 1">农事记录已删除</span><span style="padding: 0 12px; font-weight: 500; color: #AAD291">撤销</span></div>
+<div style="background: #FFE08B; color: #241A00; border-radius: 12px; padding: 12px 16px; display: flex; gap: 10px; font-size: 14px; line-height: 20px"><span class="ms" aria-hidden="true" style="font-size: 20px">ac_unit</span><span><strong style="font-weight: 500">降温预警</strong> 12日起最低 8°C</span></div>
+<div style="background: #FFDAD6; color: #93000A; border-radius: 12px; padding: 12px 16px; display: flex; gap: 10px; font-size: 14px; line-height: 20px"><span class="ms" aria-hidden="true" style="font-size: 20px">pest_control</span><span><strong style="font-weight: 500">病害预警</strong> 2号大棚霜霉病风险高</span></div>
+<div style="background: #C5EFAB; color: #2E4F1C; border-radius: 12px; padding: 12px 16px; display: flex; gap: 10px; font-size: 14px; line-height: 20px"><span class="ms" aria-hidden="true" style="font-size: 20px">check_circle</span><span>今日农事已全部完成</span></div>
+<div style="background: #BBEBEC; color: #1E4E4E; border-radius: 12px; padding: 12px 16px; display: flex; gap: 10px; font-size: 14px; line-height: 20px"><span class="ms" aria-hidden="true" style="font-size: 20px">wifi_off</span><span>当前离线，天气数据为 2 小时前</span></div>
+</div>
+<div>
+<sc-for list="{{feedbacks}}" as="r" hint-placeholder-count="6">
+<div class="row"><span style="display: flex"><span class="sw" style="background: {{r.l}}"></span><span class="sw" style="margin-left: -4px; background: {{r.d}}"></span></span><span style="display: flex; flex-direction: column"><span style="font-size: 14px; line-height: 20px; font-weight: 500">{{r.use}} <span style="font-weight: 400; color: #43483E">· {{r.role}}</span></span><span class="mono">{{r.attr}} · {{r.l}} / {{r.d}}</span></span></div>
+</sc-for>
+</div>
+</section>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px">
+<div style="background: #F2F5EA; border-radius: 16px; padding: 16px 20px; font-size: 14px; line-height: 20px"><strong style="display: block; font-size: 16px; line-height: 24px; font-weight: 500; margin-bottom: 4px">主信息卡一屏只放一个</strong>Primary Container 是最醒目的面，只给天气这种核心信息；其他卡片用 Surface Container 系列，按层级由浅到深。</div>
+<div style="background: #F2F5EA; border-radius: 16px; padding: 16px 20px; font-size: 14px; line-height: 20px"><strong style="display: block; font-size: 16px; line-height: 24px; font-weight: 500; margin-bottom: 4px">提示栏按严重程度选色</strong>信息 → Tertiary，警告 → Warning，错误 / 病害 → Error，完成 → Primary Container。操作后的临时反馈统一用 Snackbar。</div>
+<div style="background: #F2F5EA; border-radius: 16px; padding: 16px 20px; font-size: 14px; line-height: 20px"><strong style="display: block; font-size: 16px; line-height: 24px; font-weight: 500; margin-bottom: 4px">布局里不写死色值</strong>XML 只引用 ?attr/colorXxx，色值集中写在 values/ 与 values-night/ 的 colors.xml，深色模式和动态取色都能自动生效。</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const r = (use, role, attr, l, d) => ({ use, role, attr, l, d });
+    return {
+      titles: [
+        r('页面标题', 'On Surface', 'colorOnSurface', '#191D16', '#E1E4D9'),
+        r('顶栏背景', 'Surface', 'colorSurface', '#F8FAF0', '#11140E'),
+        r('顶栏（滚动后）', 'Surface Container', 'colorSurfaceContainer', '#EDEFE4', '#1D211A'),
+        r('副标题 / 说明', 'On Surface Variant', 'colorOnSurfaceVariant', '#43483E', '#C3C8BB'),
+        r('标题旁操作 / 链接', 'Primary', 'colorPrimary', '#456732', '#AAD291'),
+        r('顶栏图标', 'On Surface Variant', 'colorOnSurfaceVariant', '#43483E', '#C3C8BB')
+      ],
+      infos: [
+        r('主信息卡（天气）', 'Primary Container', 'colorPrimaryContainer', '#C5EFAB', '#2E4F1C'),
+        r('列表卡片 Elevated', 'Surface Container Low', 'colorSurfaceContainerLow', '#F2F5EA', '#191D16'),
+        r('统计块 Filled', 'Surface Container Highest', 'colorSurfaceContainerHighest', '#E1E4D9', '#32362F'),
+        r('描边卡片 Outlined', 'Outline Variant', 'colorOutlineVariant', '#C3C8BB', '#43483E'),
+        r('标签 / 选中态', 'Secondary Container', 'colorSecondaryContainer', '#D9E7CB', '#3E4A35'),
+        r('知识 / 小贴士', 'Tertiary Container', 'colorTertiaryContainer', '#BBEBEC', '#1E4E4E')
+      ],
+      feedbacks: [
+        r('Snackbar 背景', 'Inverse Surface', 'colorSurfaceInverse', '#2E312B', '#E1E4D9'),
+        r('Snackbar 操作', 'Inverse Primary', 'colorPrimaryInverse', '#AAD291', '#456732'),
+        r('天气预警', 'Warning Container', 'colorWarningContainer（自定义）', '#FFE08B', '#584400'),
+        r('病害预警 / 错误', 'Error Container', 'colorErrorContainer', '#FFDAD6', '#93000A'),
+        r('完成 / 成功', 'Primary Container', 'colorPrimaryContainer', '#C5EFAB', '#2E4F1C'),
+        r('信息 / 离线', 'Tertiary Container', 'colorTertiaryContainer', '#BBEBEC', '#1E4E4E')
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

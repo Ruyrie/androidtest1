@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>发布动态或提问</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button,textarea{font-family:Roboto,'Noto Sans SC',sans-serif}
+textarea::placeholder{color:#74796D}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#43483E;display:flex;align-items:center;justify-content:center}
+.seg{width:80px;height:36px;border:1px solid #74796D;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:20px;font-weight:500;cursor:pointer;box-sizing:border-box}
+.op{display:flex;align-items:center;gap:16px;min-height:56px;padding:0 4px;border-top:1px solid #E0E4D6}
+.op .k{flex:1;font-size:16px;line-height:24px}
+.op .v{font-size:14px;line-height:20px;color:#43483E;display:flex;align-items:center;gap:4px}
+.ph{width:104px;height:104px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 16px 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="Community.dc.html" class="ib" aria-label="关闭" style="color: #191D16"><span class="ms" aria-hidden="true">close</span></a>
+<div role="radiogroup" aria-label="发布类型" style="flex: 1; display: flex; justify-content: center">
+<span role="radio" aria-checked="{{isPost}}" class="seg" style="border-radius: 18px 0 0 18px; background: {{postBg}}; color: {{postFg}}" onClick="{{pickPost}}">动态</span>
+<span role="radio" aria-checked="{{isAsk}}" class="seg" style="border-left: 0; border-radius: 0 18px 18px 0; background: {{askBg}}; color: {{askFg}}" onClick="{{pickAsk}}">提问</span>
+</div>
+<a href="{{doneHref}}" style="height: 40px; padding: 0 20px; border-radius: 20px; background: #456732; color: #FFFFFF; display: flex; align-items: center; font-size: 14px; font-weight: 500">发布</a>
+</header>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 8px 16px 0; display: flex; flex-direction: column; gap: 16px">
+<sc-if value="{{isAsk}}" hint-placeholder-val="{{ false }}">
+<input aria-label="问题标题" value="番茄叶片卷曲发黄，是缺什么肥？" style="border: 0; border-bottom: 1px solid #C3C8BB; outline: 0; background: transparent; padding: 8px 0 12px; font-family: Roboto, 'Noto Sans SC', sans-serif; font-size: 20px; line-height: 28px; font-weight: 500; color: #191D16">
+</sc-if>
+<textarea aria-label="{{bodyLabel}}" placeholder="{{placeholder}}" value="{{body}}" onChange="{{onBody}}" style="height: 132px; resize: none; border: 0; outline: 0; background: transparent; padding: 0; font-size: 16px; line-height: 24px; color: #191D16"></textarea>
+
+<div style="display: flex; gap: 8px">
+<span class="ph" style="background: #E1E4D9; color: #74796D"><span class="ms" aria-hidden="true">image</span></span>
+<span class="ph" style="background: #E1E4D9; color: #74796D"><span class="ms" aria-hidden="true">image</span></span>
+<button type="button" class="ph" aria-label="添加图片" style="border: 1px dashed #74796D; background: transparent; color: #456732; padding: 0; box-sizing: border-box"><span class="ms" aria-hidden="true">add_photo_alternate</span></button>
+</div>
+
+<div>
+<div class="op"><span class="ms" aria-hidden="true" style="color: #456732">tag</span><span class="k">话题</span><span class="v"><span style="height: 28px; padding: 0 10px; border-radius: 8px; background: #D9E7CB; color: #3E4A35; font-weight: 500; display: flex; align-items: center">#番茄</span><span class="ms" aria-hidden="true">chevron_right</span></span></div>
+<div class="op"><span class="ms" aria-hidden="true" style="color: #456732">potted_plant</span><span class="k">关联我的作物</span><span class="v">番茄 · 1号大棚<span class="ms" aria-hidden="true">chevron_right</span></span></div>
+<div class="op"><span class="ms" aria-hidden="true" style="color: #456732">location_on</span><span class="k">所在位置</span><span class="v">南京 · 江宁区<span class="ms" aria-hidden="true">chevron_right</span></span></div>
+<sc-if value="{{isPost}}" hint-placeholder-val="{{ true }}">
+<div class="op"><span class="ms" aria-hidden="true" style="color: #456732">visibility</span><span class="k">谁可以看</span><span class="v">所有人<span class="ms" aria-hidden="true">chevron_right</span></span></div>
+</sc-if>
+<sc-if value="{{isAsk}}" hint-placeholder-val="{{ false }}">
+<div class="op"><span class="ms" aria-hidden="true" style="color: #745B00">paid</span><span class="k">悬赏积分 <span style="font-size: 12px; color: #43483E">（余 1,280）</span></span><span class="v"><span style="height: 28px; padding: 0 10px; border-radius: 8px; background: #FFE08B; color: #241A00; font-weight: 500; display: flex; align-items: center">20 积分</span><span class="ms" aria-hidden="true">chevron_right</span></span></div>
+<div class="op"><span class="ms" aria-hidden="true" style="color: #386666">auto_awesome</span><span class="k" style="display: flex; flex-direction: column">让 AI 先给参考答案<span style="font-size: 12px; line-height: 16px; color: #43483E">发布后立即生成，农友回答仍会继续</span></span><span role="img" aria-label="已开启" style="width: 52px; height: 32px; flex-shrink: 0; border-radius: 16px; background: #456732; display: flex; align-items: center; justify-content: flex-end; padding: 0 4px; box-sizing: border-box"><span style="width: 24px; height: 24px; border-radius: 12px; background: #FFFFFF; color: #456732; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true" style="font-size: 16px">check</span></span></span></div>
+</sc-if>
+</div>
+</main>
+
+<div style="flex-shrink: 0; border-top: 1px solid #E0E4D6; padding: 4px 8px 16px; display: flex; align-items: center; gap: 4px">
+<button class="ib" aria-label="相册"><span class="ms" aria-hidden="true">image</span></button>
+<button class="ib" aria-label="拍照"><span class="ms" aria-hidden="true">photo_camera</span></button>
+<button class="ib" aria-label="话题"><span class="ms" aria-hidden="true">tag</span></button>
+<button class="ib" aria-label="提到农友"><span class="ms" aria-hidden="true">alternate_email</span></button>
+<span style="flex: 1"></span>
+<span style="font-size: 12px; color: #43483E; padding-right: 8px">{{count}}/1000</span>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const mode = st.mode || 'post';
+    const post = mode === 'post';
+    const bodies = st.bodies || {
+      post: '今年第一次在番茄棚里用膜下滴灌，比漫灌省水一半多，棚里湿度也降下来了，灰霉病少了很多。记录一下，明年黄瓜棚也改。',
+      ask: '1号大棚的樱桃番茄，中下部叶片从边缘开始卷曲发黄，叶脉还是绿的。最近追过一次钾肥，浇水正常。附两张照片，请懂的农友帮忙看看。'
+    };
+    const body = bodies[mode];
+    return {
+      isPost: post, isAsk: !post, body,
+      onBody: (e) => { const n = Object.assign({}, bodies); n[mode] = e.target.value; this.setState({ bodies: n }); },
+      bodyLabel: post ? '动态内容' : '问题描述',
+      placeholder: post ? '分享你的种植经验、收获或者遇到的趣事…' : '描述症状、发生部位、最近做过的农事，越详细越好',
+      count: body.length,
+      doneHref: post ? 'Community.dc.html' : 'Question.dc.html',
+      postBg: post ? '#D9E7CB' : 'transparent', postFg: post ? '#3E4A35' : '#191D16',
+      askBg: !post ? '#D9E7CB' : 'transparent', askFg: !post ? '#3E4A35' : '#191D16',
+      pickPost: () => this.setState({ mode: 'post' }),
+      pickAsk: () => this.setState({ mode: 'ask' })
+    };
+  }
+}
+</script>
+</body>
+</html>

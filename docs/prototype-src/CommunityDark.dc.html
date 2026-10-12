@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>农友圈 深色</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#C3C8BB;display:flex;align-items:center;justify-content:center;position:relative}
+.nv{height:80px;flex-shrink:0;background:#1D211A;display:flex}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;padding-top:12px;gap:4px;color:#C3C8BB}
+.pl{width:64px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative}
+.on{color:#E1E4D9}.on .pl{background:#3E4A35;color:#D9E7CB}
+.lb{font-size:12px;line-height:16px;font-weight:500}
+.tab{flex:1;height:48px;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:20px;font-weight:500;position:relative;color:#C3C8BB}
+.post{background:#191D16;border-radius:12px;padding:12px 12px 4px;display:flex;flex-direction:column;gap:10px}
+.av{width:40px;height:40px;border-radius:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500}
+.bdg{height:20px;padding:0 6px;border-radius:6px;font-size:11px;line-height:20px;font-weight:500}
+.fol{height:32px;box-sizing:border-box;border-radius:16px;padding:0 14px;font-size:14px;line-height:20px;font-weight:500;cursor:pointer}
+.act{height:40px;border:0;background:transparent;padding:0 12px 0 8px;border-radius:20px;display:flex;align-items:center;gap:6px;font-size:14px;color:#C3C8BB;cursor:pointer}
+.img{background:#32362F;border-radius:8px;color:#8D9286;display:flex;align-items:center;justify-content:center}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #11140E; color: #E1E4D9; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative; color-scheme: dark">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px 0 16px; display: flex; align-items: center; gap: 4px">
+<h1 style="margin: 0; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">农友圈</h1>
+<button class="ib" aria-label="搜索农友和动态"><span class="ms" aria-hidden="true">search</span></button>
+<a href="Messages.dc.html" class="ib" aria-label="消息，3 条未读"><span class="ms" aria-hidden="true">mail</span><span style="position: absolute; top: 6px; right: 4px; min-width: 16px; height: 16px; padding: 0 4px; box-sizing: border-box; border-radius: 8px; background: #FFB4AB; color: #690005; font-size: 11px; line-height: 16px; font-weight: 500; text-align: center">3</span></a>
+</header>
+
+<nav aria-label="农友圈分类" style="display: flex; flex-shrink: 0; border-bottom: 1px solid #43483E">
+<span class="tab" aria-current="page" style="color: #AAD291">推荐<span style="position: absolute; left: 50%; bottom: 0; width: 40px; margin-left: -20px; height: 3px; border-radius: 3px 3px 0 0; background: #AAD291"></span></span>
+<span class="tab">关注</span>
+<a href="QA.dc.html" class="tab">问答</a>
+<span class="tab">同城</span>
+</nav>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 12px 16px 0; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{posts}}" as="p" hint-placeholder-count="3">
+<article class="post">
+<div style="display: flex; align-items: center; gap: 12px">
+<a href="UserProfile.dc.html" class="av" style="background: {{p.avBg}}; color: {{p.avFg}}" aria-label="{{p.name}}的主页">{{p.av}}</a>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; align-items: center; gap: 6px"><a href="UserProfile.dc.html" style="font-size: 14px; line-height: 20px; font-weight: 500">{{p.name}}</a><span class="bdg" style="background: {{p.bBg}}; color: {{p.bFg}}">{{p.badge}}</span></div>
+<div style="font-size: 12px; line-height: 16px; color: #C3C8BB">{{p.meta}}</div>
+</div>
+<button class="fol" style="border: {{p.fBd}}; background: {{p.fBg}}; color: {{p.fFg}}" onClick="{{p.follow}}" aria-pressed="{{p.followed}}">{{p.fText}}</button>
+</div>
+<a href="PostDetail.dc.html" style="font-size: 15px; line-height: 22px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">{{p.text}}</a>
+<div style="display: grid; gap: 4px; grid-template-columns: {{p.cols}}">
+<sc-for list="{{p.imgs}}" as="m" hint-placeholder-count="3"><a href="PostDetail.dc.html" class="img" style="height: {{m.h}}" aria-label="查看图片"><span class="ms" aria-hidden="true">image</span></a></sc-for>
+</div>
+<div style="display: flex; align-items: center; margin-left: -8px">
+<span style="height: 24px; padding: 0 8px; margin-left: 8px; margin-right: auto; border-radius: 8px; background: #3E4A35; color: #D9E7CB; font-size: 12px; line-height: 24px; font-weight: 500">{{p.tag}}</span>
+<button class="act" onClick="{{p.like}}" aria-pressed="{{p.liked}}" aria-label="点赞"><span class="ms {{p.likeCls}}" aria-hidden="true" style="font-size: 20px; color: {{p.likeColor}}">favorite</span>{{p.likeCount}}</button>
+<a href="PostDetail.dc.html" class="act" aria-label="评论"><span class="ms" aria-hidden="true" style="font-size: 20px">chat_bubble</span>{{p.comments}}</a>
+<button class="act" aria-label="分享" style="padding: 0 8px"><span class="ms" aria-hidden="true" style="font-size: 20px">share</span></button>
+</div>
+</article>
+</sc-for>
+</main>
+
+<a href="Publish.dc.html" style="position: absolute; right: 16px; bottom: 96px; height: 56px; padding: 0 20px 0 16px; border-radius: 16px; background: #2E4F1C; color: #C5EFAB; display: flex; align-items: center; gap: 12px; font-size: 14px; line-height: 20px; font-weight: 500; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15)"><span class="ms" aria-hidden="true">edit</span>发布</a>
+
+<nav aria-label="主导航" class="nv">
+<a href="HomeDark.dc.html" class="ni"><span class="pl"><span class="ms" aria-hidden="true">home</span></span><span class="lb">首页</span></a>
+<a href="Crops.dc.html" class="ni"><span class="pl"><span class="ms" aria-hidden="true">potted_plant</span></span><span class="lb">作物</span></a>
+<a href="Discover.dc.html" class="ni"><span class="pl"><span class="ms" aria-hidden="true">explore</span></span><span class="lb">发现</span></a>
+<a href="CommunityDark.dc.html" class="ni on" aria-current="page"><span class="pl"><span class="ms f" aria-hidden="true">forum</span></span><span class="lb">农友圈</span></a>
+<a href="Profile.dc.html" class="ni"><span class="pl"><span class="ms" aria-hidden="true">person</span></span><span class="lb">我的</span></a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const liked = st.liked || {};
+    const follows = st.follows || { 2: true };
+    const raw = [
+      { id: 1, name: '草莓姐姐', av: '莓', avBg: '#1E4E4E', avFg: '#BBEBEC', badge: '种植能手', bBg: '#584400', bFg: '#FFE08B', meta: '句容 · 2 小时前', text: '今年的红颜定植完成啦！棚里铺了银灰色地膜，配合黄板诱虫，蚜虫明显少了。分享下定植密度：行距 30 cm、株距 18 cm，每亩约 8000 株。', n: 3, tag: '#草莓种植', likes: 128, comments: 36 },
+      { id: 2, name: '王农艺师', av: '王', avBg: '#3E4A35', avFg: '#D9E7CB', badge: '农技专家', bBg: '#1E4E4E', bFg: '#BBEBEC', meta: '南京 · 5 小时前', text: '霜降前后大棚管理三件事：① 夜间加盖保温被，棚温不低于 10°C；② 晴天中午通风 1–2 小时，降湿防灰霉；③ 少浇水，滴灌小水勤浇。', n: 1, tag: '#大棚管理', likes: 356, comments: 58 },
+      { id: 3, name: '果园阿强', av: '强', avBg: '#584400', avFg: '#FFE08B', badge: 'Lv.3', bBg: '#32362F', bFg: '#C3C8BB', meta: '溧水 · 昨天', text: '梨树秋施基肥开始了，每棵树 20 斤羊粪加 1 斤复合肥，大家都是怎么配的？', n: 2, tag: '#果树管理', likes: 42, comments: 19 }
+    ];
+    const posts = raw.map((p) => {
+      const l = !!liked[p.id];
+      const f = !!follows[p.id];
+      const imgs = [];
+      for (let i = 0; i < p.n; i++) imgs.push({ h: p.n === 1 ? '168px' : (p.n === 2 ? '140px' : '104px') });
+      return Object.assign({}, p, {
+        imgs, cols: p.n === 1 ? '1fr' : 'repeat(' + p.n + ', minmax(0, 1fr))',
+        liked: l, likeCount: p.likes + (l ? 1 : 0), likeCls: l ? 'f' : '', likeColor: l ? '#FFB4AB' : '#C3C8BB',
+        like: () => { const n = Object.assign({}, liked); n[p.id] = !l; this.setState({ liked: n }); },
+        followed: f, fText: f ? '已关注' : '关注',
+        fBd: f ? '0' : '1px solid #8D9286', fBg: f ? '#3E4A35' : 'transparent', fFg: f ? '#D9E7CB' : '#AAD291',
+        follow: () => { const n = Object.assign({}, follows); n[p.id] = !f; this.setState({ follows: n }); }
+      });
+    });
+    return { posts };
+  }
+}
+</script>
+</body>
+</html>

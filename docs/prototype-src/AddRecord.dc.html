@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>添加农事记录</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button,input{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#191D16;display:flex;align-items:center;justify-content:center}
+.fld{position:relative;display:block}
+.fl{position:absolute;left:12px;top:-8px;padding:0 4px;background:#F8FAF0;font-size:12px;line-height:16px;color:#43483E}
+.fb{height:56px;box-sizing:border-box;border:1px solid #74796D;border-radius:4px;padding:0 12px 0 16px;display:flex;align-items:center;gap:8px;font-size:16px;line-height:24px}
+.ty{height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;line-height:20px;font-weight:500;cursor:pointer;box-sizing:border-box}
+.ph{width:80px;height:80px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.sw{width:52px;height:32px;flex-shrink:0;box-sizing:border-box;border-radius:16px;display:flex;align-items:center;cursor:pointer;border:0;padding:0}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 8px 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="CropDetail.dc.html" class="ib" aria-label="关闭"><span class="ms" aria-hidden="true">close</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">添加记录</h1>
+<a href="CropDetail.dc.html" style="height: 40px; padding: 0 12px; border-radius: 20px; display: flex; align-items: center; color: #456732; font-size: 14px; font-weight: 500">保存</a>
+</header>
+
+<form style="flex: 1; min-height: 0; overflow: hidden; padding: 4px 16px 0; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: center; gap: 12px; background: #F2F5EA; border-radius: 12px; padding: 10px 12px">
+<span style="width: 40px; height: 40px; border-radius: 8px; background: #E1E4D9; color: #74796D; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">nutrition</span></span>
+<span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 16px; line-height: 24px; font-weight: 500">番茄 · 樱桃番茄</span><span style="font-size: 12px; line-height: 16px; color: #43483E">1号大棚 · 结果期 · 第 68 天</span></span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; line-height: 20px; font-weight: 500">记录类型</span>
+<div role="radiogroup" aria-label="记录类型" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{types}}" as="t" hint-placeholder-count="6">
+<span role="radio" aria-checked="{{t.on}}" class="ty" style="background: {{t.bg}}; color: {{t.fg}}; border: {{t.bd}}" onClick="{{t.pick}}"><span class="ms" aria-hidden="true" style="font-size: 18px">{{t.icon}}</span>{{t.name}}</span>
+</sc-for>
+</div>
+</div>
+
+<label class="fld"><span class="fl">日期</span><span class="fb"><span style="flex: 1">2026年10月10日 · 上午</span><span class="ms" aria-hidden="true" style="color: #43483E; font-size: 20px">calendar_today</span></span></label>
+
+<label class="fld"><span class="fl">{{itemLabel}}</span><span class="fb"><span style="flex: 1">{{itemValue}}</span><span class="ms" aria-hidden="true" style="color: #43483E; font-size: 20px">search</span></span></label>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 120px minmax(0, 1fr); gap: 12px">
+<label class="fld"><span class="fl">用量</span><span class="fb">5</span></label>
+<label class="fld"><span class="fl">单位</span><span class="fb"><span style="flex: 1">kg</span><span class="ms" aria-hidden="true" style="color: #43483E">arrow_drop_down</span></span></label>
+<label class="fld"><span class="fl">费用（元）</span><span class="fb">60</span></label>
+</div>
+
+<div style="display: flex; align-items: center; gap: 16px; min-height: 56px; background: #F2F5EA; border-radius: 12px; padding: 8px 16px">
+<span class="ms" aria-hidden="true" style="color: #386666">receipt_long</span>
+<span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 16px; line-height: 24px">同步到收支记账</span><span style="font-size: 14px; line-height: 20px; color: #43483E">{{syncText}}</span></span>
+<button type="button" role="switch" aria-checked="{{sync}}" aria-label="同步到收支记账" class="sw" style="background: {{swBg}}; border: {{swBd}}; justify-content: {{swJust}}; padding: {{swPad}}" onClick="{{toggleSync}}"><span style="border-radius: 12px; display: flex; align-items: center; justify-content: center; width: {{thumb}}; height: {{thumb}}; background: {{thumbBg}}; color: #456732"><sc-if value="{{sync}}" hint-placeholder-val="{{ true }}"><span class="ms" aria-hidden="true" style="font-size: 16px">check</span></sc-if></span></button>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; line-height: 20px; font-weight: 500">现场照片 <span style="font-weight: 400; color: #43483E">2/9</span></span>
+<div style="display: flex; gap: 8px">
+<span class="ph" style="background: #E1E4D9; color: #74796D"><span class="ms" aria-hidden="true">image</span></span>
+<span class="ph" style="background: #E1E4D9; color: #74796D"><span class="ms" aria-hidden="true">image</span></span>
+<button type="button" class="ph" aria-label="添加照片" style="border: 1px solid #74796D; background: transparent; color: #456732; padding: 0; box-sizing: border-box"><span class="ms" aria-hidden="true">add_a_photo</span></button>
+</div>
+</div>
+</form>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const cur = st.type || '施肥';
+    const sync = st.sync !== undefined ? st.sync : true;
+    const list = [['施肥', 'compost'], ['用药', 'sanitizer'], ['灌溉', 'water_drop'], ['整枝', 'content_cut'], ['采收', 'shopping_basket'], ['其他', 'more_horiz']];
+    const item = { '施肥': ['肥料名称', '硫酸钾（K₂O ≥ 50%）'], '用药': ['药剂名称', '嘧霉胺 40% 悬浮剂'], '灌溉': ['灌溉方式', '膜下滴灌'], '整枝': ['作业内容', '整枝打杈，摘除老叶'], '采收': ['采收量', '120 斤'], '其他': ['内容', '自定义'] }[cur];
+    return {
+      types: list.map(([name, icon]) => {
+        const on = name === cur;
+        return { name, icon, on, bg: on ? '#D9E7CB' : 'transparent', fg: on ? '#3E4A35' : '#43483E', bd: on ? '1px solid #D9E7CB' : '1px solid #C3C8BB', pick: () => this.setState({ type: name }) };
+      }),
+      itemLabel: item[0], itemValue: item[1],
+      sync, syncText: sync ? '保存后自动记一笔支出 ¥60 · 化肥' : '不记账',
+      swBg: sync ? '#456732' : '#E1E4D9', swBd: sync ? '0' : '2px solid #74796D',
+      swJust: sync ? 'flex-end' : 'flex-start', swPad: sync ? '0 4px' : '0 6px',
+      thumb: sync ? '24px' : '16px', thumbBg: sync ? '#FFFFFF' : '#74796D',
+      toggleSync: () => this.setState({ sync: !sync })
+    };
+  }
+}
+</script>
+</body>
+</html>

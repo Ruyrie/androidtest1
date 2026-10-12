@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>禾伴 引导页</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 48}
+.cta{height:56px;width:100%;border:0;border-radius:28px;background:#456732;color:#FFFFFF;font-size:16px;line-height:24px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.chip{position:absolute;height:40px;box-sizing:border-box;padding:0 16px 0 12px;border-radius:20px;background:#F8FAF0;color:#191D16;display:flex;align-items:center;gap:8px;font-size:14px;line-height:20px;font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.3),0 4px 8px 3px rgba(0,0,0,.15);white-space:nowrap}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<div style="height: 64px; flex-shrink: 0; display: flex; align-items: center; justify-content: flex-end; padding: 0 8px">
+<a href="Login.dc.html" style="height: 40px; padding: 0 12px; border-radius: 20px; display: flex; align-items: center; color: #456732; font-size: 14px; font-weight: 500">跳过</a>
+</div>
+
+<div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 32px; gap: 40px">
+<div aria-hidden="true" style="position: relative; width: 280px; height: 280px">
+<div style="width: 280px; height: 280px; border-radius: 140px; display: flex; align-items: center; justify-content: center; background: {{heroBg}}; color: {{heroFg}}"><span class="ms f" style="font-size: 120px">{{icon}}</span></div>
+<div class="chip" style="left: -24px; top: 36px"><span class="ms" style="font-size: 20px; color: #456732">{{chipIconA}}</span>{{chipA}}</div>
+<div class="chip" style="right: -28px; bottom: 40px"><span class="ms" style="font-size: 20px; color: #386666">{{chipIconB}}</span>{{chipB}}</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+<h1 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 500">{{title}}</h1>
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: #43483E; max-width: 300px">{{body}}</p>
+</div>
+<div role="tablist" aria-label="引导进度" style="display: flex; gap: 8px">
+<sc-for list="{{dots}}" as="d" hint-placeholder-count="3">
+<span style="height: 8px; border-radius: 4px; width: {{d.w}}; background: {{d.bg}}"></span>
+</sc-for>
+</div>
+</div>
+
+<div style="padding: 0 24px 40px; display: flex; flex-direction: column; align-items: center; gap: 12px">
+<sc-if value="{{notLast}}" hint-placeholder-val="{{ true }}">
+<button class="cta" onClick="{{next}}">下一步</button>
+</sc-if>
+<sc-if value="{{isLast}}" hint-placeholder-val="{{ false }}">
+<a class="cta" href="Register.dc.html">开始使用</a>
+</sc-if>
+<a href="Login.dc.html" style="height: 40px; display: flex; align-items: center; font-size: 14px; color: #43483E">已有账号？<span style="color: #456732; font-weight: 500">登录</span></a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const steps = [
+      { icon: 'potted_plant', title: '管好每一块地', body: '作物、地块、农事记录一处管理，田间没信号也能用', bg: '#C5EFAB', fg: '#2E4F1C', chipIconA: 'nutrition', chipA: '番茄 · 结果期', chipIconB: 'notifications', chipB: '明早 8:00 追肥' },
+      { icon: 'auto_awesome', title: '随时问 AI 农技助手', body: '拍照识别病虫害，AI 结合你的作物和天气给出建议', bg: '#BBEBEC', fg: '#1E4E4E', chipIconA: 'photo_camera', chipA: '霜霉病 · 92%', chipIconB: 'spa', chipB: '建议上午通风' },
+      { icon: 'forum', title: '和农友一起交流', body: '分享种植经验、提问求助、买卖农产品', bg: '#D9E7CB', fg: '#3E4A35', chipIconA: 'favorite', chipA: '草莓姐姐 赞了你', chipIconB: 'question_answer', chipB: '3 个新回答' }
+    ];
+    const i = (this.state && this.state.i) || 0;
+    const s = steps[i];
+    return {
+      icon: s.icon, title: s.title, body: s.body, heroBg: s.bg, heroFg: s.fg,
+      chipA: s.chipA, chipB: s.chipB, chipIconA: s.chipIconA, chipIconB: s.chipIconB,
+      dots: steps.map((x, k) => ({ w: k === i ? '24px' : '8px', bg: k === i ? '#456732' : '#C3C8BB' })),
+      notLast: i < 2, isLast: i === 2,
+      next: () => this.setState({ i: Math.min(i + 1, 2) })
+    };
+  }
+}
+</script>
+</body>
+</html>

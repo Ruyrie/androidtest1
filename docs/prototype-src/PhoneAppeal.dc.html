@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>手机号已停用 申诉换绑</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button,input{font-family:Roboto,'Noto Sans SC',sans-serif}
+input::placeholder{color:#74796D}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#191D16;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.fld{position:relative;display:block}
+.fl{position:absolute;left:12px;top:-8px;padding:0 4px;background:#F8FAF0;font-size:12px;line-height:16px;color:#43483E}
+.fb{height:56px;box-sizing:border-box;border:1px solid #74796D;border-radius:4px;display:flex;align-items:center;gap:8px;font-size:16px;line-height:24px;padding:0 12px 0 16px}
+.fb input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:16px;line-height:24px;color:#191D16;padding:0}
+.cta{height:56px;width:100%;box-sizing:border-box;border:0;border-radius:28px;font-size:16px;line-height:24px;font-weight:500;display:flex;align-items:center;justify-content:center}
+.stp{width:28px;height:28px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0;box-sizing:border-box}
+.code{height:40px;border:0;background:transparent;border-radius:20px;padding:0 12px;font-size:14px;line-height:20px;font-weight:500;white-space:nowrap;display:flex;align-items:center}
+.tl{display:flex;gap:14px}
+.tl .d{width:24px;display:flex;flex-direction:column;align-items:center}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<sc-if value="{{notDone}}" hint-placeholder-val="{{ true }}">
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<sc-if value="{{isStep1}}" hint-placeholder-val="{{ true }}"><a href="ForgotPwd.dc.html" class="ib" aria-label="返回"><span class="ms" aria-hidden="true">arrow_back</span></a></sc-if>
+<sc-if value="{{isStep2}}" hint-placeholder-val="{{ false }}"><button class="ib" aria-label="返回上一步" onClick="{{back}}"><span class="ms" aria-hidden="true">arrow_back</span></button></sc-if>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">手机号已停用</h1>
+</header>
+
+<form style="padding: 12px 24px 0; display: flex; flex-direction: column; gap: 22px">
+<ol aria-label="步骤" style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 8px">
+<li style="display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: {{s1Text}}; font-weight: {{s1W}}"><span class="stp" style="background: {{s1Bg}}; color: {{s1Fg}}">{{s1Mark}}</span>账号信息</li>
+<li aria-hidden="true" style="flex: 1; height: 1px; background: {{lineBg}}"></li>
+<li style="display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: {{s2Text}}; font-weight: {{s2W}}"><span class="stp" style="background: {{s2Bg}}; color: {{s2Fg}}; border: {{s2Bd}}">2</span>验证新手机号</li>
+</ol>
+
+<sc-if value="{{isStep1}}" hint-placeholder-val="{{ true }}">
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: #43483E">原手机号收不到验证码时，可以提交申诉，把账号换绑到新手机号。请尽量填写准确，便于人工核实。</p>
+<label class="fld"><span class="fl">原手机号</span><span class="fb"><span style="color: #43483E">+86</span><span style="width: 1px; height: 24px; background: #C3C8BB"></span><input type="tel" inputmode="numeric" maxlength="11" placeholder="账号原来绑定的手机号" value="{{old}}" onChange="{{onOld}}" aria-label="原手机号"></span></label>
+<label class="fld"><span class="fl">账号昵称（选填）</span><span class="fb"><input value="{{nick}}" onChange="{{onNick}}" placeholder="例如：老李种菜" aria-label="账号昵称"></span></label>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<label class="fld"><span class="fl">最近一次登录</span><span class="fb"><span style="flex: 1">一个月内</span><span class="ms" aria-hidden="true" style="color: #43483E">arrow_drop_down</span></span></label>
+<label class="fld"><span class="fl">常用登录地区</span><span class="fb"><span style="flex: 1">江苏 南京</span><span class="ms" aria-hidden="true" style="color: #43483E">arrow_drop_down</span></span></label>
+</div>
+<sc-if value="{{oldOk}}" hint-placeholder-val="{{ false }}"><button type="button" class="cta" style="background: #456732; color: #FFFFFF; cursor: pointer" onClick="{{next}}">下一步</button></sc-if>
+<sc-if value="{{oldNotOk}}" hint-placeholder-val="{{ true }}"><span class="cta" aria-disabled="true" style="background: rgba(25, 29, 22, 0.12); color: rgba(25, 29, 22, 0.38)">下一步</span></sc-if>
+</sc-if>
+
+<sc-if value="{{isStep2}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: #43483E">审核通过后，账号将换绑到这个手机号，结果也会通过短信发给它。</p>
+<label class="fld"><span class="fl">新手机号</span><span class="fb"><span style="color: #43483E">+86</span><span style="width: 1px; height: 24px; background: #C3C8BB"></span><input type="tel" inputmode="numeric" maxlength="11" placeholder="请输入 11 位手机号" value="{{nw}}" onChange="{{onNew}}" aria-label="新手机号"></span></label>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<label class="fld"><span class="fl">验证码</span><span class="fb" style="padding-right: 4px"><input inputmode="numeric" maxlength="6" placeholder="6 位数字" value="{{code}}" onChange="{{onCode}}" aria-label="验证码"><span style="width: 1px; height: 24px; background: #C3C8BB"></span>
+<sc-if value="{{canSend}}" hint-placeholder-val="{{ false }}"><button type="button" class="code" style="color: #456732; cursor: pointer" onClick="{{send}}">获取验证码</button></sc-if>
+<sc-if value="{{cannotSend}}" hint-placeholder-val="{{ true }}"><span class="code" style="color: #74796D">获取验证码</span></sc-if>
+<sc-if value="{{counting}}" hint-placeholder-val="{{ false }}"><span class="code" style="color: #74796D">{{left}}s 后重发</span></sc-if>
+</span></label>
+<span style="padding: 0 16px; font-size: 12px; line-height: 16px; color: #43483E">{{codeHint}}</span>
+</div>
+<sc-if value="{{ready}}" hint-placeholder-val="{{ false }}"><button type="button" class="cta" style="background: #456732; color: #FFFFFF; cursor: pointer" onClick="{{submit}}">提交申诉</button></sc-if>
+<sc-if value="{{notReady}}" hint-placeholder-val="{{ true }}"><span class="cta" aria-disabled="true" style="background: rgba(25, 29, 22, 0.12); color: rgba(25, 29, 22, 0.38)">提交申诉</span></sc-if>
+</sc-if>
+</form>
+</sc-if>
+
+<sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+<div style="flex: 1; padding: 64px 24px 0; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center">
+<span style="width: 88px; height: 88px; border-radius: 44px; background: #FFE08B; color: #241A00; display: flex; align-items: center; justify-content: center"><span class="ms f" aria-hidden="true" style="font-size: 48px">hourglass_top</span></span>
+<h1 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 500">申诉已提交</h1>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #43483E">申诉编号 HB20261010-0832</p>
+</div>
+<div style="background: #F2F5EA; border-radius: 16px; padding: 18px 16px; display: flex; flex-direction: column; gap: 0">
+<div class="tl"><span class="d"><span class="ms f" aria-hidden="true" style="color: #456732; font-size: 22px">check_circle</span><span style="flex: 1; width: 2px; background: #C3C8BB; min-height: 20px"></span></span><span style="padding-bottom: 14px"><span style="display: block; font-size: 16px; line-height: 24px; font-weight: 500">已提交</span><span style="display: block; font-size: 13px; line-height: 18px; color: #43483E">原手机号 {{oldMasked}} → 新手机号 {{newMasked}}</span></span></div>
+<div class="tl"><span class="d"><span class="ms" aria-hidden="true" style="color: #745B00; font-size: 22px">pending</span><span style="flex: 1; width: 2px; background: #C3C8BB; min-height: 20px"></span></span><span style="padding-bottom: 14px"><span style="display: block; font-size: 16px; line-height: 24px; font-weight: 500">人工审核中</span><span style="display: block; font-size: 13px; line-height: 18px; color: #43483E">预计 1–3 个工作日，可能会电话联系新手机号核实</span></span></div>
+<div class="tl"><span class="d"><span class="ms" aria-hidden="true" style="color: #74796D; font-size: 22px">radio_button_unchecked</span></span><span><span style="display: block; font-size: 16px; line-height: 24px; color: #43483E">审核结果</span><span style="display: block; font-size: 13px; line-height: 18px; color: #43483E">通过后短信通知，可直接用新手机号登录</span></span></div>
+</div>
+<a href="Login.dc.html" class="cta" style="background: #456732; color: #FFFFFF">返回登录</a>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  componentWillUnmount() {
+    if (this.timer) clearInterval(this.timer);
+  }
+  renderVals() {
+    const st = this.state || {};
+    const step = st.step || 1;
+    const old = st.old || '';
+    const nick = st.nick || '';
+    const nw = st.nw || '';
+    const code = st.code || '';
+    const left = st.left || 0;
+    const sent = !!st.sent;
+    const ok = (p) => /^1\d{10}$/.test(p);
+    const mask = (p) => p.length === 11 ? p.slice(0, 3) + '****' + p.slice(7) : p;
+    const nwOk = ok(nw) && nw !== old;
+    const ready = nwOk && /^\d{6}$/.test(code);
+    const s2 = step === 2;
+    const digits = (v, n) => v.replace(/\D/g, '').slice(0, n);
+    return {
+      notDone: step < 3, done: step === 3, isStep1: step === 1, isStep2: s2,
+      s1Bg: s2 ? '#C5EFAB' : '#456732', s1Fg: s2 ? '#2E4F1C' : '#FFFFFF', s1Text: s2 ? '#43483E' : '#191D16', s1W: s2 ? '400' : '500', s1Mark: s2 ? '✓' : '1',
+      s2Bg: s2 ? '#456732' : 'transparent', s2Fg: s2 ? '#FFFFFF' : '#43483E', s2Bd: s2 ? '0' : '1px solid #74796D', s2Text: s2 ? '#191D16' : '#43483E', s2W: s2 ? '500' : '400',
+      lineBg: s2 ? '#456732' : '#C3C8BB',
+      old, nick, nw, code,
+      onOld: (e) => this.setState({ old: digits(e.target.value, 11) }),
+      onNick: (e) => this.setState({ nick: e.target.value }),
+      onNew: (e) => this.setState({ nw: digits(e.target.value, 11) }),
+      onCode: (e) => this.setState({ code: digits(e.target.value, 6) }),
+      oldOk: ok(old), oldNotOk: !ok(old),
+      next: () => this.setState({ step: 2 }),
+      back: () => this.setState({ step: 1 }),
+      left, counting: left > 0, canSend: nwOk && left <= 0, cannotSend: !nwOk && left <= 0,
+      codeHint: nw && nw === old ? '新手机号不能与原手机号相同' : (sent ? '验证码已发送至 ' + mask(nw) + '，5 分钟内有效' : '用于确认新手机号是你本人在用'),
+      send: () => {
+        if (this.timer) clearInterval(this.timer);
+        this.setState({ left: 60, sent: true });
+        this.timer = setInterval(() => {
+          const n = ((this.state && this.state.left) || 0) - 1;
+          this.setState({ left: n > 0 ? n : 0 });
+          if (n <= 0) clearInterval(this.timer);
+        }, 1000);
+      },
+      ready, notReady: !ready,
+      submit: () => { if (this.timer) clearInterval(this.timer); this.setState({ step: 3 }); },
+      oldMasked: mask(old), newMasked: mask(nw)
+    };
+  }
+}
+</script>
+</body>
+</html>

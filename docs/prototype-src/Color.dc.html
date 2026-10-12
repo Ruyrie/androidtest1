@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>色彩系统</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#456732}a:hover{color:#2E4F1C}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1400px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; padding: 56px 64px; display: flex; flex-direction: column; gap: 32px; overflow: hidden">
+
+<header style="display: flex; gap: 48px; align-items: flex-end">
+<div style="flex: 1">
+<div style="font-size: 14px; line-height: 20px; font-weight: 500; color: #456732">02 · 色彩系统</div>
+<h1 style="margin: 4px 0 8px; font-size: 36px; line-height: 44px; font-weight: 500">从一个种子色生成全部颜色</h1>
+<p style="margin: 0; max-width: 860px; font-size: 16px; line-height: 24px; color: #43483E">以嫩芽绿 #4C8C2B 为种子色，用 Material Theme Builder 的 Tonal Spot 方案生成 6 组色调板（每组 0–100 共 13 个色阶），再映射成浅色 / 深色两套颜色角色。界面里只引用角色名（如 colorPrimaryContainer），不直接写死色值。</p>
+</div>
+<div style="display: flex; align-items: center; gap: 16px; background: #F2F5EA; border-radius: 16px; padding: 16px 20px">
+<span style="width: 56px; height: 56px; border-radius: 16px; background: #4C8C2B"></span>
+<span><span style="display: block; font-size: 12px; line-height: 16px; color: #43483E">种子色 Seed</span><span style="display: block; font-size: 22px; line-height: 28px; font-weight: 500">#4C8C2B</span></span>
+</div>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0 0 8px; font-size: 22px; line-height: 28px; font-weight: 500">色调板 Tonal palettes</h2>
+<sc-for list="{{palettes}}" as="p" hint-placeholder-count="6">
+<div style="display: flex; gap: 8px; align-items: center">
+<div style="width: 150px; flex-shrink: 0; font-size: 14px; line-height: 20px; font-weight: 500">{{p.name}}</div>
+<div style="flex: 1; display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)); gap: 4px">
+<sc-for list="{{p.tones}}" as="s" hint-placeholder-count="13">
+<div style="height: 56px; box-sizing: border-box; border-radius: 8px; border: 1px solid rgba(116, 121, 109, 0.25); padding: 6px 8px; display: flex; flex-direction: column; justify-content: space-between; background: {{s.hex}}; color: {{s.fg}}"><span style="font-size: 12px; line-height: 16px; font-weight: 500">{{s.t}}</span><span style="font-size: 10px; line-height: 12px">{{s.hex}}</span></div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 500">颜色角色 Color roles <span style="font-size: 14px; font-weight: 400; color: #43483E">上块为角色色，下块为放在它上面的文字 / 图标色（On 色）</span></h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+<sc-for list="{{modes}}" as="m" hint-placeholder-count="2">
+<div style="border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 12px; background: {{m.panel}}; border: 1px solid {{m.border}}">
+<div style="font-size: 16px; line-height: 24px; font-weight: 500; color: {{m.ink}}">{{m.name}}</div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{m.pairs}}" as="p" hint-placeholder-count="12">
+<div style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(116, 121, 109, 0.25)">
+<div style="height: 60px; box-sizing: border-box; padding: 8px 10px; display: flex; flex-direction: column; justify-content: space-between; background: {{p.bg}}; color: {{p.fg}}"><span style="font-size: 12px; line-height: 16px; font-weight: 500">{{p.n}}</span><span style="font-size: 11px; line-height: 14px">{{p.bg}}</span></div>
+<div style="height: 36px; box-sizing: border-box; padding: 0 10px; display: flex; align-items: center; justify-content: space-between; gap: 4px; background: {{p.fg}}; color: {{p.bg}}"><span style="font-size: 11px; line-height: 14px; font-weight: 500">{{p.on}}</span><span style="font-size: 11px; line-height: 14px">{{p.fg}}</span></div>
+</div>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{m.singles}}" as="s" hint-placeholder-count="12">
+<div style="height: 52px; box-sizing: border-box; border-radius: 12px; border: 1px solid rgba(116, 121, 109, 0.3); padding: 6px 10px; display: flex; flex-direction: column; justify-content: space-between; background: {{s.hex}}; color: {{s.fg}}"><span style="font-size: 11px; line-height: 14px; font-weight: 500">{{s.n}}</span><span style="font-size: 11px; line-height: 14px">{{s.hex}}</span></div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #43483E">Warning 为自定义扩展色（种子 #E0A030，已与主色协调 harmonize），用于降温、干旱等天气预警。开启「动态取色」（Android 12+）时，系统按壁纸重新生成全部角色；关闭或低于 Android 12 时使用本色板。</p>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99, 100];
+    const pal = (name, hexes) => ({ name, tones: T.map((t, i) => ({ t, hex: hexes[i], fg: t <= 50 ? '#FFFFFF' : '#191D16' })) });
+    const lum = (hex) => {
+      const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+      return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+    };
+    const single = (n, hex) => ({ n, hex, fg: lum(hex) > 0.25 ? '#191D16' : '#F0F2E7' });
+    const pair = (n, bg, on, fg) => ({ n, bg, on, fg });
+    const palettes = [
+      pal('Primary 主色', ['#000000', '#072100', '#173807', '#2E4F1C', '#456732', '#5D8148', '#759B5F', '#8FB678', '#AAD291', '#C5EFAB', '#D3FDB8', '#F7FFEC', '#FFFFFF']),
+      pal('Secondary 辅色', ['#000000', '#131F0D', '#283420', '#3E4A35', '#55624C', '#6E7B63', '#87957C', '#A2B095', '#BDCBB0', '#D9E7CB', '#E7F6D8', '#F7FFEC', '#FFFFFF']),
+      pal('Tertiary 第三色', ['#000000', '#002020', '#003737', '#1E4E4E', '#386666', '#517F7F', '#6B9999', '#85B4B4', '#A0CFCF', '#BBEBEC', '#C9FAFA', '#F1FFFE', '#FFFFFF']),
+      pal('Neutral 中性色', ['#000000', '#191D16', '#2E312B', '#444840', '#5C5F57', '#757870', '#8F9289', '#A9ACA3', '#C5C8BE', '#E1E4D9', '#F0F2E7', '#FBFDF3', '#FFFFFF']),
+      pal('Neutral Variant', ['#000000', '#181D15', '#2D3229', '#43483E', '#5B6055', '#74796D', '#8D9286', '#A8ADA0', '#C3C8BB', '#E0E4D6', '#EEF3E4', '#FAFEF0', '#FFFFFF']),
+      pal('Error 错误色', ['#000000', '#410002', '#690005', '#93000A', '#BA1A1A', '#DE3730', '#FF5449', '#FF897D', '#FFB4AB', '#FFDAD6', '#FFEDEA', '#FFFBFF', '#FFFFFF'])
+    ];
+    const modes = [
+      {
+        name: '浅色 Light', panel: '#F8FAF0', border: '#C3C8BB', ink: '#191D16',
+        pairs: [
+          pair('Primary', '#456732', 'On Primary', '#FFFFFF'),
+          pair('Secondary', '#55624C', 'On Secondary', '#FFFFFF'),
+          pair('Tertiary', '#386666', 'On Tertiary', '#FFFFFF'),
+          pair('Error', '#BA1A1A', 'On Error', '#FFFFFF'),
+          pair('Primary Container', '#C5EFAB', 'On Primary Cont.', '#2E4F1C'),
+          pair('Secondary Container', '#D9E7CB', 'On Secondary Cont.', '#3E4A35'),
+          pair('Tertiary Container', '#BBEBEC', 'On Tertiary Cont.', '#1E4E4E'),
+          pair('Error Container', '#FFDAD6', 'On Error Cont.', '#93000A'),
+          pair('Warning（自定义）', '#745B00', 'On Warning', '#FFFFFF'),
+          pair('Warning Container', '#FFE08B', 'On Warning Cont.', '#241A00'),
+          pair('Inverse Surface', '#2E312B', 'Inverse On Surface', '#F0F2E7'),
+          pair('Surface', '#F8FAF0', 'On Surface', '#191D16')
+        ],
+        singles: [
+          single('Surface Dim', '#D9DBD1'), single('Surface Bright', '#F8FAF0'), single('Container Lowest', '#FFFFFF'), single('Container Low', '#F2F5EA'),
+          single('Container', '#EDEFE4'), single('Container High', '#E7E9DF'), single('Container Highest', '#E1E4D9'), single('Inverse Primary', '#AAD291'),
+          single('On Surface Variant', '#43483E'), single('Outline', '#74796D'), single('Outline Variant', '#C3C8BB'), single('Scrim', '#000000')
+        ]
+      },
+      {
+        name: '深色 Dark', panel: '#11140E', border: '#11140E', ink: '#E1E4D9',
+        pairs: [
+          pair('Primary', '#AAD291', 'On Primary', '#173807'),
+          pair('Secondary', '#BDCBB0', 'On Secondary', '#283420'),
+          pair('Tertiary', '#A0CFCF', 'On Tertiary', '#003737'),
+          pair('Error', '#FFB4AB', 'On Error', '#690005'),
+          pair('Primary Container', '#2E4F1C', 'On Primary Cont.', '#C5EFAB'),
+          pair('Secondary Container', '#3E4A35', 'On Secondary Cont.', '#D9E7CB'),
+          pair('Tertiary Container', '#1E4E4E', 'On Tertiary Cont.', '#BBEBEC'),
+          pair('Error Container', '#93000A', 'On Error Cont.', '#FFDAD6'),
+          pair('Warning（自定义）', '#EAC246', 'On Warning', '#3D2F00'),
+          pair('Warning Container', '#584400', 'On Warning Cont.', '#FFE08B'),
+          pair('Inverse Surface', '#E1E4D9', 'Inverse On Surface', '#2E312B'),
+          pair('Surface', '#11140E', 'On Surface', '#E1E4D9')
+        ],
+        singles: [
+          single('Surface Dim', '#11140E'), single('Surface Bright', '#373A33'), single('Container Lowest', '#0C0F09'), single('Container Low', '#191D16'),
+          single('Container', '#1D211A'), single('Container High', '#282B24'), single('Container Highest', '#32362F'), single('Inverse Primary', '#456732'),
+          single('On Surface Variant', '#C3C8BB'), single('Outline', '#8D9286'), single('Outline Variant', '#43483E'), single('Scrim', '#000000')
+        ]
+      }
+    ];
+    return { palettes, modes };
+  }
+}
+</script>
+</body>
+</html>

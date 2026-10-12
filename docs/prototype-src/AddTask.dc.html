@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>新建农事</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button,textarea{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#191D16;display:flex;align-items:center;justify-content:center}
+.fld{position:relative;display:block}
+.fl{position:absolute;left:12px;top:-8px;padding:0 4px;background:#F8FAF0;font-size:12px;line-height:16px;color:#43483E}
+.fb{height:56px;box-sizing:border-box;border:1px solid #74796D;border-radius:4px;padding:0 12px 0 16px;display:flex;align-items:center;gap:8px;font-size:16px;line-height:24px}
+.ty{height:72px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:14px;line-height:20px;font-weight:500;cursor:pointer;box-sizing:border-box}
+.sw{width:52px;height:32px;flex-shrink:0;box-sizing:border-box;border-radius:16px;display:flex;align-items:center;cursor:pointer;border:0;padding:0}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 8px 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="Calendar.dc.html" class="ib" aria-label="关闭"><span class="ms" aria-hidden="true">close</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">新建农事</h1>
+<a href="Calendar.dc.html" style="height: 40px; padding: 0 12px; border-radius: 20px; display: flex; align-items: center; color: #456732; font-size: 14px; font-weight: 500">保存</a>
+</header>
+
+<form style="flex: 1; min-height: 0; overflow: hidden; padding: 8px 16px 0; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; line-height: 20px; font-weight: 500">农事类型</span>
+<div role="radiogroup" aria-label="农事类型" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{types}}" as="t" hint-placeholder-count="6">
+<span role="radio" aria-checked="{{t.on}}" class="ty" style="background: {{t.bg}}; color: {{t.fg}}; border: {{t.bd}}" onClick="{{t.pick}}"><span class="ms" aria-hidden="true">{{t.icon}}</span>{{t.name}}</span>
+</sc-for>
+</div>
+</div>
+
+<label class="fld"><span class="fl">关联作物</span><span class="fb"><span class="ms" aria-hidden="true" style="color: #456732; font-size: 20px">nutrition</span><span style="flex: 1">番茄 · 1号大棚</span><span class="ms" aria-hidden="true" style="color: #43483E">arrow_drop_down</span></span></label>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<label class="fld"><span class="fl">日期</span><span class="fb"><span style="flex: 1">10月11日 周日</span><span class="ms" aria-hidden="true" style="color: #43483E; font-size: 20px">calendar_today</span></span></label>
+<label class="fld"><span class="fl">时间</span><span class="fb"><span style="flex: 1">08:00</span><span class="ms" aria-hidden="true" style="color: #43483E; font-size: 20px">schedule</span></span></label>
+</div>
+
+<label class="fld"><span class="fl">重复</span><span class="fb"><span style="flex: 1">每 7 天，共 3 次</span><span class="ms" aria-hidden="true" style="color: #43483E">arrow_drop_down</span></span></label>
+
+<div style="display: flex; align-items: center; gap: 16px; min-height: 56px">
+<span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 16px; line-height: 24px">提醒我</span><span style="font-size: 14px; line-height: 20px; color: #43483E">{{remindText}}</span></span>
+<button type="button" role="switch" aria-checked="{{remind}}" aria-label="提醒我" class="sw" style="background: {{swBg}}; border: {{swBd}}; justify-content: {{swJust}}; padding: {{swPad}}" onClick="{{toggleRemind}}"><span style="border-radius: 12px; display: flex; align-items: center; justify-content: center; width: {{thumb}}; height: {{thumb}}; background: {{thumbBg}}; color: #456732"><sc-if value="{{remind}}" hint-placeholder-val="{{ true }}"><span class="ms" aria-hidden="true" style="font-size: 16px">check</span></sc-if></span></button>
+</div>
+
+<label class="fld"><span class="fl">备注</span><textarea placeholder="如：农药名称、稀释倍数" style="display: block; width: 100%; box-sizing: border-box; height: 80px; resize: none; border: 1px solid #74796D; border-radius: 4px; padding: 16px; background: transparent; font-size: 16px; line-height: 24px; color: #191D16; outline: 0">嘧霉胺 1000 倍液，重点喷叶背</textarea></label>
+
+<div role="note" style="background: #BBEBEC; color: #1E4E4E; border-radius: 12px; padding: 12px 16px; display: flex; gap: 12px; font-size: 14px; line-height: 20px">
+<span class="ms" aria-hidden="true" style="font-size: 20px">auto_awesome</span>
+<span>AI 提示：11 日 7:00–10:00 风力 1 级、无降水，适合喷药；12 日起有降雨，建议提前完成。</span>
+</div>
+</form>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const cur = st.type || '用药';
+    const remind = st.remind !== undefined ? st.remind : true;
+    const list = [['施肥', 'compost'], ['用药', 'sanitizer'], ['灌溉', 'water_drop'], ['整枝', 'content_cut'], ['采收', 'shopping_basket'], ['其他', 'more_horiz']];
+    return {
+      types: list.map(([name, icon]) => {
+        const on = name === cur;
+        return { name, icon, on, bg: on ? '#D9E7CB' : '#F2F5EA', fg: on ? '#3E4A35' : '#43483E', bd: on ? '2px solid #456732' : '2px solid transparent', pick: () => this.setState({ type: name }) };
+      }),
+      remind,
+      remindText: remind ? '提前 30 分钟通知' : '不提醒',
+      swBg: remind ? '#456732' : '#E1E4D9', swBd: remind ? '0' : '2px solid #74796D',
+      swJust: remind ? 'flex-end' : 'flex-start', swPad: remind ? '0 4px' : '0 6px',
+      thumb: remind ? '24px' : '16px', thumbBg: remind ? '#FFFFFF' : '#74796D',
+      toggleRemind: () => this.setState({ remind: !remind })
+    };
+  }
+}
+</script>
+</body>
+</html>

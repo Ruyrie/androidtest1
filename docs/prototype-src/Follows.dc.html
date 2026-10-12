@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>关注与粉丝</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button,input{font-family:Roboto,'Noto Sans SC',sans-serif}
+input::placeholder{color:#43483E}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#43483E;display:flex;align-items:center;justify-content:center}
+.tab{flex:1;height:48px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:20px;font-weight:500;position:relative;cursor:pointer}
+.row{display:flex;align-items:center;gap:16px;min-height:72px;padding:0 16px}
+.av{width:48px;height:48px;border-radius:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:500}
+.btn{height:32px;min-width:84px;box-sizing:border-box;border-radius:16px;padding:0 12px;font-size:14px;line-height:20px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="MyHome.dc.html" class="ib" aria-label="返回" style="color: #191D16"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">老李种菜</h1>
+<button class="ib" aria-label="发现农友"><span class="ms" aria-hidden="true">person_add</span></button>
+</header>
+
+<div role="tablist" style="display: flex; border-bottom: 1px solid #E0E4D6; flex-shrink: 0">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+<button role="tab" aria-selected="{{t.on}}" class="tab" style="color: {{t.fg}}" onClick="{{t.pick}}">{{t.name}}<span style="position: absolute; left: 50%; bottom: 0; width: 56px; margin-left: -28px; height: 3px; border-radius: 3px 3px 0 0; background: {{t.bar}}"></span></button>
+</sc-for>
+</div>
+
+<div style="padding: 12px 16px 4px; flex-shrink: 0">
+<label style="height: 48px; border-radius: 24px; background: #E7E9DF; display: flex; align-items: center; gap: 12px; padding: 0 16px; color: #43483E"><span class="ms" aria-hidden="true" style="font-size: 20px">search</span><input aria-label="搜索" placeholder="搜索昵称" style="flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; color: #191D16"></label>
+</div>
+
+<main style="flex: 1; min-height: 0; overflow: hidden">
+<sc-if value="{{isFans}}" hint-placeholder-val="{{ true }}"><div style="padding: 8px 16px; font-size: 12px; line-height: 16px; color: #43483E">最近关注你的农友</div></sc-if>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+<div class="row">
+<a href="UserProfile.dc.html" class="av" style="background: {{r.avBg}}; color: {{r.avFg}}">{{r.av}}</a>
+<a href="UserProfile.dc.html" style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+<span style="display: flex; align-items: center; gap: 6px; font-size: 16px; line-height: 24px">{{r.name}}<sc-if value="{{r.hasBadge}}" hint-placeholder-val="{{ false }}"><span style="height: 20px; padding: 0 6px; border-radius: 6px; font-size: 11px; line-height: 20px; font-weight: 500; background: {{r.bBg}}; color: {{r.bFg}}">{{r.badge}}</span></sc-if></span>
+<span style="font-size: 14px; line-height: 20px; color: #43483E; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.sub}}</span>
+</a>
+<button class="btn" onClick="{{r.toggle}}" aria-pressed="{{r.on}}" style="border: {{r.bd}}; background: {{r.bg}}; color: {{r.fg}}"><sc-if value="{{r.mutual}}" hint-placeholder-val="{{ false }}"><span class="ms" aria-hidden="true" style="font-size: 16px">sync_alt</span></sc-if>{{r.label}}</button>
+</div>
+</sc-for>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const tab = st.tab || 'fans';
+    const rel = st.rel || { a: true, d: true, w: true, g: true };
+    const people = {
+      a: { name: '草莓姐姐', av: '莓', avBg: '#BBEBEC', avFg: '#1E4E4E', badge: '种植能手', bBg: '#FFE08B', bFg: '#241A00', sub: '句容 · 种草莓 8 年' },
+      b: { name: '菜园小周', av: '周', avBg: '#D9E7CB', avFg: '#3E4A35', badge: '', sub: '江宁 · 家庭菜园' },
+      c: { name: '江宁老陈', av: '陈', avBg: '#C5EFAB', avFg: '#2E4F1C', badge: '', sub: '种了 30 年小麦水稻' },
+      d: { name: '王农艺师', av: '王', avBg: '#D9E7CB', avFg: '#3E4A35', badge: '农技专家', bBg: '#BBEBEC', bFg: '#1E4E4E', sub: '区农技站 · 蔬菜病虫害' },
+      e: { name: '果园阿强', av: '强', avBg: '#FFE08B', avFg: '#241A00', badge: '', sub: '溧水 · 梨和桃' },
+      f: { name: '小林的阳台菜园', av: '林', avBg: '#E1E4D9', avFg: '#43483E', badge: '', sub: '新手 · 刚开始种番茄' },
+      w: { name: '禾伴官方', av: '禾', avBg: '#456732', avFg: '#FFFFFF', badge: '官方', bBg: '#C5EFAB', bFg: '#2E4F1C', sub: '功能更新与农事提醒' },
+      g: { name: '江苏农技推广', av: '苏', avBg: '#BBEBEC', avFg: '#1E4E4E', badge: '机构', bBg: '#BBEBEC', bFg: '#1E4E4E', sub: '每周发布病虫害预报' }
+    };
+    const fansIds = ['b', 'a', 'c', 'd', 'e', 'f'];
+    const followIds = ['d', 'a', 'w', 'g'];
+    const fans = tab === 'fans';
+    const ids = fans ? fansIds : followIds;
+    const rows = ids.map((id) => {
+      const p = people[id];
+      const on = !!rel[id];
+      const mutual = fans && on;
+      let label, bd, bg, fg;
+      if (fans) {
+        label = on ? '互相关注' : '回关';
+        bd = on ? '1px solid #74796D' : '0'; bg = on ? 'transparent' : '#D9E7CB'; fg = on ? '#43483E' : '#3E4A35';
+      } else {
+        label = on ? '已关注' : '关注';
+        bd = on ? '1px solid #74796D' : '0'; bg = on ? 'transparent' : '#456732'; fg = on ? '#43483E' : '#FFFFFF';
+      }
+      return Object.assign({}, p, {
+        hasBadge: !!p.badge, on, mutual, label, bd, bg, fg,
+        toggle: () => { const n = Object.assign({}, rel); n[id] = !on; this.setState({ rel: n }); }
+      });
+    });
+    return {
+      rows, isFans: fans,
+      tabs: [['following', '关注 42'], ['fans', '粉丝 128']].map(([id, name]) => ({ name, on: id === tab, fg: id === tab ? '#456732' : '#43483E', bar: id === tab ? '#456732' : 'transparent', pick: () => this.setState({ tab: id }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

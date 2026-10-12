@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>兑换记录</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border-radius:24px;color:#43483E;display:flex;align-items:center;justify-content:center}
+.tab{flex:1;height:48px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:20px;font-weight:500;position:relative;cursor:pointer}
+.od{background:#F2F5EA;border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.btn{height:36px;box-sizing:border-box;border-radius:18px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;font-size:14px;line-height:20px;font-weight:500}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="PointsMall.dc.html" class="ib" aria-label="返回" style="color: #191D16"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">兑换记录</h1>
+<a href="Service.dc.html" class="ib" aria-label="禾伴客服"><span class="ms" aria-hidden="true">support_agent</span></a>
+</header>
+
+<div role="tablist" style="display: flex; border-bottom: 1px solid #E0E4D6; flex-shrink: 0">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+<button role="tab" aria-selected="{{t.on}}" class="tab" style="color: {{t.fg}}" onClick="{{t.pick}}">{{t.name}}<span style="position: absolute; left: 50%; bottom: 0; width: 40px; margin-left: -20px; height: 3px; border-radius: 3px 3px 0 0; background: {{t.bar}}"></span></button>
+</sc-for>
+</div>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 12px 16px 0; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{orders}}" as="o" hint-placeholder-count="3">
+<article class="od">
+<div style="display: flex; align-items: center; font-size: 12px; line-height: 16px; color: #43483E"><span style="flex: 1">{{o.time}} · {{o.no}}</span><span style="font-size: 14px; line-height: 20px; font-weight: 500; color: {{o.sc}}">{{o.status}}</span></div>
+<div style="display: flex; gap: 12px; align-items: center">
+<span style="width: 60px; height: 60px; flex-shrink: 0; border-radius: 8px; background: #E1E4D9; color: #74796D; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true" style="font-size: 28px">{{o.icon}}</span></span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; line-height: 22px; font-weight: 500">{{o.name}}</span><span style="font-size: 13px; line-height: 18px; color: #43483E">{{o.desc}}</span></span>
+<span style="font-size: 14px; font-weight: 500; color: #456732; white-space: nowrap">{{o.pts}} 积分</span>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px">
+<a href="Service.dc.html" class="btn" style="border: 1px solid #74796D; color: #43483E">联系客服</a>
+<a href="{{o.href}}" class="btn" style="background: #D9E7CB; color: #3E4A35">{{o.action}}</a>
+</div>
+</article>
+</sc-for>
+<sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 48px 24px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+<span style="width: 64px; height: 64px; border-radius: 32px; background: #E1E4D9; color: #74796D; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true" style="font-size: 32px">inventory_2</span></span>
+<span style="font-size: 16px; font-weight: 500">暂无相关订单</span>
+<a href="PointsMall.dc.html" style="height: 40px; padding: 0 20px; border-radius: 20px; background: #456732; color: #FFFFFF; display: flex; align-items: center; font-size: 14px; font-weight: 500">去商城看看</a>
+</div>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const tab = (this.state && this.state.tab) || 'all';
+    const all = [
+      { k: 'wait', time: '10月10日', no: 'DH202610100917', status: '待发货', sc: '#745B00', icon: 'nutrition', name: '番茄种子组合', desc: '× 1 · 预计 10月13日前发货', pts: '600', action: '修改地址', href: 'Address.dc.html' },
+      { k: 'ship', time: '10月02日', no: 'DH202610021544', status: '运输中', sc: '#386666', icon: 'back_hand', name: '加厚园艺手套 2 双', desc: '× 1 · 预计 10月11日送达', pts: '400', action: '查看物流', href: 'Logistics.dc.html' },
+      { k: 'done', time: '09月20日', no: 'DH202609200833', status: '已发放', sc: '#456732', icon: 'account_circle', name: '头像框「丰收」', desc: '装扮 · 可在编辑资料中更换', pts: '200', action: '去使用', href: 'EditProfile.dc.html' },
+      { k: 'done', time: '09月12日', no: 'DH202609121105', status: '已签收', sc: '#456732', icon: 'compost', name: '有机肥试用装 1 kg', desc: '× 1 · 09月15日签收', pts: '150', action: '再次兑换', href: 'PointsMall.dc.html' }
+    ];
+    const orders = all.filter((o) => tab === 'all' || o.k === tab);
+    return {
+      orders, empty: orders.length === 0,
+      tabs: [['all', '全部'], ['wait', '待发货'], ['ship', '已发货'], ['done', '已完成']].map(([id, name]) => ({ name, on: id === tab, fg: id === tab ? '#456732' : '#43483E', bar: id === tab ? '#456732' : 'transparent', pick: () => this.setState({ tab: id }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

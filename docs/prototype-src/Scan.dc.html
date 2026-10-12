@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>拍照识别</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#FFFFFF;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.cn{position:absolute;width:36px;height:36px;border-color:#FFFFFF;border-style:solid}
+.md{height:36px;border:0;border-radius:18px;padding:0 16px;font-size:14px;line-height:20px;font-weight:500;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #000000; color: #FFFFFF; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative; color-scheme: dark">
+
+<div style="flex: 1; position: relative; background: #1D211A; display: flex; align-items: center; justify-content: center">
+<div aria-hidden="true" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #43483E"><span class="ms" style="font-size: 160px">eco</span></div>
+
+<div style="position: absolute; left: 0; right: 0; top: 0; height: 64px; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="Discover.dc.html" class="ib" aria-label="关闭"><span class="ms" aria-hidden="true">close</span></a>
+<span style="flex: 1; text-align: center; font-size: 16px; line-height: 24px; font-weight: 500">拍照识别</span>
+<button class="ib" aria-label="{{flashLabel}}" onClick="{{toggleFlash}}"><span class="ms" aria-hidden="true">{{flashIcon}}</span></button>
+</div>
+
+<div style="position: relative; width: 280px; height: 280px">
+<span class="cn" style="left: 0; top: 0; border-width: 4px 0 0 4px; border-radius: 16px 0 0 0"></span>
+<span class="cn" style="right: 0; top: 0; border-width: 4px 4px 0 0; border-radius: 0 16px 0 0"></span>
+<span class="cn" style="left: 0; bottom: 0; border-width: 0 0 4px 4px; border-radius: 0 0 0 16px"></span>
+<span class="cn" style="right: 0; bottom: 0; border-width: 0 4px 4px 0; border-radius: 0 0 16px 0"></span>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; bottom: 24px; display: flex; justify-content: center">
+<span style="height: 36px; padding: 0 16px; border-radius: 18px; background: rgba(46, 49, 43, 0.85); display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px"><span class="ms" aria-hidden="true" style="font-size: 18px">lightbulb</span>{{hint}}</span>
+</div>
+</div>
+
+<div style="height: 220px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px">
+<div role="radiogroup" aria-label="识别模式" style="display: flex; gap: 8px">
+<button role="radio" aria-checked="{{isPest}}" class="md" style="background: {{pestBg}}; color: {{pestFg}}" onClick="{{pickPest}}">病虫害</button>
+<button role="radio" aria-checked="{{isCrop}}" class="md" style="background: {{cropBg}}; color: {{cropFg}}" onClick="{{pickCrop}}">作物 / 杂草</button>
+</div>
+<div style="width: 100%; box-sizing: border-box; padding: 0 40px; display: flex; align-items: center; justify-content: space-between">
+<button aria-label="从相册选择" style="width: 52px; height: 52px; border: 0; padding: 0; border-radius: 14px; background: #32362F; color: #C3C8BB; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">photo_library</span></button>
+<a href="ScanResult.dc.html" aria-label="拍照" style="width: 80px; height: 80px; box-sizing: border-box; border-radius: 40px; border: 4px solid #FFFFFF; display: flex; align-items: center; justify-content: center"><span style="width: 62px; height: 62px; border-radius: 31px; background: #FFFFFF"></span></a>
+<button aria-label="识别记录" style="width: 52px; height: 52px; border: 0; padding: 0; border-radius: 26px; background: #32362F; color: #C3C8BB; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">history</span></button>
+</div>
+<span style="font-size: 12px; line-height: 16px; color: #C3C8BB">识别在本机完成，结果仅供参考</span>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const mode = st.mode || 'pest';
+    const flash = !!st.flash;
+    const pest = mode === 'pest';
+    return {
+      isPest: pest, isCrop: !pest,
+      pestBg: pest ? '#AAD291' : 'transparent', pestFg: pest ? '#173807' : '#C3C8BB',
+      cropBg: !pest ? '#AAD291' : 'transparent', cropFg: !pest ? '#173807' : '#C3C8BB',
+      pickPest: () => this.setState({ mode: 'pest' }),
+      pickCrop: () => this.setState({ mode: 'crop' }),
+      hint: pest ? '对准病叶或虫体，保持清晰' : '拍下整株或叶片，识别作物与杂草',
+      flashIcon: flash ? 'flash_on' : 'flash_off', flashLabel: flash ? '关闭闪光灯' : '打开闪光灯',
+      toggleFlash: () => this.setState({ flash: !flash })
+    };
+  }
+}
+</script>
+</body>
+</html>

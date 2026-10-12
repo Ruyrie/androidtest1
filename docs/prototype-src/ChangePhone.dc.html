@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>换绑手机号</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button,input{font-family:Roboto,'Noto Sans SC',sans-serif}
+input::placeholder{color:#74796D}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.fld{position:relative;display:block}
+.fl{position:absolute;left:12px;top:-8px;padding:0 4px;background:#F8FAF0;font-size:12px;line-height:16px}
+.fb{height:56px;box-sizing:border-box;border-radius:4px;display:flex;align-items:center;gap:8px;font-size:16px;line-height:24px}
+.fb input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:16px;line-height:24px;color:#191D16;padding:0}
+.cta{height:56px;width:100%;box-sizing:border-box;border:0;border-radius:28px;font-size:16px;line-height:24px;font-weight:500;display:flex;align-items:center;justify-content:center}
+.code{height:40px;border:0;background:transparent;border-radius:20px;padding:0 12px;font-size:14px;line-height:20px;font-weight:500;white-space:nowrap;display:flex;align-items:center}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative">
+
+<sc-if value="{{editing}}" hint-placeholder-val="{{ true }}">
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="Security.dc.html" aria-label="返回" style="width: 48px; height: 48px; border-radius: 24px; color: #191D16; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">换绑手机号</h1>
+</header>
+
+<form style="padding: 12px 24px 0; display: flex; flex-direction: column; gap: 22px">
+<div style="background: #F2F5EA; border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px">
+<span style="width: 44px; height: 44px; border-radius: 22px; background: #D9E7CB; color: #3E4A35; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">smartphone</span></span>
+<span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 12px; line-height: 16px; color: #43483E">当前绑定</span><span style="font-size: 18px; line-height: 24px; font-weight: 500">+86 138****5678</span></span>
+</div>
+
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: #43483E">输入新的手机号并完成验证，即可换绑。原手机号不需要接收验证码。</p>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<label class="fld"><span class="fl" style="color: {{phColor}}">新手机号</span><span class="fb" style="padding: 0 12px 0 15px; border: {{phBorder}}"><span style="color: #43483E">+86</span><span style="width: 1px; height: 24px; background: #C3C8BB"></span><input type="tel" inputmode="numeric" maxlength="11" placeholder="请输入 11 位手机号" value="{{phone}}" onChange="{{onPhone}}" aria-label="新手机号" aria-invalid="{{phErr}}"><sc-if value="{{phErr}}" hint-placeholder-val="{{ false }}"><span class="ms f" aria-hidden="true" style="color: #BA1A1A">error</span></sc-if></span></label>
+<span style="padding: 0 16px; font-size: 12px; line-height: 16px; color: {{phColor}}">{{phMsg}}</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<label class="fld"><span class="fl" style="color: #43483E">验证码</span><span class="fb" style="border: 1px solid #74796D; padding: 0 4px 0 16px"><input inputmode="numeric" maxlength="6" placeholder="6 位数字" value="{{code}}" onChange="{{onCode}}" aria-label="验证码"><span style="width: 1px; height: 24px; background: #C3C8BB"></span>
+<sc-if value="{{canSend}}" hint-placeholder-val="{{ false }}"><button type="button" class="code" style="color: #456732; cursor: pointer" onClick="{{send}}">{{sendText}}</button></sc-if>
+<sc-if value="{{cannotSend}}" hint-placeholder-val="{{ true }}"><span class="code" style="color: #74796D">获取验证码</span></sc-if>
+<sc-if value="{{counting}}" hint-placeholder-val="{{ false }}"><span class="code" style="color: #74796D">{{left}}s 后重发</span></sc-if>
+</span></label>
+<span style="padding: 0 16px; font-size: 12px; line-height: 16px; color: #43483E">{{codeHint}}</span>
+</div>
+
+<sc-if value="{{ready}}" hint-placeholder-val="{{ false }}"><button type="button" class="cta" style="background: #456732; color: #FFFFFF; cursor: pointer" onClick="{{ask}}">确认换绑</button></sc-if>
+<sc-if value="{{notReady}}" hint-placeholder-val="{{ true }}"><span class="cta" aria-disabled="true" style="background: rgba(25, 29, 22, 0.12); color: rgba(25, 29, 22, 0.38)">确认换绑</span></sc-if>
+
+<div role="note" style="background: #FFE08B; color: #241A00; border-radius: 12px; padding: 12px 16px; display: flex; gap: 12px; font-size: 14px; line-height: 20px">
+<span class="ms" aria-hidden="true" style="font-size: 20px">info</span>
+<span>换绑后请用新手机号登录和找回密码；原手机号将与本账号解除绑定。一个手机号只能绑定一个禾伴账号。</span>
+</div>
+</form>
+</sc-if>
+
+<sc-if value="{{dialog}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.32); display: flex; align-items: center; justify-content: center; padding: 0 32px">
+<div role="dialog" aria-modal="true" aria-labelledby="cp-title" style="width: 100%; background: #E7E9DF; border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<span class="ms" aria-hidden="true" style="align-self: center; color: #456732">phonelink_setup</span>
+<h2 id="cp-title" style="margin: 0; text-align: center; font-size: 24px; line-height: 32px; font-weight: 500">换绑到 {{masked}}？</h2>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #43483E">确认后，138****5678 将不能再登录本账号，其他设备需要用新手机号重新登录。</p>
+<div style="display: flex; justify-content: flex-end; gap: 8px">
+<button onClick="{{cancel}}" style="height: 40px; border: 0; background: transparent; border-radius: 20px; padding: 0 12px; color: #456732; font-size: 14px; font-weight: 500; cursor: pointer">取消</button>
+<button onClick="{{confirm}}" style="height: 40px; border: 0; background: transparent; border-radius: 20px; padding: 0 12px; color: #456732; font-size: 14px; font-weight: 500; cursor: pointer">确认换绑</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+<div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 0 32px; text-align: center">
+<span style="width: 96px; height: 96px; border-radius: 48px; background: #C5EFAB; color: #2E4F1C; display: flex; align-items: center; justify-content: center"><span class="ms f" aria-hidden="true" style="font-size: 56px">check_circle</span></span>
+<div>
+<h1 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 500">换绑成功</h1>
+<p style="margin: 8px 0 0; font-size: 16px; line-height: 24px; color: #43483E">当前绑定手机号 +86 {{masked}}<br>下次登录和找回密码请使用新手机号</p>
+</div>
+</div>
+<div style="padding: 0 24px 40px"><a href="Security.dc.html" class="cta" style="background: #456732; color: #FFFFFF">完成</a></div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  componentWillUnmount() {
+    if (this.timer) clearInterval(this.timer);
+  }
+  renderVals() {
+    const st = this.state || {};
+    const phone = st.phone || '';
+    const code = st.code || '';
+    const left = st.left || 0;
+    const sent = !!st.sent;
+    const done = !!st.done;
+    const fmtOk = /^1\d{10}$/.test(phone);
+    const same = phone === '13800005678';
+    const partialBad = phone.length > 0 && !/^1/.test(phone);
+    const phErr = same || partialBad || (phone.length === 11 && !fmtOk);
+    const phOk = fmtOk && !same;
+    const masked = phone.length === 11 ? phone.slice(0, 3) + '****' + phone.slice(7) : '';
+    const ready = phOk && /^\d{6}$/.test(code);
+    return {
+      editing: !done, done, dialog: !!st.dialog,
+      phone, code, masked, phErr,
+      onPhone: (e) => this.setState({ phone: e.target.value.replace(/\D/g, '').slice(0, 11) }),
+      onCode: (e) => this.setState({ code: e.target.value.replace(/\D/g, '').slice(0, 6) }),
+      phColor: phErr ? '#BA1A1A' : '#43483E',
+      phBorder: phErr ? '2px solid #BA1A1A' : '1px solid #74796D',
+      phMsg: same ? '新手机号不能与当前手机号相同' : (phErr ? '请输入正确的手机号' : (phOk ? '可以使用 · 将发送验证码到 ' + masked : '仅支持中国大陆手机号')),
+      left, counting: left > 0, canSend: phOk && left <= 0, cannotSend: !phOk && left <= 0,
+      sendText: sent ? '重新获取' : '获取验证码',
+      codeHint: sent ? '验证码已发送至 ' + (masked || '新手机号') + '，5 分钟内有效' : '先输入新手机号，再获取验证码',
+      send: () => {
+        if (this.timer) clearInterval(this.timer);
+        this.setState({ left: 60, sent: true });
+        this.timer = setInterval(() => {
+          const n = ((this.state && this.state.left) || 0) - 1;
+          this.setState({ left: n > 0 ? n : 0 });
+          if (n <= 0) clearInterval(this.timer);
+        }, 1000);
+      },
+      ready, notReady: !ready,
+      ask: () => this.setState({ dialog: true }),
+      cancel: () => this.setState({ dialog: false }),
+      confirm: () => { if (this.timer) clearInterval(this.timer); this.setState({ dialog: false, done: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

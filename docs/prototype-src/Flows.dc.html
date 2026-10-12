@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>核心流程</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#456732}a:hover{color:#2E4F1C}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.fl{display:grid;grid-template-columns:230px minmax(0,1fr);gap:20px;align-items:center;padding:14px 0;border-top:1px solid #E0E4D6}
+.nm{display:flex;align-items:center;gap:12px}
+.nm .c{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nm .t{font-size:16px;line-height:24px;font-weight:500}
+.nm .d{font-size:12px;line-height:16px;color:#43483E}
+.ch{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.st{border:1px solid #C3C8BB;border-radius:8px;padding:6px 10px;font-size:14px;line-height:20px;background:#F8FAF0;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.st b{font-size:11px;line-height:16px;font-weight:500;color:#456732}
+.go{color:#74796D;font-size:20px}
+.end{background:#C5EFAB;color:#2E4F1C;border-color:#C5EFAB;font-weight:500}
+.alt{font-size:12px;line-height:16px;color:#43483E;width:100%;margin-top:2px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1400px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; padding: 56px 64px; display: flex; flex-direction: column; gap: 20px; overflow: hidden">
+
+<header>
+<div style="font-size: 14px; line-height: 20px; font-weight: 500; color: #456732">09 · 核心流程</div>
+<h1 style="margin: 4px 0 8px; font-size: 36px; line-height: 44px; font-weight: 500">11 条关键路径，都能在原型里点通</h1>
+<p style="margin: 0; max-width: 960px; font-size: 16px; line-height: 24px; color: #43483E">编号对应原型图画板；绿色块是流程终点。打开原型图任意画板的 Play 即可按此路径操作。</p>
+</header>
+
+<div>
+<div class="fl" style="border-top: 0">
+<div class="nm"><span class="c" style="background: #C5EFAB; color: #2E4F1C"><span class="ms" aria-hidden="true">rocket_launch</span></span><span><span class="t" style="display: block">首次使用</span><span class="d">新用户从安装到进入首页</span></span></div>
+<div class="ch"><span class="st"><b>A01</b>闪屏</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>A02</b>引导页 · 3 屏</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>A05</b>注册：验证手机 + 设密码</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>A06</b>完善资料 · 选作物</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st end"><b>H01</b>首页</span><span class="alt">分支：引导页「已有账号」→ A03 登录；完善资料可跳过</span></div>
+</div>
+
+<div class="fl">
+<div class="nm"><span class="c" style="background: #C5EFAB; color: #2E4F1C"><span class="ms" aria-hidden="true">login</span></span><span><span class="t" style="display: block">登录</span><span class="d">两种方式可切换</span></span></div>
+<div class="ch"><span class="st"><b>A03</b>密码登录</span><span class="ms go" aria-hidden="true">sync_alt</span><span class="st"><b>A04</b>验证码登录</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st">勾选协议</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st end"><b>H01</b>首页</span><span class="alt">游客浏览：可看内容，点赞、发布、私信时引导登录；未勾选协议点登录会提示</span></div>
+</div>
+
+<div class="fl">
+<div class="nm"><span class="c" style="background: #FFE08B; color: #241A00"><span class="ms" aria-hidden="true">lock_reset</span></span><span><span class="t" style="display: block">找回密码</span><span class="d">忘记密码时</span></span></div>
+<div class="ch"><span class="st"><b>A03</b>登录 · 忘记密码</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>A07</b>验证手机 · 短信验证码</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>A08</b>设置新密码 · 强度校验</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st">重置成功，其他设备下线</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st end"><b>A03</b>重新登录</span></div>
+</div>
+
+<div class="fl">
+<div class="nm"><span class="c" style="background: #FFE08B; color: #241A00"><span class="ms" aria-hidden="true">shield_person</span></span><span><span class="t" style="display: block">修改密码 · 注销</span><span class="d">已登录时的账号安全</span></span></div>
+<div class="ch"><span class="st"><b>M01</b>我的</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>M05</b>设置</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>M06</b>账号与安全</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>M07</b>短信验证绑定手机</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st">设置新密码</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st end"><b>A03</b>重新登录</span><span class="alt">注销账号：M06 → 二次确认对话框（勾选「已了解后果」才可点击）→ A03；7 天内可撤销</span></div>
+</div>
+
+<div class="fl">
+<div class="nm"><span class="c" style="background: #BBEBEC; color: #1E4E4E"><span class="ms" aria-hidden="true">center_focus_strong</span></span><span><span class="t" style="display: block">识别诊断</span><span class="d">发现病叶到处理</span></span></div>
+<div class="ch"><span class="st"><b>H01/D01</b>首页 · 发现</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>D02</b>拍照识别</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>D03</b>识别结果 · 匹配度</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>D05</b>防治方法</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st end"><b>H04</b>加入农事日历</span><span class="alt">拿不准：D03 → D06 问 AI，或 S03 发到问答请农友帮忙；结果可存入 C04 作物记录</span></div>
+</div>
+
+<div class="fl">
+<div class="nm"><span class="c" style="background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true">autorenew</span></span><span><span class="t" style="display: block">农事闭环</span><span class="d">记录、提醒、算账</span></span></div>
+<div class="ch"><span class="st"><b>C02</b>作物详情</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>C04</b>添加记录 · 同步记账</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st end"><b>D10</b>收支统计</span><span style="width: 20px"></span><span class="st"><b>H03</b>农事日历</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>H04</b>新建农事</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st end">到点推送提醒</span></div>
+</div>
+
+<div class="fl">
+<div class="nm"><span class="c" style="background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true">diversity_3</span></span><span><span class="t" style="display: block">社交互动</span><span class="d">看动态到交朋友</span></span></div>
+<div class="ch"><span class="st"><b>S01</b>农友圈</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>S02</b>动态详情 · 点赞 / 评论 / 收藏</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>S06</b>农友主页</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st">关注</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st end"><b>S09</b>私信</span><span class="alt">对方收到：S08 消息 → 新增关注 / 评论回复 → S07 回关；自己的展示：M02 我的主页 → M03 编辑资料</span></div>
+</div>
+
+<div class="fl">
+<div class="nm"><span class="c" style="background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true">contact_support</span></span><span><span class="t" style="display: block">问答求助</span><span class="d">提问到采纳</span></span></div>
+<div class="ch"><span class="st"><b>S03</b>提问 · 悬赏积分</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st">AI 先给参考答案</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>S05</b>农友回答</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st">提问者采纳</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st end"><b>H05</b>回答者获得积分</span></div>
+</div>
+
+<div class="fl">
+<div class="nm"><span class="c" style="background: #FFDAD6; color: #93000A"><span class="ms" aria-hidden="true">storefront</span></span><span><span class="t" style="display: block">集市交易</span><span class="d">买卖不经过 App 支付</span></span></div>
+<div class="ch"><span class="st"><b>D07</b>集市 · 分类筛选</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>D08</b>商品详情 · 收藏</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>S09</b>联系卖家</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st end">线下验货交易</span><span class="alt">卖家：D09 发布商品，可附上作物种植记录，也可花 100 积分置顶 24 小时；详情页和聊天页都提示「当面验货，谨防诈骗」</span></div>
+</div>
+
+<div class="fl">
+<div class="nm"><span class="c" style="background: #FFE08B; color: #241A00"><span class="ms" aria-hidden="true">redeem</span></span><span><span class="t" style="display: block">积分兑换</span><span class="d">赚积分到收货</span></span></div>
+<div class="ch"><span class="st"><b>H05</b>签到 · 每日任务</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>P03</b>积分商城</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>P04</b>商品详情 · 选数量</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>P05</b>确认兑换 · 选地址</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>P07</b>兑换记录</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>P08</b>物流</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st end">签收</span><span class="alt">实物由禾伴官方发货；装扮类即时到账。有问题找 P09 禾伴客服（自动回复，人工暂未开放）；积分流水看 P01，规则看 P02</span></div>
+</div>
+
+<div class="fl">
+<div class="nm"><span class="c" style="background: #FFE08B; color: #241A00"><span class="ms" aria-hidden="true">phonelink_setup</span></span><span><span class="t" style="display: block">换绑手机号</span><span class="d">原手机号不再使用</span></span></div>
+<div class="ch"><span class="st"><b>M06</b>账号与安全</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st"><b>M08</b>输入新手机号</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st">新号验证码</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st">确认对话框</span><span class="ms go" aria-hidden="true">chevron_right</span><span class="st end">用新手机号登录</span><span class="alt">未登录、忘记密码且手机号停用：A07 → A09 填原手机号 → 验证新手机号 → 提交人工审核（1–3 个工作日）→ 短信通知结果</span></div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,883 @@
+禾伴 · 智慧种植助手
+技术准备文档
+Android App（Java · MVVM · Jetpack · RxJava）
+版本 v1.0　·　2026 年 10 月 10 日
+课程：Android 企业框架开发
+配套文档：禾伴 UI 设计文档 v2.0、禾伴原型图
+目　录
+1 概述4
+1.1 文档目的与范围4
+1.2 已确定的技术决策4
+1.3 技术选型总览5
+1.4 与 UI 设计文档的差异6
+2 开发环境与准备7
+2.1 开发工具7
+2.2 需要申请的服务与 Key7
+2.3 local.properties 配置7
+2.4 包名迁移步骤8
+3 工程结构9
+3.1 包结构9
+3.2 资源目录9
+3.3 命名规范10
+4 Gradle 配置11
+4.1 版本目录 libs.versions.toml11
+4.2 app/build.gradle12
+4.3 AndroidManifest 与权限14
+4.4 构建类型与混淆15
+5 总体架构16
+5.1 分层结构16
+5.2 依赖装配：AppContainer16
+5.3 mock / remote 切换18
+5.4 页面状态与错误处理18
+5.5 线程与生命周期规范19
+6 界面层实现规范21
+6.1 单 Activity 与 Navigation21
+6.2 DataBinding 规范22
+6.3 列表：RecyclerView + ListAdapter24
+6.4 Material 3 主题与深色模式24
+6.5 通用界面组件26
+7 数据层实现27
+7.1 Room 数据库27
+7.2 DAO 与 RxJava28
+7.3 DataStore 设置存储29
+7.4 敏感信息加密30
+7.5 模拟数据与示例图片31
+7.6 Paging 3 分页32
+8 网络层实现34
+8.1 OkHttp 与 Retrofit 配置34
+8.2 和风天气接入35
+8.3 阿里云短信认证36
+8.4 后端接口预留39
+9 AI 大模型接入41
+9.1 总体设计41
+9.2 请求与响应格式41
+9.3 流式输出实现43
+9.4 提示词与上下文45
+9.5 拍照识别46
+9.6 模型服务设置（M11 新增）48
+9.7 错误码处理49
+9.8 Key 安全与费用控制49
+10 图片加载50
+10.1 Glide：列表图片与缓存50
+10.2 Picasso：详情大图与图片变换50
+10.3 两个框架的分工51
+11 后台任务与通知52
+11.1 WorkManager 任务52
+11.2 通知渠道52
+11.3 CameraX 预览配置53
+12 模块实现要点54
+12.1 账号（A01–A09）54
+12.2 首页（H01–H05）54
+12.3 作物（C01–C05）55
+12.4 发现（D01–D11）55
+12.5 农友圈（S01–S09）55
+12.6 我的与设置（M01–M13）56
+12.7 积分（P01–P09）56
+13 测试方案58
+13.1 单元测试58
+13.2 RxJava 测试58
+13.3 网络与流式输出测试59
+13.4 界面测试与验收59
+14 开发计划60
+15 风险与对策61
+附录 A 页面与代码对应表62
+附录 B 示例图片清单66
+附录 C 参考资料68
+1 概述
+1.1 文档目的与范围
+本文档是禾伴 App 编码前的技术准备，后续代码按本文档实现。界面和交互以《禾伴 UI 设计文档 v2.0》和原型图（64 页）为准，本文档说明用什么框架、怎么组织代码、数据怎么存、接口怎么调。
+本期范围：只开发 App 端。暂时没有自己的后端，账号、作物、社交等数据保存在手机本地并用模拟数据填充；以下几项直接接入真实的第三方服务：
+•  AI 问答：DeepSeek（流式输出）；
+•  拍照识别：把图片发给支持识图的大模型，主模型 DeepSeek 视觉模型，备用通义千问 VL；
+•  天气：和风天气；
+•  短信验证码：阿里云号码认证服务的「短信认证」。
+代码分层时预留后端接口，后端完成后只替换数据层实现，页面和 ViewModel 不改（见第 5 章）。
+1.2 已确定的技术决策
+表 1-1 技术决策
+项目 | 决策 | 说明
+开发语言 | Java 11 | 与课程实验一致；不使用 Kotlin / Compose
+最低版本 | minSdk 31（Android 12） | targetSdk / compileSdk 36；动态取色、系统闪屏 API 一定可用
+包名 | com.heban.app | 由现有 com.example.androidtest1 迁移（见 2.4）
+架构 | MVVM + Repository | 单 Activity + 多 Fragment；Navigation 管理跳转
+界面 | XML + DataBinding + Material 3 | 主题 Theme.Material3.DayNight.NoActionBar
+异步 | RxJava 3 + RxAndroid 3 | Room、Retrofit、Paging、WorkManager、DataStore 统一用 RxJava 适配
+数据切换 | productFlavor：mock / remote | 现阶段用 mock；后端接入后切到 remote
+AI 问答 | DeepSeek（deepseek-v4-flash） | OpenAI 兼容接口，SSE 流式；模型名可配置
+拍照识别 | 主：DeepSeek 视觉模型备：通义千问 VL | 主模型失败自动切换备用；用户也可在设置里配置自己的识图模型
+天气 | 和风天气 API | 实时、逐小时、7 天预报；农事指数由 App 自己计算
+短信验证码 | 阿里云号码认证服务 · 短信认证 | App 直接调用 SendSmsVerifyCode / CheckSmsVerifyCode；使用控制台赠送的签名和模板
+Key 管理 | local.properties → BuildConfig；App 内可覆盖 | 用户可在「AI 助手设置 → 模型服务」填写自己的 Key 或接入其他 OpenAI 兼容模型
+图片框架 | Glide + Picasso | Glide：列表、头像、缓存；Picasso：详情大图与图片变换
+示例图片 | 维基百科图片，放在 assets/images/ | 按分类存放，附来源与协议清单，后续替换
+1.3 技术选型总览
+下表的版本号是 2026 年 10 月查到的最新稳定版。开工时如果 Android Studio 提示有更新的稳定版，可以升级小版本。
+表 1-2 框架与版本
+分类 | 框架 | 版本 | 在禾伴中的用途 | 对应课程实验
+构建 | Android Gradle Plugin / Gradle | 9.0.1 / 9.2.1 | 现有工程配置，保持不变 | —
+界面 | Material Components | 1.14.0 | Material 3 组件与主题 | —
+界面 | DataBinding（AGP 内置） | 随 AGP | 布局绑定、双向绑定、BindingAdapter | DataBinding 实验
+Jetpack | Lifecycle（ViewModel / LiveData） | 2.11.0 | MVVM；Flowable 转 LiveData | Jetpack 实验
+Jetpack | Navigation | 2.10.2 | 单 Activity 页面跳转、底部导航 | Jetpack 实验
+Jetpack | Fragment | 1.9.1 | 页面载体 | Jetpack 实验
+Jetpack | Room | 2.8.5 | 本地数据库（含 rxjava3、paging 扩展） | Jetpack 实验
+Jetpack | Paging 3 | 3.5.2 | 集市、动态分页 | Jetpack 实验
+Jetpack | WorkManager | 2.12.0 | 农事提醒、物流轮询、天气刷新 | Jetpack 实验
+Jetpack | DataStore（Preferences） | 1.2.1 | 设置项、登录态 | Jetpack 实验
+Jetpack | CameraX | 1.6.2 | 拍照识别 | —
+异步 | RxJava / RxAndroid | 3.1.12 / 3.0.2 | 全部异步与事件流 | RxJava 实验、RxJava 框架使用
+网络 | Retrofit（含 rxjava3、gson 适配） | 3.0.0 | 天气、短信、识图、后端接口 | 网络通讯框架
+网络 | OkHttp（含 sse、logging） | 5.5.0 | HTTP 客户端、SSE 流式、日志 | 网络通讯框架
+网络 | Gson | 2.14.0 | JSON 解析 | 网络通讯框架
+图片 | Glide | 5.0.9 | 列表图片、缓存设置 | Glide 缓存设定
+图片 | Picasso | 2.8 | 详情大图、Transformation 变换 | Picasso 实践项目
+列表 | RecyclerView / SwipeRefreshLayout | 1.4.0 / 1.2.0 | 列表与下拉刷新 | —
+测试 | JUnit4 / AndroidX Test / Espresso / MockWebServer | 4.13.2 / 1.3.0 / 3.7.0 / 5.5.0 | 单元测试、界面测试、网络模拟 | —
+1.4 与 UI 设计文档的差异
+以下几处以本文档为准，UI 设计文档和原型图需要同步修改：
+表 1-3 需要同步的修改
+位置 | UI 设计文档 v2.0 | 本文档
+1.2 基本信息 · 平台 | Android 8.0+ | Android 12+（minSdk 31）
+9.2 账号 · Token 存储 | EncryptedSharedPreferences | DataStore + Android Keystore 加密（官方已不再推荐 security-crypto）
+M11 AI 助手设置 | 回答风格、参考内容、对话记录 | 新增「模型服务」区块：服务商、Base URL、API Key、问答模型、识图模型、测试连接（见 9.6）
+A04 / A05 / A07 / M07 / M08 / A09 验证码 | 原型中为模拟倒计时 | 接入阿里云短信认证（见 8.3）
+D02 / D03 拍照识别 | 本地 TFLite 或后端接口二选一 | 发给识图大模型；结果页显示识别模型名称
+2 开发环境与准备
+2.1 开发工具
+表 2-1 开发环境
+项目 | 要求
+Android Studio | 支持 AGP 9.0 的版本（以官方 AGP 兼容表为准）
+JDK | Gradle 运行使用 JDK 17 或更高（Android Studio 自带 JBR 即可）；代码编译目标 Java 11
+Gradle | 9.2.1（使用工程自带的 gradlew）
+Android SDK | SDK Platform 36、Build-Tools 36、Android Emulator
+模拟器 | Pixel 8 · API 36（与设计稿 412 × 915 dp 一致）
+真机 | Android 12 及以上；用于测试相机、通知、短信
+2.2 需要申请的服务与 Key
+表 2-2 第三方服务
+服务 | 用途 | 在哪里申请 | local.properties 配置项
+DeepSeek 开放平台 | AI 问答、识图主模型 | DeepSeek 开放平台 → API Keys；先少量充值 | DEEPSEEK_API_KEY
+阿里云百炼 | 识图备用模型（通义千问 VL） | 阿里云百炼控制台 → API-KEY | DASHSCOPE_API_KEY
+和风天气 | 天气数据 | 和风天气开发服务控制台 → 项目与凭据；设置页查看 API Host | QWEATHER_API_HOSTQWEATHER_API_KEY
+阿里云号码认证服务 | 短信验证码 | 开通号码认证服务；控制台「短信认证」查看赠送签名和模板；RAM 控制台创建子账号 AccessKey | ALIYUN_AK_IDALIYUN_AK_SECRETALIYUN_SMS_SIGN_NAMEALIYUN_SMS_TPL_*
+注意　阿里云 RAM 子账号只授予「号码认证服务」发送和校验短信验证码两个接口的权限，不要使用主账号 AccessKey；并在控制台设置发送频率和每日上限。所有 Key 只写在本机 local.properties，不提交到 Git。
+2.3 local.properties 配置
+local.properties 已在 .gitignore 中，每位开发者在自己电脑上填写。没有填写的项会让对应功能自动退回模拟模式（例如短信没有配置 AccessKey 时使用固定验证码 123456）。
+local.properties（示例，值替换为自己的）
+sdk.dir=C\:\\Users\\you\\AppData\\Local\\Android\\Sdk # AI 问答与识图DEEPSEEK_API_KEY=sk-xxxxxxxxDEEPSEEK_CHAT_MODEL=deepseek-v4-flashDEEPSEEK_VISION_MODEL=deepseek-v4-flash-vision-expDASHSCOPE_API_KEY=sk-xxxxxxxxQWEN_VL_MODEL=qwen-vl-plus # 和风天气（API Host 在控制台「设置」中查看）QWEATHER_API_HOST=xxxxxxxx.re.qweatherapi.comQWEATHER_API_KEY=xxxxxxxx # 阿里云短信认证（RAM 子账号）SMS_PROVIDER=aliyunALIYUN_AK_ID=LTAIxxxxxxxxALIYUN_AK_SECRET=xxxxxxxxALIYUN_SMS_SIGN_NAME=控制台赠送的签名名称ALIYUN_SMS_TPL_LOGIN=100001ALIYUN_SMS_TPL_RESET=100003ALIYUN_SMS_TPL_CHANGE_PHONE=控制台赠送的对应模板编号
+2.4 包名迁移步骤
+现有工程的包名是 com.example.androidtest1，开工第一步改为 com.heban.app：
+1.  app/build.gradle 中 namespace 和 applicationId 改为 com.heban.app；
+2.  在 Android Studio 中对 java/com/example/androidtest1 包执行 Refactor → Rename，改为 com/heban/app（测试目录同样处理）；
+3.  AndroidManifest.xml 中的类名引用随重构自动更新，检查 application 的 android:name 和 activity 名称；
+4.  settings.gradle 中 rootProject.name 可改为 "HeBan"（可选）；
+5.  Sync 后运行一次，确认能正常启动，再开始后续开发。
+3 工程结构
+3.1 包结构
+单模块工程（app），按「数据层 / 界面层」分包，界面层再按原型图模块分包。mock 和 remote 两个 flavor 各有一个 di/RepositoryModule.java，用来决定注入哪套数据实现。
+app/src 目录结构
+app/src/├─ main/java/com/heban/app/│  ├─ HeBanApp.java              Application：初始化容器、主题、通知渠道│  ├─ di/│  │  ├─ AppContainer.java       手写依赖容器（单例对象集中创建）│  │  └─ AppViewModelFactory.java│  ├─ data/│  │  ├─ local/db/               AppDatabase、Converters│  │  ├─ local/dao/              各表 DAO│  │  ├─ local/entity/           Room 实体│  │  ├─ local/prefs/            SettingsStore（DataStore）、SecureStore（Keystore）│  │  ├─ remote/                 NetworkModule、拦截器、AppError│  │  ├─ remote/weather/         和风天气 API 与 DTO│  │  ├─ remote/sms/             阿里云短信认证（签名、接口、SmsService）│  │  ├─ remote/llm/             LlmClient、LlmConfig、提示词、DTO│  │  ├─ remote/api/             后端接口（预留）│  │  ├─ mock/                   模拟数据导入、自动回复│  │  └─ repository/             Repository 接口与本地实现│  ├─ ui/│  │  ├─ MainActivity.java       单 Activity：导航宿主、底部导航、问 AI 按钮│  │  ├─ common/                 BaseFragment、BaseViewModel、UiState、BindingAdapters、通用适配器│  │  ├─ account/                A02–A09│  │  ├─ home/                   H01–H05│  │  ├─ crop/                   C01–C05│  │  ├─ discover/               D01、scan/、pest/、ai/、market/、ledger/│  │  ├─ community/              S01–S09│  │  ├─ me/                     M01–M04、settings/（M05–M13）│  │  └─ points/                 P01–P09│  ├─ worker/                    WorkManager 任务│  └─ util/                      日期、手机号脱敏、图片、通知等工具类├─ main/res/                     布局、导航图、主题、颜色├─ main/assets/│  ├─ mock/                      模拟数据 JSON│  └─ images/                    示例图片（crops、pests、products、mall、posts）├─ mock/java/com/heban/app/di/RepositoryModule.java└─ remote/java/com/heban/app/di/RepositoryModule.java
+3.2 资源目录
+表 3-1 资源组织
+目录 | 内容
+res/layout/ | activity_main.xml；fragment_*.xml（每个页面一个）；item_*.xml（列表项）；dialog_*.xml；view_*.xml（空状态、加载、错误等可复用片段）
+res/navigation/ | nav_graph.xml（主图），内含 auth_graph、register_graph、mall_graph 等嵌套图
+res/menu/ | bottom_nav.xml（5 个一级入口，id 与导航目的地一致）
+res/values/ | colors.xml（浅色色值）、themes.xml、attrs.xml（自定义 Warning 角色）、dimens.xml、type.xml（字号样式）、strings.xml
+res/values-night/ | colors.xml（深色色值）
+res/drawable/ | 矢量图标（Material Symbols Rounded 导入）、形状背景
+assets/mock/ | farmers.json、posts.json、questions.json、products.json、pests.json、mall_items.json、replies.json、service_faq.json、sample_farm.json
+assets/images/ | 示例图片，按 crops/、pests/、products/、mall/、posts/ 分类，附 CREDITS.md 来源清单
+3.3 命名规范
+表 3-2 命名规范
+对象 | 规则 | 示例
+页面 | <页面名>Fragment + <页面名>ViewModel | CropDetailFragment / CropDetailViewModel
+页面布局 | fragment_<页面名小写下划线>.xml | fragment_crop_detail.xml
+列表项布局 | item_<内容>.xml | item_crop_card.xml
+Room 实体 | <表名>Entity，表名小写下划线 | FarmRecordEntity → farm_record
+DAO | <实体名>Dao | FarmRecordDao
+Repository | 接口 <模块>Repository；实现 Mock<模块>Repository / Remote<模块>Repository | PostRepository / MockPostRepository
+控件 id | <类型缩写>_<含义> | btn_login、et_phone、rv_crops、tv_title
+颜色 | md_<角色>，与 UI 设计文档颜色角色一一对应 | md_primary_container
+字符串 | <模块>_<含义> | account_login_title
+金额 | 统一用 long 存「分」，显示时再格式化 | amountCent = 6000 → ¥60
+4 Gradle 配置
+4.1 版本目录 libs.versions.toml
+依赖统一写在 gradle/libs.versions.toml，在现有内容基础上补充：
+gradle/libs.versions.toml
+[versions]agp = "9.0.1"junit = "4.13.2"junitVersion = "1.3.0"espressoCore = "3.7.0"appcompat = "1.8.0"material = "1.14.0"activity = "1.13.0"constraintlayout = "2.2.2"fragment = "1.9.1"lifecycle = "2.11.0"navigation = "2.10.2"room = "2.8.5"paging = "3.5.2"work = "2.12.0"datastore = "1.2.1"camerax = "1.6.2"recyclerview = "1.4.0"swiperefreshlayout = "1.2.0"rxjava = "3.1.12"rxandroid = "3.0.2"retrofit = "3.0.0"okhttp = "5.5.0"gson = "2.14.0"glide = "5.0.9"picasso = "2.8" [libraries]# —— 已有 ——junit = { module = "junit:junit", version.ref = "junit" }ext-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }material = { module = "com.google.android.material:material", version.ref = "material" }activity = { module = "androidx.activity:activity", version.ref = "activity" }constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }# —— Jetpack ——fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycle" }lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "lifecycle" }lifecycle-reactivestreams = { module = "androidx.lifecycle:lifecycle-reactivestreams", version.ref = "lifecycle" }navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "navigation" }navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "navigation" }room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }room-rxjava3 = { module = "androidx.room:room-rxjava3", version.ref = "room" }room-paging = { module = "androidx.room:room-paging", version.ref = "room" }room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }room-testing = { module = "androidx.room:room-testing", version.ref = "room" }paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }paging-rxjava3 = { module = "androidx.paging:paging-rxjava3", version.ref = "paging" }work-runtime = { module = "androidx.work:work-runtime", version.ref = "work" }work-rxjava3 = { module = "androidx.work:work-rxjava3", version.ref = "work" }datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }datastore-rxjava3 = { module = "androidx.datastore:datastore-preferences-rxjava3", version.ref = "datastore" }camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "camerax" }camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camerax" }camera-view = { module = "androidx.camera:camera-view", version.ref = "camerax" }recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }# —— RxJava / 网络 / 图片 ——rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }retrofit-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "retrofit" }retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }okhttp-sse = { module = "com.squareup.okhttp3:okhttp-sse", version.ref = "okhttp" }okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp" }gson = { module = "com.google.code.gson:gson", version.ref = "gson" }glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" } [plugins]android-application = { id = "com.android.application", version.ref = "agp" }
+4.2 app/build.gradle
+在现有文件基础上：开启 DataBinding 和 BuildConfig，增加 mock / remote 两个 flavor，从 local.properties 读取 Key 注入 BuildConfig。
+app/build.gradle
+plugins {    alias(libs.plugins.android.application)} def localProps = new Properties()def lp = rootProject.file('local.properties')if (lp.exists()) lp.withInputStream { localProps.load(it) }def str = { String v -> '"' + v.replace('"', '\\"') + '"' } // local.properties 中的配置项及默认值，全部注入 BuildConfigdef configKeys = [        DEEPSEEK_API_KEY           : '',        DEEPSEEK_CHAT_MODEL        : 'deepseek-v4-flash',        DEEPSEEK_VISION_MODEL      : 'deepseek-v4-flash-vision-exp',        DASHSCOPE_API_KEY          : '',        QWEN_VL_MODEL              : 'qwen-vl-plus',        QWEATHER_API_HOST          : '',        QWEATHER_API_KEY           : '',        SMS_PROVIDER               : 'fake',        ALIYUN_AK_ID               : '',        ALIYUN_AK_SECRET           : '',        ALIYUN_SMS_SIGN_NAME       : '',        ALIYUN_SMS_TPL_LOGIN       : '100001',        ALIYUN_SMS_TPL_RESET       : '100003',        ALIYUN_SMS_TPL_CHANGE_PHONE: '',] android {    namespace 'com.heban.app'    compileSdk {        version = release(36) {            minorApiLevel = 1        }    }     defaultConfig {        applicationId "com.heban.app"        minSdk 31        targetSdk 36        versionCode 1        versionName "1.0.0"        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"         configKeys.each { k, d ->            buildConfigField "String", k, str(localProps.getProperty(k, d))        }    }     flavorDimensions = ["data"]    productFlavors {        mock {            dimension "data"            buildConfigField "String", "API_BASE_URL", '"https://example.invalid/"'        }        remote {            dimension "data"            // 后端地址待定            buildConfigField "String", "API_BASE_URL", '"https://api.heban.example/"'        }    }     buildFeatures {        dataBinding true        buildConfig true    }     buildTypes {        release {            minifyEnabled false            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),                    'proguard-rules.pro'        }    }    compileOptions {        sourceCompatibility JavaVersion.VERSION_11        targetCompatibility JavaVersion.VERSION_11    }} dependencies {    implementation libs.appcompat    implementation libs.material    implementation libs.activity    implementation libs.constraintlayout    implementation libs.fragment    implementation libs.recyclerview    implementation libs.swiperefreshlayout     implementation libs.lifecycle.viewmodel    implementation libs.lifecycle.livedata    implementation libs.lifecycle.reactivestreams    implementation libs.navigation.fragment    implementation libs.navigation.ui     implementation libs.room.runtime    implementation libs.room.rxjava3    implementation libs.room.paging    annotationProcessor libs.room.compiler    implementation libs.paging.runtime    implementation libs.paging.rxjava3    implementation libs.work.runtime    implementation libs.work.rxjava3    implementation libs.datastore.preferences    implementation libs.datastore.rxjava3    implementation libs.camera.camera2    implementation libs.camera.lifecycle    implementation libs.camera.view     implementation libs.rxjava    implementation libs.rxandroid    implementation libs.retrofit    implementation libs.retrofit.rxjava3    implementation libs.retrofit.gson    implementation libs.okhttp    implementation libs.okhttp.sse    implementation libs.okhttp.logging    implementation libs.gson     implementation libs.glide    annotationProcessor libs.glide.compiler    implementation libs.picasso     testImplementation libs.junit    testImplementation libs.okhttp.mockwebserver    androidTestImplementation libs.ext.junit    androidTestImplementation libs.espresso.core    androidTestImplementation libs.room.testing}
+注意　Build Variants 选择 mockDebug 进行日常开发。BuildConfig 中的 Key 会被打包进 APK，只用于课程演示，APK 不要对外分发；后端上线后改为服务端转发（见 9.8）。
+4.3 AndroidManifest 与权限
+app/src/main/AndroidManifest.xml（要点）
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">    <uses-permission android:name="android.permission.INTERNET" />    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />    <uses-permission android:name="android.permission.CAMERA" />    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />    <uses-feature android:name="android.hardware.camera.any" android:required="false" />     <application        android:name=".HeBanApp"        android:label="@string/app_name"        android:icon="@mipmap/ic_launcher"        android:theme="@style/Theme.HeBan"        android:allowBackup="true"        android:dataExtractionRules="@xml/data_extraction_rules"        android:fullBackupContent="@xml/backup_rules">        <activity            android:name=".ui.MainActivity"            android:exported="true"            android:windowSoftInputMode="adjustResize">            <intent-filter>                <action android:name="android.intent.action.MAIN" />                <category android:name="android.intent.category.LAUNCHER" />            </intent-filter>        </activity>    </application></manifest>
+表 4-1 运行时权限与申请时机
+权限 | 用途 | 申请时机
+CAMERA | 拍照识别（D02） | 第一次进入拍照页时申请；拒绝后可改用相册
+POST_NOTIFICATIONS | 农事提醒、天气预警、物流通知（Android 13+ 需要） | 第一次开启「提醒我」或在消息通知设置中打开总开关时申请
+ACCESS_COARSE_LOCATION | 定位到区县，获取当地天气 | 首页第一次加载天气时申请；拒绝则使用资料中的「所在地区」
+相册 | 选择照片 | 使用系统照片选择器（PickVisualMedia），不需要存储权限
+4.4 构建类型与混淆
+•  日常开发使用 mockDebug；后端联调使用 remoteDebug。
+•  release 暂不开启混淆（minifyEnabled false）。如果以后开启，需要在 proguard-rules.pro 中保留 Gson 解析用的 DTO 和 Room 实体字段，并加入 Retrofit、OkHttp、Glide 官方提供的混淆规则。
+•  Glide 依靠注解处理器生成代码来加载自定义的 AppGlideModule（HeBanGlideModule，见 10.1），所以 Glide 的 compiler 依赖不能省略；代码中直接使用 Glide.with(...)。
+5 总体架构
+5.1 分层结构
+采用 MVVM。View 层只负责显示和转发用户操作；ViewModel 持有页面状态；Repository 接口屏蔽数据来源。数据从数据库或网络以 RxJava 数据流的形式返回，ViewModel 把它转成 LiveData，再由 DataBinding 显示到界面上。
+图 5-1 总体架构
+表 5-1 各层职责
+层 | 职责 | 不应该做的事
+View（Fragment + XML） | 绑定 ViewModel、观察 LiveData、处理导航和权限申请、显示 Snackbar / 对话框 | 直接访问数据库或网络；保存业务状态
+ViewModel | 持有 LiveData 状态；调用 Repository；组合多个数据流；处理表单校验 | 持有 View / Context 引用（需要时用 Application）
+Repository | 决定数据从哪里来（Room、网络、缓存）；线程切换（subscribeOn io）；错误转换 | 引用任何界面类
+数据源 | DAO、DataStore、Retrofit 接口、LlmClient、SmsService | 包含业务判断
+5.2 依赖装配：AppContainer
+不引入 Hilt，用一个手写的 AppContainer 在 Application 中集中创建单例对象。ViewModel 统一通过 AppViewModelFactory 创建，构造函数只接收 AppContainer。
+di/AppContainer.java（节选）
+public final class AppContainer {    public final Context app;    public final Gson gson = new Gson();    public final AppDatabase db;    public final SettingsStore settings;    public final SecureStore secureStore = new SecureStore();    public final OkHttpClient baseClient;    public final Notifier notifier;     public final SmsService smsService;    public final LlmConfigProvider llmConfigs;    public final LlmClient llmClient;    public final WeatherRepository weatherRepository;    public final CropRepository cropRepository;    public final AiRepository aiRepository;    public final VisionRepository visionRepository;    public final UserRepository userRepository;     // 随 flavor 变化    public final PostRepository postRepository;     // 随 flavor 变化     public AppContainer(Context context) {        app = context.getApplicationContext();        db = AppDatabase.get(app);        settings = new SettingsStore(app);        baseClient = NetworkModule.baseClient(BuildConfig.DEBUG);        notifier = new Notifier(app, settings);         smsService = SmsServices.create(baseClient, gson);   // aliyun 或 fake        llmConfigs = new LlmConfigProvider(settings, secureStore);        llmClient = new LlmClient(baseClient, gson);        weatherRepository = new WeatherRepository(                NetworkModule.qweather(baseClient, gson), db, gson);        cropRepository = new CropRepository(db);        aiRepository = new AiRepository(                llmClient, llmConfigs, db, settings, weatherRepository);        visionRepository = new VisionRepository(llmClient, llmConfigs, db, gson);         userRepository = RepositoryModule.userRepository(this);        postRepository = RepositoryModule.postRepository(this);    }}
+di/AppViewModelFactory.java
+public final class AppViewModelFactory implements ViewModelProvider.Factory {    private final AppContainer container;     public AppViewModelFactory(AppContainer container) { this.container = container; }     @NonNull    @Override    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {        try {            return modelClass.getConstructor(AppContainer.class).newInstance(container);        } catch (ReflectiveOperationException e) {            throw new IllegalArgumentException(                    "ViewModel 需要 (AppContainer) 构造函数: " + modelClass, e);        }    }} // Fragment 中获取 ViewModelvm = new ViewModelProvider(this, HeBanApp.factory(requireContext()))        .get(LoginViewModel.class);
+5.3 mock / remote 切换
+两个 flavor 各提供一个同名的 RepositoryModule，编译时只会打包所选 flavor 的那一份。只有「以后要由后端提供」的数据才区分两套实现；作物、记账、天气、AI 这些本来就在本机或直连第三方的数据，只有一套实现，放在 main 中。
+表 5-2 Repository 一览
+Repository | mock 实现（现阶段） | remote 实现（后端接入后）
+UserRepository | 账号存 Room（密码 PBKDF2 加盐），短信走阿里云 | 调用后端登录 / 注册接口，Token 存 DataStore
+PostRepository / QaRepository | assets JSON 首次导入 Room，点赞评论写本地 | 后端分页接口 + Room 缓存
+FarmerRepository / ChatRepository | 本地农友数据；私信按话术自动回复 | 后端接口；私信改 WebSocket
+MarketRepository | 本地商品 + 自己发布的商品；置顶按 pinned_until 排序 | 后端商品接口
+PointsRepository / MallRepository | 积分流水、订单、物流在本地生成 | 后端积分与订单接口
+CropRepository / LedgerRepository | Room（两个 flavor 共用） | 同左，后续增加云同步
+WeatherRepository | 和风天气 + Room 缓存（共用） | 同左
+AiRepository / VisionRepository | DeepSeek / 通义千问 VL 直连（共用） | 改为调用后端转发接口
+src/mock/java/com/heban/app/di/RepositoryModule.java
+public final class RepositoryModule {    private RepositoryModule() { }     public static UserRepository userRepository(AppContainer c) {        return new MockUserRepository(c.db, c.settings, c.smsService);    }     public static PostRepository postRepository(AppContainer c) {        return new MockPostRepository(c.db);    }    // 其余同理}// src/remote/... 中同名类返回 RemoteUserRepository、RemotePostRepository
+5.4 页面状态与错误处理
+每个列表或详情页面都用 UiState 表示「加载中 / 成功 / 空 / 错误」四种状态，对应 UI 设计文档第 7 章的页面状态设计。所有异常在 Repository 或 ViewModel 中转换为 AppError，界面只显示 AppError 中的中文提示。
+ui/common/UiState.java
+public final class UiState<T> {    public enum Status { LOADING, SUCCESS, EMPTY, ERROR }     public final Status status;    @Nullable public final T data;    @Nullable public final AppError error;     private UiState(Status s, @Nullable T d, @Nullable AppError e) {        status = s; data = d; error = e;    }     public static <T> UiState<T> loading() { return new UiState<>(Status.LOADING, null, null); }    public static <T> UiState<T> success(T d) { return new UiState<>(Status.SUCCESS, d, null); }    public static <T> UiState<T> empty() { return new UiState<>(Status.EMPTY, null, null); }    public static <T> UiState<T> error(Throwable t) {        return new UiState<>(Status.ERROR, null, AppError.from(t));    }     public boolean isLoading() { return status == Status.LOADING; }    public boolean isEmpty() { return status == Status.EMPTY; }    public boolean isError() { return status == Status.ERROR; }}
+表 5-3 AppError 类型
+类型 | 来源 | 提示文案
+NETWORK | UnknownHostException、ConnectException 等 IOException | 网络不太好，检查后再试一次
+TIMEOUT | SocketTimeoutException、RxJava timeout | 请求超时，请稍后重试
+UNAUTHORIZED | HTTP 401 | API Key 无效，请到「AI 助手设置 → 模型服务」检查
+NO_BALANCE | HTTP 402（DeepSeek 余额不足） | 模型服务余额不足
+RATE_LIMIT | HTTP 429；短信频率限制 | 操作太频繁，请稍后再试
+SERVER | HTTP 5xx | 服务暂时不可用，请稍后重试
+PARSE | JsonParseException、识图结果格式错误 | 返回内容无法识别
+BUSINESS | 短信 Code 不为 OK、验证码错误、账号已存在等 | 直接显示业务提示
+UNKNOWN | 其他 | 出了点问题，请重试
+5.5 线程与生命周期规范
+1.  Repository 返回的数据流在 Repository 内部指定 subscribeOn(Schedulers.io())；ViewModel 订阅时用 observeOn(AndroidSchedulers.mainThread())。
+2.  所有订阅放入 BaseViewModel 的 CompositeDisposable，onCleared() 时统一 clear，避免内存泄漏和页面关闭后回调。
+3.  Room 的 Flowable 查询会在数据变化时自动重新发射，界面数据以数据库为准（单一数据源）。
+4.  ViewModel 用 LiveDataReactiveStreams 把 Flowable 转成 LiveData 时，要注意它在没有观察者时会取消订阅；需要一直保持的流（如流式回答）改为手动订阅并写入 MutableLiveData。
+5.  HeBanApp 中设置 RxJavaPlugins.setErrorHandler，记录 UndeliverableException，防止页面关闭后迟到的错误导致崩溃。
+ui/common/BaseViewModel.java
+public abstract class BaseViewModel extends ViewModel {    protected final AppContainer c;    protected final CompositeDisposable disposables = new CompositeDisposable();    public final SingleLiveEvent<String> toast = new SingleLiveEvent<>();   // 一次性提示     protected BaseViewModel(AppContainer c) { this.c = c; }     protected void add(Disposable d) { disposables.add(d); }     @Override    protected void onCleared() { disposables.clear(); }}
+6 界面层实现规范
+6.1 单 Activity 与 Navigation
+整个 App 只有 MainActivity 一个 Activity，所有页面都是 Fragment，跳转由 Navigation 管理。底部导航的 5 个菜单 id 与导航图中 5 个一级目的地 id 相同，用 NavigationUI 绑定；进入二级页面时隐藏底部导航。「问 AI」扩展悬浮按钮放在 MainActivity 布局中，只在首页、作物、发现三个目的地显示。
+表 6-1 导航图结构
+导航图 | 包含的页面 | 说明
+auth_graph | A02 引导页、A03 密码登录、A04 验证码登录、A07 忘记密码、A08 设置新密码、A09 申诉换绑 | 未登录时的起点；登录成功后 popUpTo 清空返回栈
+register_graph | A05 注册、A06 完善资料 | 共享 RegisterViewModel
+主图（一级） | H01 首页、C01 作物、D01 发现、S01 农友圈、M01 我的 | 底部导航的 5 个目的地
+主图（二级） | 其余页面 | 全屏打开，左上角返回
+mall_graph | P04 商品详情、P05 确认兑换、P06 收货地址 | 共享 MallOrderViewModel（数量、地址）
+change_pwd_graph / reset_graph | M07 两个步骤；A07 → A08 | 分步页面共享 ViewModel
+ui/MainActivity.java（节选）
+public class MainActivity extends AppCompatActivity {    private static final Set<Integer> TOP_LEVEL = Set.of(            R.id.homeFragment, R.id.cropsFragment, R.id.discoverFragment,            R.id.communityFragment, R.id.profileFragment);    private static final Set<Integer> SHOW_AI_FAB = Set.of(            R.id.homeFragment, R.id.cropsFragment, R.id.discoverFragment);    private boolean ready = false;     @Override    protected void onCreate(Bundle savedInstanceState) {        super.onCreate(savedInstanceState);        ActivityMainBinding b = DataBindingUtil.setContentView(this, R.layout.activity_main);         // A01：系统闪屏一直显示到起始页确定（Android 12 SplashScreen API）        View content = findViewById(android.R.id.content);        ViewTreeObserver.OnPreDrawListener hold = new ViewTreeObserver.OnPreDrawListener() {            @Override public boolean onPreDraw() {                if (!ready) return false;                content.getViewTreeObserver().removeOnPreDrawListener(this);                return true;            }        };        content.getViewTreeObserver().addOnPreDrawListener(hold);         NavHostFragment host = (NavHostFragment) getSupportFragmentManager()                .findFragmentById(R.id.nav_host);        NavController nav = host.getNavController();        AppContainer c = HeBanApp.container(this);        c.userRepository.startDestination()          // Single<Integer>：引导页 / 登录 / 首页                .observeOn(AndroidSchedulers.mainThread())                .subscribe(dest -> {                    NavGraph graph = nav.getNavInflater().inflate(R.navigation.nav_graph);                    graph.setStartDestination(dest);                    nav.setGraph(graph);                    ready = true;                }, e -> ready = true);         NavigationUI.setupWithNavController(b.bottomNav, nav);        nav.addOnDestinationChangedListener((controller, dest, args) -> {            b.setShowBottomNav(TOP_LEVEL.contains(dest.getId()));            b.setShowAiFab(SHOW_AI_FAB.contains(dest.getId()));        });        b.fabAi.setOnClickListener(v -> nav.navigate(R.id.aiChatFragment));    }}
+分步页面共享 ViewModel 时，按嵌套导航图取 ViewModelStoreOwner：
+在 register_graph 内共享 ViewModel
+NavBackStackEntry entry = NavHostFragment.findNavController(this)        .getBackStackEntry(R.id.register_graph);RegisterViewModel vm = new ViewModelProvider(entry, HeBanApp.factory(requireContext()))        .get(RegisterViewModel.class);
+6.2 DataBinding 规范
+•  每个页面布局以 <layout> 为根，声明变量 vm（页面 ViewModel）；列表项布局声明变量 item 和点击回调 listener。
+•  Fragment 中必须调用 binding.setLifecycleOwner(getViewLifecycleOwner())，LiveData 才会自动刷新界面。
+•  输入框用双向绑定 @={vm.phone}（MutableLiveData<String>）；按钮可用状态、错误提示、加载状态用单向绑定。
+•  点击事件用 lambda：android:onClick="@{() -> vm.login()}"；列表项点击通过 listener 变量传入。
+•  布局表达式只做简单判断，复杂逻辑放到 ViewModel 或 BindingAdapter 中。
+res/layout/fragment_login.xml（节选）
+<layout xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto">    <data>        <variable name="vm" type="com.heban.app.ui.account.LoginViewModel" />    </data>    <LinearLayout        android:layout_width="match_parent"        android:layout_height="match_parent"        android:orientation="vertical"        android:padding="16dp">         <com.google.android.material.textfield.TextInputLayout            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"            android:layout_width="match_parent"            android:layout_height="wrap_content"            android:hint="手机号"            app:error="@{vm.phoneError}">            <com.google.android.material.textfield.TextInputEditText                android:layout_width="match_parent"                android:layout_height="wrap_content"                android:inputType="phone"                android:text="@={vm.phone}" />        </com.google.android.material.textfield.TextInputLayout>         <com.google.android.material.button.MaterialButton            android:layout_width="match_parent"            android:layout_height="wrap_content"            android:enabled="@{vm.canSubmit &amp;&amp; !vm.loading}"            android:onClick="@{() -> vm.login()}"            android:text="登录" />    </LinearLayout></layout>
+ui/common/BindingAdapters.java（节选）
+public final class BindingAdapters {    private BindingAdapters() { }     /** 列表、头像等小图：Glide（缓存配置见 10.1） */    @BindingAdapter(value = {"imageUrl", "placeholder"}, requireAll = false)    public static void loadImage(ImageView view, String path, Drawable placeholder) {        Glide.with(view)                .load(ImagePaths.toUri(path))                .placeholder(placeholder != null ? placeholder : view.getContext()                        .getDrawable(R.drawable.ph_image))                .centerCrop()                .into(view);    }     /** 详情页大图：Picasso + 圆角变换（见 10.2） */    @BindingAdapter("largeImageUrl")    public static void loadLargeImage(ImageView view, String path) {        Picasso.get()                .load(ImagePaths.toUri(path))                .fit().centerCrop()                .transform(new RoundedCornersTransformation(Dimens.dp(view, 12)))                .into(view);    }     @BindingAdapter("visible")    public static void setVisible(View view, boolean visible) {        view.setVisibility(visible ? View.VISIBLE : View.GONE);    }     /** 无头像时显示昵称首字 + 固定容器色（UI 设计文档 7 章） */    @BindingAdapter({"avatarText", "avatarSeed"})    public static void setAvatar(TextView view, String nickname, long userId) {        view.setText(nickname == null || nickname.isEmpty() ? "?" : nickname.substring(0, 1));        AvatarColors.Pair p = AvatarColors.forId(userId);        view.getBackground().setTint(p.container);        view.setTextColor(p.onContainer);    }}
+util/ImagePaths.java：统一处理图片路径
+public final class ImagePaths {    private static final String ASSET_PREFIX = "file:///android_asset/";     /** "images/crops/tomato.jpg" → assets；http / file / content 地址原样返回 */    public static Uri toUri(@Nullable String path) {        if (path == null || path.isEmpty()) return null;        if (path.startsWith("http") || path.startsWith("file:") || path.startsWith("content:")) {            return Uri.parse(path);        }        return Uri.parse(ASSET_PREFIX + path);    }}
+6.3 列表：RecyclerView + ListAdapter
+所有列表用 ListAdapter + DiffUtil，数据更新只刷新变化的项；列表项通过 DataBinding 绑定。分页列表（集市、动态）用 PagingDataAdapter，见 7.6。
+ui/crop/CropAdapter.java
+public class CropAdapter extends ListAdapter<CropCard, CropAdapter.VH> {    public interface Listener { void onClick(CropCard item); }     private static final DiffUtil.ItemCallback<CropCard> DIFF = new DiffUtil.ItemCallback<>() {        @Override public boolean areItemsTheSame(@NonNull CropCard a, @NonNull CropCard b) {            return a.id == b.id;        }        @Override public boolean areContentsTheSame(@NonNull CropCard a, @NonNull CropCard b) {            return a.equals(b);        }    };     private final Listener listener;     public CropAdapter(Listener listener) { super(DIFF); this.listener = listener; }     @NonNull @Override    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {        ItemCropCardBinding b = ItemCropCardBinding.inflate(                LayoutInflater.from(parent.getContext()), parent, false);        b.setListener(listener);        return new VH(b);    }     @Override    public void onBindViewHolder(@NonNull VH holder, int position) {        holder.b.setItem(getItem(position));        holder.b.executePendingBindings();    }     static class VH extends RecyclerView.ViewHolder {        final ItemCropCardBinding b;        VH(ItemCropCardBinding b) { super(b.getRoot()); this.b = b; }    }}
+6.4 Material 3 主题与深色模式
+颜色、字号、圆角全部按 UI 设计文档第 2–5 章实现：色值写在 values/colors.xml 和 values-night/colors.xml，主题只引用颜色资源，布局只引用 ?attr/ 主题属性。
+res/values/attrs.xml：自定义 Warning 颜色角色
+<resources>    <attr name="colorWarning" format="color" />    <attr name="colorOnWarning" format="color" />    <attr name="colorWarningContainer" format="color" />    <attr name="colorOnWarningContainer" format="color" /></resources>
+res/values/themes.xml（节选）
+<resources>    <style name="Theme.HeBan" parent="Theme.Material3.DayNight.NoActionBar">        <item name="colorPrimary">@color/md_primary</item>        <item name="colorOnPrimary">@color/md_on_primary</item>        <item name="colorPrimaryContainer">@color/md_primary_container</item>        <item name="colorOnPrimaryContainer">@color/md_on_primary_container</item>        <item name="colorSecondaryContainer">@color/md_secondary_container</item>        <item name="colorTertiaryContainer">@color/md_tertiary_container</item>        <item name="colorSurface">@color/md_surface</item>        <item name="colorSurfaceContainerLow">@color/md_surface_container_low</item>        <item name="colorSurfaceContainerHighest">@color/md_surface_container_highest</item>        <!-- 其余颜色角色按 UI 设计文档表 2-2 逐项配置 -->        <item name="colorWarning">@color/md_warning</item>        <item name="colorWarningContainer">@color/md_warning_container</item>        <item name="colorOnWarningContainer">@color/md_on_warning_container</item>         <item name="textAppearanceTitleLarge">@style/TextAppearance.HeBan.TitleLarge</item>        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.HeBan.Medium</item>         <!-- A01 闪屏（Android 12 原生 API） -->        <item name="android:windowSplashScreenBackground">@color/md_surface</item>        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_sprout</item>    </style>     <style name="TextAppearance.HeBan.TitleLarge" parent="TextAppearance.Material3.TitleLarge">        <item name="android:textStyle">bold</item>  <!-- 中文标题用 Medium 字重的近似 -->        <item name="android:letterSpacing">0</item>    </style></resources>
+HeBanApp.java：深色模式与动态取色
+@Overridepublic void onCreate() {    super.onCreate();    container = new AppContainer(this);     // 显示与通用（M12）：浅色 / 深色 / 跟随系统；启动时同步读取一次    AppCompatDelegate.setDefaultNightMode(container.settings.themeModeBlocking());     // 动态取色开关：开启时按壁纸生成颜色角色    DynamicColors.applyToActivitiesIfAvailable(this, new DynamicColorsOptions.Builder()            .setPrecondition((activity, theme) -> container.settings.dynamicColorBlocking())            .build());     RxJavaPlugins.setErrorHandler(e -> Log.w("HeBan", "Undeliverable", e));    container.notifier.createChannels();}
+切换主题后调用 AppCompatDelegate.setDefaultNightMode() 立即生效；切换动态取色后调用 activity.recreate()。
+6.5 通用界面组件
+表 6-2 通用组件
+组件 | 实现 | 用于
+空 / 加载 / 错误视图 | view_state.xml（include），绑定 UiState；错误视图带「重试」按钮 | 所有列表页
+骨架屏 | item_skeleton_*.xml，Surface Container Highest 色块 | 列表首屏加载
+Snackbar | Snackbars.show(view, text, action)，统一 LENGTH_LONG | 操作反馈、「功能暂未开放」
+确认对话框 | MaterialAlertDialogBuilder 封装 ConfirmDialog | 退出登录、注销、换绑、删除
+验证码按钮 | SmsCodeButton：倒计时文字绑定 vm.countdown | A04、A05、A07、M07、M08、A09
+密码强度条 | PasswordStrength 工具类 + LinearProgressIndicator | A05、A08、M07
+手机号脱敏 | PhoneMask.mask("13800005678") → "1385678" | M05、M06、M07、P05 等
+7 数据层实现
+7.1 Room 数据库
+数据库名 heban.db。开发阶段允许破坏性迁移；正式发布前把版本号固定下来，之后每次改表都写 Migration。
+data/local/db/AppDatabase.java
+@Database(entities = {        UserEntity.class, PlotEntity.class, CropEntity.class, FarmRecordEntity.class,        FarmTaskEntity.class, LedgerEntryEntity.class, CheckinEntity.class, PointsTxnEntity.class,        MallItemEntity.class, MallOrderEntity.class, AddressEntity.class,        ChatSessionEntity.class, ChatMessageEntity.class, ScanRecordEntity.class, PestEntity.class,        FarmerEntity.class, PostEntity.class, CommentEntity.class, ProductEntity.class,        ConversationEntity.class, DirectMessageEntity.class, FavoriteEntity.class,        NotificationEntity.class, WeatherCacheEntity.class, DraftEntity.class, AppealEntity.class}, version = 1, exportSchema = false)@TypeConverters(Converters.class)public abstract class AppDatabase extends RoomDatabase {    public abstract CropDao cropDao();    public abstract FarmRecordDao farmRecordDao();    public abstract LedgerDao ledgerDao();    public abstract PointsDao pointsDao();    // …… 其余 DAO     private static volatile AppDatabase instance;     public static AppDatabase get(Context context) {        if (instance == null) {            synchronized (AppDatabase.class) {                if (instance == null) {                    instance = Room.databaseBuilder(context, AppDatabase.class, "heban.db")                            .fallbackToDestructiveMigration(true)   // 仅开发阶段                            .build();                }            }        }        return instance;    }}
+表 7-1 数据表
+表 | 主要字段 | 用于页面
+user | id, phone, password_hash, salt, nickname, region, identity, crops, bio, years, created_at | A03–A09、M02、M03
+plot | id, name, area_mu, type（大棚/露天）, structure, irrigation, soil | C05
+crop | id, plot_id, name, variety, plant_mode, area_mu, planted_at, expected_days, stage, cover_path, remind_enabled | H01、C01–C03
+farm_record | id, crop_id, type, date, material, amount, unit, cost_cent, photos, ledger_entry_id, note | C02、C04
+farm_task | id, crop_id, type, due_at, repeat_days, repeat_count, remind_minutes, done, done_at, note | H01、H03、H04
+ledger_entry | id, type（IN/OUT）, category, amount_cent, crop_id, date, note, source（manual/record） | D10、D11
+checkin | date（yyyy-MM-dd，主键）, streak, points | H05
+points_txn | id, type, title, amount（积分，可负）, growth（成长值）, created_at, ref_id | P01、H05、M01
+mall_item / mall_order | 商品：id, name, type, price, stock, limit_per_user, image；订单：order_no, item_id, qty, points, address_json, status, created_at, tracking_no | P03–P08
+address | id, name, phone, region, detail, is_default | P05、P06
+chat_session / chat_message | 会话：id, title, updated_at；消息：id, session_id, role, content, image_path, status, created_at | D06、M11
+scan_record | id, image_path, mode, result_json, provider, crop_id, created_at | D02、D03
+pest | id, name, aliases, en_name, category, crops, part, season, pathogen, conditions, symptoms, prevention_json, images | D04、D05
+farmer / post / comment | 农友、动态（含提问：type、reward、status、accepted_id）、评论（含回答、accepted） | S01–S07
+product | id, seller_id, title, category, price_cent, unit, min_qty, trade_ways, location, images, tags, pinned_until, mine, created_at | D07–D09
+conversation / direct_message | 私信会话与消息；product_id 关联集市商品 | S08、S09、P09
+favorite / notification | 收藏（target_type, target_id）；消息通知（type, title, target, read） | M04、S08
+weather_cache | location_id（主键）, now_json, hourly_json, daily_json, fetched_at | H01、H02
+draft / appeal | 发布草稿；换绑申诉记录（old_phone, new_phone, status, created_at） | S03、A09
+7.2 DAO 与 RxJava
+DAO 的查询返回 Flowable（数据变化自动更新）或 Single（只取一次），写操作返回 Completable 或 Single<Long>。需要同时写多张表的操作（例如保存农事记录并同步记一笔账）用 runInTransaction 保证原子性。
+data/local/dao/CropDao.java
+@Daopublic interface CropDao {    @Query("SELECT * FROM crop ORDER BY planted_at DESC")    Flowable<List<CropEntity>> observeAll();     @Transaction    @Query("SELECT * FROM crop WHERE id = :id")    Flowable<CropWithRecords> observeWithRecords(long id);   // @Relation 关联农事记录     @Query("SELECT * FROM crop WHERE id = :id")    Single<CropEntity> getOnce(long id);     @Insert    Single<Long> insert(CropEntity crop);     @Update    Completable update(CropEntity crop);} public class CropWithRecords {    @Embedded public CropEntity crop;    @Relation(parentColumn = "id", entityColumn = "crop_id")    public List<FarmRecordEntity> records;}
+data/repository/CropRepository.java：农事记录同步记账（C04）
+public Completable saveRecord(FarmRecordEntity record, boolean syncToLedger) {    return Completable.fromAction(() -> db.runInTransaction(() -> {        if (syncToLedger && record.costCent > 0) {            long ledgerId = db.ledgerDao().insertSync(LedgerEntryEntity.fromRecord(record));            record.ledgerEntryId = ledgerId;        }        db.farmRecordDao().insertSync(record);    })).subscribeOn(Schedulers.io());}
+ViewModel 中把 Flowable 转成 LiveData
+public class CropsViewModel extends BaseViewModel {    public final LiveData<List<CropCard>> crops;     public CropsViewModel(AppContainer c) {        super(c);        crops = LiveDataReactiveStreams.fromPublisher(                c.cropRepository.observeCards()                     // Flowable<List<CropCard>>                        .onErrorReturnItem(Collections.emptyList()));    }}
+7.3 DataStore 设置存储
+设置项和登录态用 DataStore（Preferences）保存，通过 RxDataStore 以 RxJava 方式读写。整个 App 只创建一个 RxDataStore 实例（放在 AppContainer 中）。
+data/local/prefs/SettingsStore.java（节选）
+public final class SettingsStore {    public static final Preferences.Key<String> AI_STYLE =            PreferencesKeys.stringKey("ai.style");    public static final Preferences.Key<Integer> THEME_MODE =            PreferencesKeys.intKey("ui.theme_mode");     private final RxDataStore<Preferences> store;     public SettingsStore(Context context) {        store = new RxPreferenceDataStoreBuilder(context, "settings").build();    }     public Flowable<String> aiStyle() {        return store.data().map(p -> {            String v = p.get(AI_STYLE);            return v != null ? v : "DETAIL";        });    }     public Completable setAiStyle(String style) {        return store.updateDataAsync(p -> {            MutablePreferences m = p.toMutablePreferences();            m.set(AI_STYLE, style);            return Single.just(m);        }).ignoreElement();    }     /** 只在 Application 启动时使用一次 */    public int themeModeBlocking() {        Integer v = store.data().map(p -> {            Integer m = p.get(THEME_MODE);            return m != null ? m : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;        }).blockingFirst();        return v;    }}
+表 7-2 DataStore 键
+分组 | 键 | 说明
+登录态 | session.user_id、session.token、session.guest、onboarding.done | 当前用户、模拟 Token、游客模式、是否看过引导页
+显示 | ui.theme_mode、ui.dynamic_color、ui.font_scale | M12 显示与通用
+通知 | notify.enabled、notify.farm_task、notify.weather、notify.pest、notify.comment、notify.like、notify.follow、notify.dm、notify.dnd_start、notify.dnd_end | M09 消息通知；免打扰用「当天分钟数」存储
+隐私 | privacy.post_visibility、privacy.region_precision、privacy.find_by_phone、privacy.dm、privacy.comment | M10 隐私设置
+AI | ai.style、ai.use_crops、ai.use_weather、ai.save_history | M11 回答风格与参考内容
+模型服务 | llm.provider、llm.base_url、llm.chat_model、llm.vision_model、llm.api_key_enc | M11 新增；Key 经 SecureStore 加密后保存
+天气 | weather.location_id、weather.location_name | 和风天气 LocationID 与显示名
+模拟数据 | mock.imported_version | 模拟数据导入版本，JSON 更新后重新导入
+7.4 敏感信息加密
+用户在 App 中填写的 API Key、模拟登录 Token 等敏感信息，用 Android Keystore 中的 AES-256-GCM 密钥加密后再存入 DataStore。密钥由系统保管，不能被导出。
+data/local/prefs/SecureStore.java
+public final class SecureStore {    private static final String ALIAS = "heban_secret_key";    private static final String TRANSFORM = "AES/GCM/NoPadding";     private SecretKey key() throws GeneralSecurityException, IOException {        KeyStore ks = KeyStore.getInstance("AndroidKeyStore");        ks.load(null);        if (ks.containsAlias(ALIAS)) {            return ((KeyStore.SecretKeyEntry) ks.getEntry(ALIAS, null)).getSecretKey();        }        KeyGenerator kg = KeyGenerator.getInstance(                KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");        kg.init(new KeyGenParameterSpec.Builder(ALIAS,                KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)                .setBlockModes(KeyProperties.BLOCK_MODE_GCM)                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)                .setKeySize(256)                .build());        return kg.generateKey();    }     public String encrypt(String plain) throws GeneralSecurityException, IOException {        Cipher cipher = Cipher.getInstance(TRANSFORM);        cipher.init(Cipher.ENCRYPT_MODE, key());        byte[] iv = cipher.getIV();                                   // 12 字节        byte[] body = cipher.doFinal(plain.getBytes(StandardCharsets.UTF_8));        byte[] out = ByteBuffer.allocate(iv.length + body.length).put(iv).put(body).array();        return Base64.encodeToString(out, Base64.NO_WRAP);    }     public String decrypt(String encoded) throws GeneralSecurityException, IOException {        byte[] all = Base64.decode(encoded, Base64.NO_WRAP);        Cipher cipher = Cipher.getInstance(TRANSFORM);        cipher.init(Cipher.DECRYPT_MODE, key(), new GCMParameterSpec(128, all, 0, 12));        return new String(cipher.doFinal(all, 12, all.length - 12), StandardCharsets.UTF_8);    }}
+模拟账号的密码不加密保存，而是用 PBKDF2WithHmacSHA256（随机 16 字节盐、10000 次迭代）计算哈希后保存，登录时比对哈希。
+7.5 模拟数据与示例图片
+农友、动态、问答、集市商品、病虫害百科、积分商品等「将来由后端提供」的数据，现阶段写在 assets/mock/ 的 JSON 文件中。第一次启动时由 MockDataImporter 在后台线程解析并写入 Room，之后的点赞、评论、发布都直接改 Room，所以操作结果会保留。
+表 7-3 模拟数据文件
+文件 | 内容 | 导入到
+farmers.json | 农友资料：昵称、徽标、等级、地区、简介、关注数 | farmer
+posts.json | 动态及评论 | post、comment
+questions.json | 问答（问题、悬赏、回答、AI 参考答案） | post（type=QUESTION）、comment
+products.json | 集市商品 | product
+pests.json | 病虫害百科（含症状、防治方法、别名、图片路径） | pest
+mall_items.json | 积分商城商品 | mall_item
+replies.json | 私信自动回复话术（按关键词） | 内存
+service_faq.json | 禾伴客服快捷问题与回答 | 内存
+sample_farm.json | 新账号可选的示例地块、作物、农事 | plot、crop、farm_record
+data/mock/MockDataImporter.java（节选）
+public Completable importIfNeeded() {    return settings.mockImportedVersion()            .firstOrError()            .flatMapCompletable(v -> v >= MOCK_VERSION ? Completable.complete()                    : Completable.fromAction(() -> db.runInTransaction(() -> {                        db.farmerDao().insertAllSync(read("mock/farmers.json", FarmerEntity[].class));                        db.postDao().insertAllSync(read("mock/posts.json", PostEntity[].class));                        db.pestDao().insertAllSync(read("mock/pests.json", PestEntity[].class));                        // ……                    })).andThen(settings.setMockImportedVersion(MOCK_VERSION)))            .subscribeOn(Schedulers.io());} private <T> List<T> read(String asset, Class<T[]> type) throws IOException {    try (Reader r = new InputStreamReader(app.getAssets().open(asset), StandardCharsets.UTF_8)) {        return Arrays.asList(gson.fromJson(r, type));    }}
+示例图片
+App 中作物、病虫害、商品、动态配图暂时使用维基百科（Wikimedia Commons）上对应内容的图片，后续再替换为自己拍摄或授权的图片。
+•  存放位置：app/src/main/assets/images/，分为 crops/、pests/、products/、mall/、posts/ 五个文件夹（清单见附录 B）。
+•  文件名：小写英文加下划线，如 pests/cucumber_downy_mildew_1.jpg；模拟数据 JSON 中只写相对路径 images/…，由 ImagePaths 转成 file:///android_asset/… 交给 Glide / Picasso 加载。
+•  尺寸：长边不超过 1280px，JPEG 质量约 80，单张不超过 300KB，全部图片控制在 15MB 以内。
+•  版权：维基图片多为 CC BY-SA 等协议，需要署名。assets/images/CREDITS.md 记录每张图的文件名、原始链接、作者和协议；替换图片时同步更新这份清单。
+7.6 Paging 3 分页
+集市商品和农友圈动态数据较多，用 Paging 3 分页加载。现阶段数据在 Room 中，直接用 Room 生成的 PagingSource；后端接入后改为 RxPagingSource 调用分页接口，ViewModel 和界面不变。
+data/local/dao/ProductDao.java
+@Query("SELECT * FROM product WHERE (:category IS NULL OR category = :category) "        + "ORDER BY (pinned_until > :now) DESC, created_at DESC")PagingSource<Integer, ProductEntity> pagingSource(@Nullable String category, long now);
+ui/discover/market/MarketViewModel.java：切换分类时重新分页
+public class MarketViewModel extends BaseViewModel {    private final BehaviorProcessor<String> category = BehaviorProcessor.createDefault("全部");    public final Flowable<PagingData<ProductEntity>> products;     public MarketViewModel(AppContainer c) {        super(c);        Flowable<PagingData<ProductEntity>> source = category.switchMap(cat -> {            String filter = "全部".equals(cat) ? null : cat;            Pager<Integer, ProductEntity> pager = new Pager<>(new PagingConfig(20),                    () -> c.db.productDao().pagingSource(filter, System.currentTimeMillis()));            return PagingRx.getFlowable(pager);        });        products = PagingRx.cachedIn(source, ViewModelKt.getViewModelScope(this));    }     public void selectCategory(String cat) { category.onNext(cat); }} // Fragment：BaseFragment 持有 CompositeDisposable（onDestroyView 时清除）// adapter 继承 PagingDataAdapterdisposables.add(vm.products.subscribe(        data -> adapter.submitData(getViewLifecycleOwner().getLifecycle(), data)));
+8 网络层实现
+8.1 OkHttp 与 Retrofit 配置
+全 App 共用一个基础 OkHttpClient（连接池、日志），不同服务通过 newBuilder() 派生出各自的超时和拦截器设置。日志拦截器只在 debug 打开，并隐藏 Key 相关请求头。
+data/remote/NetworkModule.java
+public final class NetworkModule {    public static OkHttpClient baseClient(boolean debug) {        HttpLoggingInterceptor log = new HttpLoggingInterceptor();        log.setLevel(debug ? HttpLoggingInterceptor.Level.BASIC                           : HttpLoggingInterceptor.Level.NONE);        log.redactHeader("Authorization");        log.redactHeader("X-QW-Api-Key");        return new OkHttpClient.Builder()                .connectTimeout(15, TimeUnit.SECONDS)                .readTimeout(30, TimeUnit.SECONDS)                .addInterceptor(log)                .build();    }     public static Retrofit retrofit(String baseUrl, OkHttpClient client, Gson gson) {        return new Retrofit.Builder()                .baseUrl(baseUrl)                .client(client)                .addConverterFactory(GsonConverterFactory.create(gson))                .addCallAdapterFactory(                        RxJava3CallAdapterFactory.createWithScheduler(Schedulers.io()))                .build();    }     public static QWeatherApi qweather(OkHttpClient base, Gson gson) {        OkHttpClient client = base.newBuilder()                .addInterceptor(chain -> chain.proceed(chain.request().newBuilder()                        .header("X-QW-Api-Key", BuildConfig.QWEATHER_API_KEY).build()))                .build();        return retrofit("https://" + BuildConfig.QWEATHER_API_HOST + "/", client, gson)                .create(QWeatherApi.class);    }}
+表 8-1 各服务的客户端设置
+服务 | 调用方式 | 超时 | 认证
+和风天气 | Retrofit（QWeatherApi） | 读 15 秒 | 请求头 X-QW-Api-Key
+阿里云短信认证 | Retrofit（@Url 完整地址） | 读 15 秒 | 请求参数签名（AccessKey）
+DeepSeek 问答（流式） | OkHttp EventSource（okhttp-sse） | 读 60 秒（两段数据之间） | Authorization: Bearer Key
+识图（主 / 备） | Retrofit（LlmApi，@Url） | 整体 30 秒（RxJava timeout） | Authorization: Bearer Key
+禾伴后端（预留） | Retrofit（HeBanApi） | 读 15 秒 | Authorization: Bearer Token
+8.2 和风天气接入
+和风天气的每个开发者有独立的 API Host（在控制台「设置」中查看），认证可以用 API KEY 或 JWT。课程阶段使用 API KEY（请求头 X-QW-Api-Key）；官方说明从 2027-02-01 起会限制 API KEY 认证的每日请求量，所以客户端要做好缓存，后续可改为 JWT。返回数据经过 Gzip 压缩，OkHttp 会自动解压。
+表 8-2 使用的和风天气接口
+接口 | 路径 | 用于 | 主要字段
+城市搜索 | GET /geo/v2/city/lookup?location= | 把「江宁」或经纬度转成 LocationID | id、name、adm1、adm2
+实时天气 | GET /v7/weather/now?location= | H01 天气卡、H02 顶部 | temp、feelsLike、text、icon、windDir、windScale、humidity、precip
+逐小时预报 | GET /v7/weather/24h?location= | H02 逐小时；农事指数 | fxTime、temp、text、icon、pop、windScale
+7 天预报 | GET /v7/weather/7d?location= | H02 未来 7 天；降温预警 | fxDate、tempMax、tempMin、textDay、iconDay、precip、humidity
+成功时返回体中 code 为 "200"；失败时按 HTTP 状态码和返回的错误信息处理。接口路径和字段以和风天气官方文档为准。
+data/remote/weather/QWeatherApi.java
+public interface QWeatherApi {    @GET("geo/v2/city/lookup")    Single<QwCityResp> lookupCity(@Query("location") String keywordOrLonLat);     @GET("v7/weather/now")    Single<QwNowResp> now(@Query("location") String locationId);     @GET("v7/weather/24h")    Single<QwHourlyResp> hourly(@Query("location") String locationId);     @GET("v7/weather/7d")    Single<QwDailyResp> daily(@Query("location") String locationId);}
+data/repository/WeatherRepository.java：三个接口并发请求 + 缓存
+public Flowable<WeatherBundle> observe(String locationId) {    return db.weatherDao().observe(locationId)                // 先显示缓存            .map(cache -> WeatherBundle.fromCache(cache, gson))            .mergeWith(refreshIfStale(locationId).toFlowable());} private Maybe<WeatherBundle> refreshIfStale(String id) {    return db.weatherDao().getFetchedAt(id).defaultIfEmpty(0L)            .filter(t -> System.currentTimeMillis() - t > 30 * 60_000L)  // 30 分钟内不重复            .flatMapSingle(t -> Single.zip(api.now(id), api.hourly(id), api.daily(id),                    WeatherBundle::new))            .flatMap(b -> db.weatherDao().upsert(b.toCache(id, gson))                    .andThen(Maybe.<WeatherBundle>empty()))      // 写库后由 Room 推送新数据            .onErrorComplete()                                 // 失败时保留缓存，显示离线提示            .subscribeOn(Schedulers.io());}
+首页 H01 需要同时显示天气和今日农事，两个数据都会持续变化，所以用 Flowable.combineLatest 合并；H02 首次加载三个天气接口时用 Single.zip，三者都返回后一起显示。
+农事指数与降温预警（App 本地计算）
+表 8-3 FarmIndexCalculator 规则
+指标 | 判断规则 | 显示
+喷药 | 未来 6 小时降水概率 < 30%、风力 ≤ 3 级、气温 10–30°C → 适宜；风力 4 级或降水概率 30–60% → 较适宜；否则不宜。连续满足条件的时段作为推荐时间 | 适宜 · 15:00–18:00
+灌溉 | 未来 24 小时降水量 ≥ 5mm → 暂不需要；湿度 < 50% 且无降水 → 适宜；其余 → 视墒情 | 暂不需要
+施肥 | 未来 24 小时无中雨及以上降水 → 适宜 | 适宜
+晾晒 | 白天晴或多云且湿度 < 70% → 适宜；湿度 70–85% → 较适宜 | 较适宜
+霜冻 | 未来 7 天最低温 ≤ 2°C → 提示首次出现的日期 | 12 日起注意
+通风 | 湿度 ≥ 85% → 上午通风；夜间湿度高 → 提醒排湿 | 上午为宜
+降温预警 | 未来 3 天最低温比今天低 ≥ 8°C，或最低温 ≤ 8°C 且降幅 ≥ 5°C → 首页显示 Warning 提示栏，并通过「天气预警」通知渠道提醒 | 降温预警 12日起最低 8°C
+8.3 阿里云短信认证
+个人实名的阿里云账号无法申请普通「短信服务」的签名，因此使用号码认证服务中的「短信认证」：调用 SendSmsVerifyCode 发送验证码、CheckSmsVerifyCode 校验，验证码由阿里云生成和校验，使用控制台赠送的签名和模板，不需要企业资质。
+安全　现阶段由 App 直接调用接口，AccessKey 会打包进 APK。务必使用只授权这两个接口的 RAM 子账号，在控制台设置发送频率和每日上限，APK 不对外分发；后端上线后改为由服务端调用（App 只请求后端的发送 / 校验接口）。
+表 8-4 验证码使用场景
+页面 | 场景 | 模板（local.properties） | 校验通过后
+A04 验证码登录 | 登录 / 自动注册 | ALIYUN_SMS_TPL_LOGIN（赠送模板 100001） | 本地查找或创建账号，写入登录态
+A05 注册 | 注册 | ALIYUN_SMS_TPL_LOGIN | 进入 A06 完善资料
+A07 忘记密码 | 重置密码 | ALIYUN_SMS_TPL_RESET（赠送模板 100003） | 进入 A08 设置新密码
+M07 修改密码 | 身份验证（已绑定手机号） | ALIYUN_SMS_TPL_RESET | 进入第 2 步设置新密码
+M08 换绑手机号 | 验证新手机号 | ALIYUN_SMS_TPL_CHANGE_PHONE | 更新账号手机号（本地检查是否已被占用）
+A09 申诉换绑 | 验证新手机号 | ALIYUN_SMS_TPL_CHANGE_PHONE | 保存申诉记录，状态「人工审核中」
+赠送签名必须搭配赠送模板使用；除 100001、100003 外的模板编号以控制台显示为准。
+表 8-5 接口参数（Version 2017-05-25，以官方 API 文档为准）
+接口 | 参数 | 说明
+SendSmsVerifyCode | PhoneNumber | 手机号（必填）
+ | SignName / TemplateCode | 赠送签名名称与模板编号（必填）
+ | TemplateParam | 模板变量 JSON，例如 {"code":"##code##","min":"5"}，##code## 由阿里云生成验证码
+ | CodeLength / ValidTime / Interval | 验证码长度（用 6）、有效期秒数（300）、重发间隔秒数（60）
+ | CountryCode / CodeType | 86；1 表示纯数字
+CheckSmsVerifyCode | PhoneNumber / VerifyCode | 手机号与用户输入的验证码
+ | 返回 Model.VerifyResult | PASS 表示校验通过
+公共参数 | Action、Version、Format、AccessKeyId、SignatureMethod、SignatureVersion、SignatureNonce、Timestamp、Signature | RPC 风格请求签名（见下方代码）
+接口地址为 https://dypnsapi.aliyuncs.com/。下面用 RPC 签名方式（HMAC-SHA1）自己拼请求，不引入阿里云服务端 SDK。阿里云目前推荐 V3 签名，如果以后官方要求 V3，只需替换 AliyunSigner 一个类。
+data/remote/sms/AliyunSigner.java
+public final class AliyunSigner {    private static final String ENDPOINT = "https://dypnsapi.aliyuncs.com/";     /** 返回已签名的完整 GET 地址 */    public static String signedUrl(String action, Map<String, String> bizParams,                                   String akId, String akSecret) throws Exception {        TreeMap<String, String> p = new TreeMap<>(bizParams);   // 参数按名称排序        p.put("Action", action);        p.put("Version", "2017-05-25");        p.put("Format", "JSON");        p.put("AccessKeyId", akId);        p.put("SignatureMethod", "HMAC-SHA1");        p.put("SignatureVersion", "1.0");        p.put("SignatureNonce", UUID.randomUUID().toString());        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);        f.setTimeZone(TimeZone.getTimeZone("UTC"));        p.put("Timestamp", f.format(new Date()));         StringBuilder query = new StringBuilder();        for (Map.Entry<String, String> e : p.entrySet()) {            if (query.length() > 0) query.append('&');            query.append(enc(e.getKey())).append('=').append(enc(e.getValue()));        }        String stringToSign = "GET&" + enc("/") + "&" + enc(query.toString());        Mac mac = Mac.getInstance("HmacSHA1");        byte[] key = (akSecret + "&").getBytes(StandardCharsets.UTF_8);        mac.init(new SecretKeySpec(key, "HmacSHA1"));        String signature = Base64.encodeToString(                mac.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)), Base64.NO_WRAP);        return ENDPOINT + "?" + query + "&Signature=" + enc(signature);    }     /** 阿里云要求的编码：空格 %20、* 为 %2A、~ 不编码 */    static String enc(String s) throws UnsupportedEncodingException {        return URLEncoder.encode(s, "UTF-8")                .replace("+", "%20").replace("*", "%2A").replace("%7E", "~");    }}
+data/remote/sms/AliyunSmsService.java
+public interface AliyunApi {    @GET Single<AliyunResp> call(@Url String signedUrl);} public final class AliyunSmsService implements SmsService {    private final AliyunApi api;     @Override    public Completable send(String phone, SmsScene scene) {        return Single.fromCallable(() -> {                    Map<String, String> m = new HashMap<>();                    m.put("PhoneNumber", phone);                    m.put("CountryCode", "86");                    m.put("SignName", BuildConfig.ALIYUN_SMS_SIGN_NAME);                    m.put("TemplateCode", scene.templateCode());                    m.put("TemplateParam", "{\"code\":\"##code##\",\"min\":\"5\"}");                    m.put("CodeLength", "6");                    m.put("ValidTime", "300");                    m.put("Interval", "60");                    m.put("CodeType", "1");                    return AliyunSigner.signedUrl("SendSmsVerifyCode", m,                            BuildConfig.ALIYUN_AK_ID, BuildConfig.ALIYUN_AK_SECRET);                })                .flatMap(api::call)                .flatMapCompletable(r -> "OK".equals(r.code) ? Completable.complete()                        : Completable.error(new BusinessException(r.code, r.message)))                .subscribeOn(Schedulers.io());    }     @Override    public Single<Boolean> verify(String phone, String code) {        return Single.fromCallable(() -> {                    Map<String, String> m = new HashMap<>();                    m.put("PhoneNumber", phone);                    m.put("CountryCode", "86");                    m.put("VerifyCode", code);                    return AliyunSigner.signedUrl("CheckSmsVerifyCode", m,                            BuildConfig.ALIYUN_AK_ID, BuildConfig.ALIYUN_AK_SECRET);                })                .flatMap(api::call)                .map(r -> "OK".equals(r.code) && r.model != null                        && "PASS".equals(r.model.verifyResult))                .subscribeOn(Schedulers.io());    }}
+•  SmsService 有两个实现：AliyunSmsService 和 FakeSmsService。SMS_PROVIDER=fake 或没有配置 AccessKey 时使用 FakeSmsService：验证码固定为 123456，并用 Snackbar 提示「模拟短信：123456」，方便开发调试，不产生费用。
+•  发送成功后，ViewModel 用 Observable.intervalRange 做 60 秒倒计时，倒计时期间按钮不可点（与阿里云 Interval 参数一致）。
+•  返回 Code 不为 OK 时，直接显示 Message（如发送过于频繁、手机号格式错误），并记录 Code 便于排查。
+验证码倒计时（RxJava）
+public void sendCode() {    add(c.smsService.send(phone.getValue(), SmsScene.LOGIN)            .observeOn(AndroidSchedulers.mainThread())            .subscribe(this::startCountdown, e -> toast.setValue(AppError.from(e).message)));} private void startCountdown() {    add(Observable.intervalRange(0, 61, 0, 1, TimeUnit.SECONDS)            .map(i -> 60 - i)            .observeOn(AndroidSchedulers.mainThread())            .subscribe(left -> {                countdown.setValue(left.intValue());       // 按钮文字「42s 后重发」                canSendCode.setValue(left == 0);            }));}
+8.4 后端接口预留
+remote flavor 中的 Repository 调用禾伴后端。后端尚未开发，这里先约定接口风格和清单，后端开发时以此为基础细化。
+•  风格：REST + JSON；统一返回 {"code": 0, "message": "ok", "data": {...}}，code 不为 0 表示业务错误。
+•  认证：登录后返回 Token，请求头 Authorization: Bearer <token>；401 时清除登录态并跳转登录页。
+•  分页：?page=1&size=20，返回 {"list": [...], "hasMore": true}。
+•  AI 与短信：后端上线后，App 不再保存 DeepSeek、通义千问和阿里云的 Key，改为调用后端的转发接口。
+表 8-6 后端接口清单（预留）
+模块 | 接口 | 说明
+账号 | POST /auth/sms-code、POST /auth/login、POST /auth/login-sms、POST /auth/register | 发送验证码、密码登录、验证码登录、注册
+账号 | POST /auth/password/reset、PUT /auth/password、PUT /auth/phone、POST /auth/appeal | 找回密码、修改密码、换绑手机、申诉换绑
+用户 | GET /users/me、PUT /users/me、GET /users/{id}、POST /users/{id}/follow | 资料、编辑资料、农友主页、关注 / 取消关注
+作物同步 | GET /sync?since=、POST /sync | 作物、农事、记账的云端同步（可选）
+动态 | GET /posts?tab=、POST /posts、POST /posts/{id}/like、GET/POST /posts/{id}/comments | 农友圈
+问答 | GET /questions、POST /questions/{id}/answers、POST /answers/{id}/accept | 问答与采纳
+集市 | GET /products?category=、POST /products、POST /products/{id}/pin | 商品列表、发布、积分置顶
+消息 | GET /conversations、GET/POST /conversations/{id}/messages、GET /notifications | 私信与通知
+积分 | POST /points/checkin、GET /points/txns、GET /mall/items、POST /mall/orders、GET /orders/{id}/logistics | 签到、明细、商城、兑换、物流
+AI 转发 | POST /ai/chat（SSE）、POST /ai/vision | 服务端保存模型 Key 并转发
+9 AI 大模型接入
+9.1 总体设计
+App 中有两项 AI 能力：D06 AI 助手的文本问答，以及 D02 / D03 的拍照识别。DeepSeek 和通义千问都提供 OpenAI 兼容格式的 /chat/completions 接口，所以用同一套请求格式和同一个 LlmClient 调用，不同服务只是 Base URL、Key 和模型名不同。
+表 9-1 模型服务配置
+用途 | 默认服务 | Base URL | 默认模型（可配置）
+问答（流式） | DeepSeek | https://api.deepseek.com | deepseek-v4-flash
+识图 · 主模型 | DeepSeek 视觉模型 | https://api.deepseek.com | deepseek-v4-flash-vision-exp
+识图 · 备用 | 通义千问 VL（阿里云百炼） | https://dashscope.aliyuncs.com/compatible-mode/v1 | qwen-vl-plus
+用户自定义 | 任意 OpenAI 兼容服务 | 用户填写 | 用户填写问答模型和识图模型
+说明　DeepSeek 已于 2026-07-24 停用旧模型名 deepseek-chat / deepseek-reasoner，改用 deepseek-v4-flash / deepseek-v4-pro；视觉模型 deepseek-v4-flash-vision-exp 为实验版（2026 年 8 月推出）。模型名一律放在配置中，不写死在代码里，以 DeepSeek 官方文档为准。
+LlmConfigProvider 按以下优先级决定每次请求使用哪套配置：
+1.  用户在「AI 助手设置 → 模型服务」中填写并启用了自己的配置 → 使用用户配置（问答用用户的问答模型；识图用户填了识图模型时作为主模型）；
+2.  否则使用 BuildConfig 中的默认配置（DeepSeek）；
+3.  识图的备用模型固定为通义千问 VL（配置了 DASHSCOPE_API_KEY 时启用），主模型失败时自动切换。
+data/remote/llm/LlmConfig.java
+public final class LlmConfig {    public final String provider;      // "deepseek" / "dashscope" / "custom"    public final String displayName;   // 结果页显示「由 DeepSeek 识别」    public final String baseUrl;       // 不带结尾斜杠    public final String apiKey;    public final String model;     public String chatCompletionsUrl() { return baseUrl + "/chat/completions"; }    // 构造函数省略}
+9.2 请求与响应格式
+问答和识图都使用 OpenAI 兼容的 Chat Completions 格式。请求头 Authorization: Bearer <API Key>，Content-Type: application/json。
+问答请求（stream = true）
+POST https://api.deepseek.com/chat/completions{  "model": "deepseek-v4-flash",  "stream": true,  "max_tokens": 1024,  "temperature": 0.7,  "messages": [    {"role": "system", "content": "你是「禾伴」App 里的农技助手……（见 9.4）"},    {"role": "user", "content": "番茄叶片发黄怎么办？"},    {"role": "assistant", "content": "……上一轮回答……"},    {"role": "user", "content": "需要打什么药？"}  ]}
+流式响应（Server-Sent Events）
+data: {"choices":[{"index":0,"delta":{"role":"assistant","content":""}}]} data: {"choices":[{"index":0,"delta":{"content":"从描述看"}}]} data: {"choices":[{"index":0,"delta":{"content":"更像缺镁"}}]} data: {"choices":[{"index":0,"delta":{},"finish_reason":"stop"}],"usage":{"total_tokens":512}} data: [DONE]
+识图请求（stream = false，图片为 Base64 data URL）
+POST <主模型或备用模型的 Base URL>/chat/completions{  "model": "deepseek-v4-flash-vision-exp",  "stream": false,  "max_tokens": 800,  "temperature": 0.2,  "messages": [    {"role": "system", "content": "你是农作物病虫害识别助手……（见 9.5）"},    {"role": "user", "content": [      {"type": "image_url", "image_url": {"url": "data:image/jpeg;base64,/9j/4AAQ..."}},      {"type": "text", "text": "识别模式：病虫害；用户选择的作物：黄瓜"}    ]}  ]}
+DeepSeek V4 支持通过请求字段切换「思考模式」，本项目默认不开启；如需开启，字段名和取值以官方文档为准。开启后流式数据中会出现 reasoning_content，界面可选择不显示。
+data/remote/llm/dto（Gson 模型，节选）
+public class ChatRequest {    public String model;    public List<ChatMessage> messages;    public boolean stream;    @SerializedName("max_tokens") public Integer maxTokens;    public Double temperature;} public class ChatMessage {    public String role;          // system / user / assistant    public Object content;       // 纯文本用 String；带图片用 List<ContentPart>} public class ContentPart {    public String type;          // "text" 或 "image_url"    public String text;    @SerializedName("image_url") public ImageUrl imageUrl;    public static class ImageUrl { public String url; }} public class ChatChunk {                         // 流式数据中的一段    public List<Choice> choices;    public static class Choice {        public Delta delta;        public Message message;                  // 非流式响应使用        @SerializedName("finish_reason") public String finishReason;    }    public static class Delta { public String content; }    public static class Message { public String content; }}
+9.3 流式输出实现
+图 9-1 AI 问答流式输出流程
+data/remote/llm/LlmClient.java：SSE 转 Flowable
+public final class LlmClient {    private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");    private final OkHttpClient sseClient;    private final LlmApi api;                   // 非流式（识图、测试连接）    private final Gson gson;     public LlmClient(OkHttpClient base, Gson gson) {        this.gson = gson;        this.sseClient = base.newBuilder().readTimeout(60, TimeUnit.SECONDS).build();        this.api = NetworkModule.retrofit("https://api.deepseek.com/", base, gson)                .create(LlmApi.class);    }     public Flowable<String> stream(LlmConfig cfg, ChatRequest req) {        req.stream = true;        return Flowable.create(emitter -> {            Request request = new Request.Builder()                    .url(cfg.chatCompletionsUrl())                    .header("Authorization", "Bearer " + cfg.apiKey)                    .header("Accept", "text/event-stream")                    .post(RequestBody.create(gson.toJson(req), JSON))                    .build();            EventSource source = EventSources.createFactory(sseClient)                    .newEventSource(request, new EventSourceListener() {                        @Override                        public void onEvent(@NonNull EventSource es, String id, String type,                                            @NonNull String data) {                            if ("[DONE]".equals(data.trim())) { emitter.onComplete(); return; }                            ChatChunk chunk = gson.fromJson(data, ChatChunk.class);                            if (chunk.choices == null || chunk.choices.isEmpty()) return;                            ChatChunk.Delta d = chunk.choices.get(0).delta;                            if (d != null && d.content != null && !d.content.isEmpty()) {                                emitter.onNext(d.content);                            }                        }                         @Override                        public void onClosed(@NonNull EventSource es) { emitter.onComplete(); }                         @Override                        public void onFailure(@NonNull EventSource es, Throwable t, Response r) {                            emitter.tryOnError(LlmException.from(t, r));   // 401 / 402 / 429 等                        }                    });            emitter.setCancellable(source::cancel);     // 取消订阅时断开连接        }, BackpressureStrategy.BUFFER);    }     public Single<String> complete(LlmConfig cfg, ChatRequest req) {        req.stream = false;        return api.complete(cfg.chatCompletionsUrl(), "Bearer " + cfg.apiKey, req)                .map(resp -> resp.choices.get(0).message.content);    }} public interface LlmApi {    @POST Single<ChatChunk> complete(@Url String url, @Header("Authorization") String auth,                                     @Body ChatRequest body);}
+ui/discover/ai/AiChatViewModel.java：逐字显示
+public void send(String question) {    if (streaming != null && !streaming.isDisposed()) return;    messages.append(ChatItem.user(question));    StringBuilder answer = new StringBuilder();    streaming = c.aiRepository.ask(sessionId, question)               // Flowable<String>            .buffer(60, TimeUnit.MILLISECONDS)                          // 合并片段，减少刷新次数            .filter(parts -> !parts.isEmpty())            .observeOn(AndroidSchedulers.mainThread())            .subscribe(parts -> {                for (String p : parts) answer.append(p);                streamingText.setValue(answer.toString());              // DataBinding 刷新气泡            }, e -> {                error.setValue(AppError.from(e));                c.aiRepository.saveAnswer(sessionId, answer.toString(), true).subscribe();            }, () -> c.aiRepository.saveAnswer(sessionId, answer.toString(), false).subscribe());    add(streaming);} public void stop() { if (streaming != null) streaming.dispose(); }   // 「停止生成」
+9.4 提示词与上下文
+AiRepository 在每次提问时组装系统提示词：固定的角色和安全要求 + 根据设置决定是否附带的用户信息。对话历史只带最近 6 轮（12 条消息），超长内容截断到 2000 字，控制费用和延迟。
+系统提示词模板（AiPrompts.SYSTEM）
+你是「禾伴」App 里的农技助手，面向中国的种植户和家庭园艺用户。回答要求：1. 使用简体中文。{style_rule}2. 涉及农药时，只写药剂通用名，并提醒「按产品标签用量使用、注意安全间隔期」，   不要编造具体用量；拿不准时建议咨询当地农技站。3. 结合下面的用户信息回答；信息不够时先给出最可能的判断，再说明还需要补充什么   （例如照片、发病部位、最近施肥用药情况）。4. 与种植无关的问题，简短回答后引导回种植话题。【用户信息】地区：{region}；今天：{date}（{solar_term}）天气：{weather_summary}在种作物：{crops}最近农事：{recent_records}
+表 9-2 提示词变量
+变量 | 来源 | 说明
+{style_rule} | ai.style | 简洁：先给结论，再列 3 条以内做法，200 字以内；详细：说明原因、步骤和注意事项，分点列出；通俗：少用术语，像农技员当面讲
+{region} | 用户资料 | 只到区县（如「南京市江宁区」），不上传精确位置
+{weather_summary} | WeatherRepository 缓存 | 今天天气、温度区间、未来 3 天要点；关闭「所在地区与天气」时整行省略
+{crops} | crop 表 | 名称、品种、生长阶段、地块，例如「番茄（樱桃番茄，结果期第 68 天，1号大棚）」；关闭「我的作物与农事记录」时省略
+{recent_records} | farm_record 表 | 最近 3 条农事，例如「10/08 追施硫酸钾 5kg」
+从识别结果页（D03）点「问 AI」进入时，把识别结论作为第一条用户消息的背景：「拍照识别结果：黄瓜霜霉病（中度，匹配度 92%），依据：……。请给出详细防治方案。」这样问答模型不需要再看图片。
+9.5 拍照识别
+图 9-2 拍照识别与备用模型切换
+图片获取与预处理
+ui/discover/scan/ScanFragment.java：CameraX 拍照
+imageCapture.takePicture(ContextCompat.getMainExecutor(requireContext()),        new ImageCapture.OnImageCapturedCallback() {            @Override            public void onCaptureSuccess(@NonNull ImageProxy image) {                Bitmap bitmap = image.toBitmap();                int rotation = image.getImageInfo().getRotationDegrees();                image.close();                Matrix m = new Matrix();                m.postRotate(rotation);                Bitmap upright = Bitmap.createBitmap(bitmap, 0, 0,                        bitmap.getWidth(), bitmap.getHeight(), m, true);                vm.recognize(upright);                         // 跳转 D03 并开始识别            }             @Override            public void onError(@NonNull ImageCaptureException e) {                Snackbars.show(binding.getRoot(), "拍照失败，请重试");            }        }); // 相册：系统照片选择器，不需要存储权限pickImage = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {    if (uri == null) return;    vm.recognize(ImageUtils.decode(requireContext(), uri));   // ImageDecoder + ALLOCATOR_SOFTWARE});
+util/ImageUtils.java：压缩并转成 data URL
+public static String toDataUrl(Bitmap src, int maxEdge, int quality) {    float scale = Math.min(1f, maxEdge / (float) Math.max(src.getWidth(), src.getHeight()));    Bitmap bmp = scale < 1f            ? Bitmap.createScaledBitmap(src, Math.round(src.getWidth() * scale),                                        Math.round(src.getHeight() * scale), true)            : src;    ByteArrayOutputStream out = new ByteArrayOutputStream();    bmp.compress(Bitmap.CompressFormat.JPEG, quality, out);        // 1280px、质量 80，约 200–400KB    return "data:image/jpeg;base64," + Base64.encodeToString(out.toByteArray(), Base64.NO_WRAP);}
+识图提示词与返回格式
+系统提示词（VisionPrompts.SYSTEM）
+你是农作物病虫害识别助手。根据用户上传的照片判断问题。只输出一个 JSON 对象，不要输出任何其他文字，也不要使用代码块标记。JSON 结构如下（字段含义见说明）：{"image_ok": true, "image_issue": "", "crop": "黄瓜", "top": {"name": "黄瓜霜霉病", "category": "卵菌病害", "part": "叶部",         "confidence": 0.92, "severity": "中度",         "evidence": "叶面受叶脉限制的黄色多角形斑，叶背有灰黑色霉层",         "advice": ["上午通风排湿", "摘除病叶带出棚外", "发病初期选用对症药剂，按标签用量喷施"],         "urgency_days": 3}, "others": [{"name": "黄瓜细菌性角斑病", "confidence": 0.06},            {"name": "缺镁症", "confidence": 0.02}]}如果照片模糊、过暗或不是植物，image_ok 为 false，并在 image_issue 中说明原因。如果植株健康，top.category 写「健康」。
+表 9-3 识别结果字段（ScanResult）
+字段 | 类型 | 说明 | 显示位置（D03）
+image_ok / image_issue | boolean / String | 照片是否可用；不可用的原因 | 不可用时提示重拍
+crop | String | 识别出的作物 | 标题旁标签
+top.name | String | 最可能的病虫害名称 | 「最可能是 黄瓜霜霉病」
+top.category / part | String | 病害类型（真菌 / 细菌 / 卵菌 / 病毒 / 虫害 / 生理性 / 杂草 / 健康）、发病部位 | 特征标签
+top.confidence | double 0–1 | 置信度 | 「匹配度 92%」
+top.severity / urgency_days | String / int | 轻度 / 中度 / 重度；建议几天内处理 | 严重程度标签、处理时限
+top.evidence / advice | String / String[] | 判断依据；处理建议 | 症状说明、建议列表
+others | Array | 其他可能及置信度 | 「其他可能」列表
+解析时先截取第一个「{」到最后一个「}」之间的内容再交给 Gson（兼容模型偶尔加代码块标记的情况），并检查 confidence 是否在 0–1 之间。解析失败视为该模型失败，触发备用模型。识别出的名称再按 pest 表的名称和别名匹配，匹配上时「查看防治方法」跳到本地百科 D05。
+主模型失败时切换备用模型
+data/repository/VisionRepository.java
+public Single<ScanOutcome> recognize(Bitmap photo, ScanMode mode, @Nullable String cropHint) {    return Single.fromCallable(() -> ImageUtils.toDataUrl(photo, 1280, 80))            .subscribeOn(Schedulers.computation())            .flatMap(dataUrl -> {                LlmConfig primary = configs.visionPrimary();    // 用户识图模型或 DeepSeek 视觉模型                LlmConfig backup = configs.visionBackup();      // 通义千问 VL，可能为 null                Single<ScanOutcome> first = callVision(primary, dataUrl, mode, cropHint);                if (backup == null) return first;                return first.onErrorResumeNext(e -> VisionErrors.shouldFallback(e)                        ? callVision(backup, dataUrl, mode, cropHint)                        : Single.error(e));            })            .flatMap(outcome -> saveRecord(photo, outcome).andThen(Single.just(outcome)));} private Single<ScanOutcome> callVision(LlmConfig cfg, String dataUrl, ScanMode mode, String hint) {    return llm.complete(cfg, VisionPrompts.build(cfg.model, dataUrl, mode, hint))            .timeout(30, TimeUnit.SECONDS)            .map(text -> new ScanOutcome(ScanResultParser.parse(text, gson), cfg.displayName));}
+表 9-4 是否切换备用模型（VisionErrors.shouldFallback）
+主模型返回 | 切换备用 | 原因
+超时、网络错误（IOException） | 是 | 可能是主模型服务不稳定
+HTTP 400 / 404 | 是 | 实验版模型可能改名、下线或不支持图片
+HTTP 5xx | 是 | 服务端故障
+返回内容不是合法 JSON / 字段缺失 | 是 | 换一个模型再试
+HTTP 401 / 403 | 否 | Key 错误或无权限，提示用户检查配置
+HTTP 402 | 否 | 余额不足，提示充值
+HTTP 429 | 否 | 请求过快，提示稍后再试
+9.6 模型服务设置（M11 新增）
+「AI 助手设置」页新增「模型服务」区块，允许用户填写自己的 API Key，或接入其他 OpenAI 兼容的模型服务。原型图 M11 需要据此补充。
+表 9-5 模型服务设置项
+设置项 | 控件 | 说明
+服务商 | 单选：DeepSeek / 通义千问（阿里云百炼）/ 自定义 | 选择 DeepSeek 或通义千问时自动填入 Base URL 和推荐模型名
+Base URL | 文本框（选择「自定义」时可编辑） | 例如 https://api.deepseek.com；自动去掉结尾斜杠，请求时拼接 /chat/completions
+API Key | 密码样式文本框，保存后只显示后 4 位 | 用 SecureStore 加密后存入 DataStore
+问答模型 | 文本框 | 例如 deepseek-v4-flash；必须支持流式输出
+识图模型 | 文本框（可留空） | 留空时识图使用默认的 DeepSeek 视觉模型
+测试连接 | 按钮 | 发送一条「你好」（max_tokens 8，非流式），显示成功或失败原因
+使用内置配置 | 按钮 | 清除用户配置，恢复使用 App 内置的默认 Key
+9.7 错误码处理
+表 9-6 模型服务错误码（DeepSeek，其他 OpenAI 兼容服务类似）
+HTTP 状态码 | 含义 | App 处理
+400 | 请求格式错误 | 记录日志；识图时切换备用模型
+401 | API Key 错误 | 提示到模型服务设置中检查 Key
+402 | 余额不足 | 提示「模型服务余额不足」
+422 | 参数错误 | 记录日志，提示重试
+429 | 请求速率达到上限 | 提示稍后再试；发送按钮 throttleFirst 防止连点
+500 / 503 | 服务器故障 / 繁忙 | 提示稍后重试；识图时切换备用模型
+错误码含义以各服务官方文档为准；失败时已生成的半段回答保留在界面上，并标记「回答未完成」，可点「重新生成」。
+9.8 Key 安全与费用控制
+1.  默认 Key 来自 local.properties，只用于课程演示；APK 不对外分发。
+2.  在 DeepSeek、阿里云百炼控制台只充值少量金额，并开启用量提醒；阿里云短信使用 RAM 子账号并设置每日上限。
+3.  问答 max_tokens 1024、识图 max_tokens 800；历史最多 6 轮；离开 AI 页面时取消正在进行的流式请求。
+4.  发送和拍照按钮使用 throttleFirst(800ms) 防止重复请求；同一张图片识别失败后由用户手动重试，不自动循环。
+5.  后端上线后，Key 只保存在服务端，App 调用 /ai/chat、/ai/vision 转发接口（见 8.4）。
+10 图片加载
+10.1 Glide：列表图片与缓存
+列表、缩略图、头像、作物卡片使用 Glide。通过自定义 AppGlideModule 配置内存和磁盘缓存，数值与 UI 设计文档一致：内存 20MB，磁盘 250MB。
+HeBanGlideModule.java
+@GlideModulepublic final class HeBanGlideModule extends AppGlideModule {    @Override    public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {        builder.setMemoryCache(new LruResourceCache(20L * 1024 * 1024));        builder.setDiskCache(new InternalCacheDiskCacheFactory(context, 250L * 1024 * 1024));        builder.setDefaultRequestOptions(new RequestOptions()                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)                .placeholder(R.drawable.ph_image)                .error(R.drawable.ph_image));    }     @Override    public boolean isManifestParsingEnabled() { return false; }}
+M12 显示与通用：查看与清理图片缓存
+public Single<Long> imageCacheSize() {    return Single.fromCallable(() -> FileUtils.sizeOf(new File(app.getCacheDir(),                    InternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR)))            .subscribeOn(Schedulers.io());} public Completable clearImageCache() {    return Completable.fromAction(() -> Glide.get(app).clearDiskCache())   // 必须在后台线程            .subscribeOn(Schedulers.io())            .observeOn(AndroidSchedulers.mainThread())            .doOnComplete(() -> Glide.get(app).clearMemory());              // 必须在主线程}
+10.2 Picasso：详情大图与图片变换
+详情页大图（病害图片、商品图片、动态大图）使用 Picasso，并通过 Transformation 实现圆角和水印。Picasso 在 HeBanApp 中配置单例，调试时打开来源标记（左上角色块显示图片来自内存、磁盘还是网络），便于对比两个框架的缓存行为。
+HeBanApp.java：Picasso 单例配置
+Picasso picasso = new Picasso.Builder(this)        .memoryCache(new LruCache(16 * 1024 * 1024))       // 内存缓存 16MB        .indicatorsEnabled(BuildConfig.DEBUG)                 // 调试时显示来源标记        .build();Picasso.setSingletonInstance(picasso);
+ui/common/image/RoundedCornersTransformation.java
+public final class RoundedCornersTransformation implements Transformation {    private final float radius;     public RoundedCornersTransformation(float radiusPx) { this.radius = radiusPx; }     @Override    public Bitmap transform(Bitmap source) {        int w = source.getWidth(), h = source.getHeight();        Bitmap out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);        paint.setShader(new BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));        new Canvas(out).drawRoundRect(new RectF(0, 0, w, h), radius, radius, paint);        if (out != source) source.recycle();             // Picasso 要求：返回新图时回收原图        return out;    }     @Override    public String key() { return "rounded-" + radius; }   // 参与缓存键}
+同样方式实现 WatermarkTransformation：在集市商品图右下角绘制「禾伴 @昵称」，用于 D08 商品详情。多个变换可以链式调用 .transform(a).transform(b)。
+10.3 两个框架的分工
+表 10-1 Glide 与 Picasso 使用场景
+场景 | 框架 | 理由
+作物卡片、商品网格、动态宫格、头像 | Glide | 列表滚动多、需要磁盘缓存和自动按控件尺寸缩放
+病害详情大图、商品详情轮播、动态大图 | Picasso | 单张大图，配合 fit().centerCrop() 与 Transformation
+图片缓存大小显示与清理（M12） | Glide | 缓存目录和大小可配置
+相机拍摄后的预览 | 直接显示 Bitmap | 已在内存中，不需要加载框架
+11 后台任务与通知
+11.1 WorkManager 任务
+表 11-1 后台任务
+任务 | 类型 | 触发与约束 | 作用
+FarmTaskReminderWorker | OneTimeWorkRequest，唯一任务 task-{id} | 延迟到「农事时间 − 提前量」；保存农事时创建，修改时 REPLACE，删除时取消 | 农事任务提醒；重复任务在完成后安排下一次
+WeatherRefreshWorker | PeriodicWorkRequest，每 3 小时 | 需要联网 | 刷新天气缓存；满足降温预警规则时发通知（不受免打扰限制）
+LogisticsWorker | PeriodicWorkRequest，每 2 小时 | 需要联网；有未签收订单时才启用 | 物流状态更新时发通知；现阶段由本地按时间推进模拟物流节点
+worker/FarmTaskReminderWorker.java（RxWorker）
+public class FarmTaskReminderWorker extends RxWorker {    public FarmTaskReminderWorker(@NonNull Context context, @NonNull WorkerParameters params) {        super(context, params);    }     @NonNull    @Override    public Single<Result> createWork() {        long taskId = getInputData().getLong("task_id", -1);        AppContainer c = HeBanApp.container(getApplicationContext());        return c.db.farmTaskDao().getOnce(taskId)                .flatMap(task -> task.done ? Single.just(Result.success())                        : c.notifier.showTaskReminder(task).andThen(Single.just(Result.success())))                .onErrorReturnItem(Result.failure());    }     public static void schedule(Context ctx, FarmTaskEntity task) {        long delay = task.dueAt - task.remindMinutes * 60_000L - System.currentTimeMillis();        OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(FarmTaskReminderWorker.class)                .setInitialDelay(Math.max(0, delay), TimeUnit.MILLISECONDS)                .setInputData(new Data.Builder().putLong("task_id", task.id).build())                .build();        WorkManager.getInstance(ctx).enqueueUniqueWork("task-" + task.id,                ExistingWorkPolicy.REPLACE, req);    }}
+11.2 通知渠道
+表 11-2 通知渠道（Notifier.createChannels）
+渠道 id | 名称 | 重要性 | 对应设置（M09）
+farm_task | 农事提醒 | 默认 | 农事任务提醒
+weather_alert | 天气预警 | 高（免打扰时段也提醒） | 天气预警
+pest_alert | 病虫害高发 | 默认 | 病虫害高发提醒
+interaction | 互动消息 | 默认 | 评论和回答、赞和收藏、新增关注
+direct_message | 私信 | 高 | 私信
+order | 兑换与物流 | 默认 | —（始终开启）
+Notifier 发送前检查对应的 DataStore 开关和免打扰时段；通知点击后通过 Navigation 的 DeepLink 打开对应页面（如农事提醒打开 H03，物流通知打开 P08）。
+11.3 CameraX 预览配置
+ui/discover/scan/ScanFragment.java：绑定相机
+ListenableFuture<ProcessCameraProvider> future =        ProcessCameraProvider.getInstance(requireContext());future.addListener(() -> {    try {        ProcessCameraProvider provider = future.get();        Preview preview = new Preview.Builder().build();        preview.setSurfaceProvider(binding.previewView.getSurfaceProvider());        imageCapture = new ImageCapture.Builder()                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)                .build();        provider.unbindAll();        provider.bindToLifecycle(getViewLifecycleOwner(), CameraSelector.DEFAULT_BACK_CAMERA,                preview, imageCapture);    } catch (Exception e) {        Snackbars.show(binding.getRoot(), "相机启动失败");    }}, ContextCompat.getMainExecutor(requireContext()));
+12 模块实现要点
+本章按原型图模块列出每个页面需要注意的实现细节，页面与类的对应关系见附录 A。
+12.1 账号（A01–A09）
+•  起始页：MainActivity 读取 onboarding.done 和 session.user_id，决定进入 A02 引导页、A03 登录还是 H01 首页；判断完成前保持系统闪屏（A01）。
+•  A02 引导页：同一个 Fragment 内切换 3 屏内容（状态存在 Fragment 中），最后一屏「开始使用」进入 A05 注册，「跳过 / 已有账号」进入 A03。
+•  A03 密码登录：PBKDF2 比对密码哈希；连续输错 5 次锁定 10 分钟（本地计数）；未勾选协议时点击登录弹出 Snackbar「请先阅读并勾选同意协议」。
+•  A04 验证码登录：SmsService.verify 通过后，手机号未注册则自动创建账号（默认昵称「农友 + 手机号后四位」）并进入首页。
+•  A05 / A06 注册：两步共享 RegisterViewModel；密码规则 8–20 位、同时包含字母和数字，PasswordStrength 实时计算强度；A06 可跳过。
+•  游客浏览：session.guest = true；点赞、评论、发布、私信、签到等操作先调用 requireLogin()，未登录时弹出对话框引导登录。
+•  A07 / A08 找回密码：手动输入手机号并校验验证码 → 设置新密码 → 更新哈希、清除登录态 → 显示「密码已重置」→ 返回 A03。
+•  A09 申诉换绑：三步（原手机号信息 → 新手机号验证码 → 已提交），保存 appeal 记录，状态显示「人工审核中」；后端上线后由后端审核并短信通知。
+•  退出登录只清除登录态，保留本机作物数据；注销账号需勾选「我已了解以上后果」，本地标记 deleted_at，7 天内重新登录可撤销。
+12.2 首页（H01–H05）
+•  H01：Flowable.combineLatest 合并天气、今日农事、我的作物、未读消息数四个数据流生成 HomeState；问候语按时间段变化；勾选完成农事时写入 done，并按规则奖励积分（完成今日农事 +5，每天 1 次）。
+•  H02：Single.zip 并发请求三个天气接口；FarmIndexCalculator 计算农事指数；点击定位图标通过城市搜索切换地点。
+•  H03：月历用 RecyclerView + GridLayoutManager（7 列）自绘；节气日期放在 assets/mock/solar_terms.json；有农事的日期按类型显示彩色圆点。
+•  H04：保存时写入 farm_task 并调用 FarmTaskReminderWorker.schedule；「AI 提示」由 FarmIndexCalculator 根据逐小时预报给出最佳作业时段，不调用大模型。
+•  H05：PointsRepository.checkIn() 保证一天只能签到一次，计算连续天数；连续第 7 天得 10 + 20 = 30 积分、5 + 10 = 15 成长值；每日任务完成状态来自当天的 points_txn；徽章进度按记录数量计算。
+12.3 作物（C01–C05）
+•  C01：筛选 Chip（全部 / 大棚 / 露天 / 需关注）用 BehaviorProcessor 保存当前筛选，switchMap 切换查询；生长进度 = 已种天数 ÷ 预计天数。
+•  C02：CropWithRecords（@Relation）一次取出作物和农事记录；生长阶段步进条按已种天数和作物生长期表计算；Tab 切换农事记录 / 生长数据 / 照片。
+•  C03：新增与编辑共用；预计采收日期 = 定植日期 + 作物默认生长期（作物生长期表放在 assets/mock/crop_profiles.json）。
+•  C04：表单字段随记录类型变化（施肥 → 肥料名称 / 用量，用药 → 药剂名称，灌溉 → 方式）；「同步到收支记账」开启时在同一事务内写入 ledger_entry；现场照片用 PickMultipleVisualMedia 选择（最多 9 张），复制到 App 私有目录。
+•  C05：总面积 = SUM(地块面积)，利用率 = SUM(作物面积) ÷ SUM(地块面积)；本季投入 = 该地块作物的支出合计。
+12.4 发现（D01–D11）
+•  D01：「本季高发」按当前月份和地区从 pest 表的 season 字段筛选；「附近好物」取集市前 2 件商品。
+•  D02 / D03：见 9.5；识别记录保存在 scan_record，可从拍照页「历史」进入；结果页底部显示「由 DeepSeek 识别」或「由通义千问 VL 识别」。
+•  D04 / D05：百科数据全部在本地，离线可用；搜索框用 debounce(300ms) + distinctUntilChanged + switchMap 查询；D05 大图用 Picasso，「加入农事日历」带参数打开 H04。
+•  D06：见 9.3–9.4；用户在对话中附带图片时，改用识图模型（非流式）回答这条消息，提示词不要求 JSON；会话列表和清空功能与 M11 共用 chat_session 表。
+•  D07–D09：集市分页见 7.6，置顶商品（pinned_until > 当前时间）排在最前；商品图片轮播用 RecyclerView + PagerSnapHelper；发布时开启「置顶 24 小时」在同一事务内扣除 100 积分并写入 pinned_until，积分不足时开关不可用。
+•  D10：按月统计用 SUM(amount_cent) … GROUP BY；近 6 个月结余柱状图和支出构成图用自定义 View（Canvas）绘制；来自农事记录的条目标注来源。
+•  D11：自定义数字键盘（GridLayout）维护金额字符串，限制两位小数；支出 8 类、收入 4 类，切换收支时重置类别。
+12.5 农友圈（S01–S09）
+•  S01：推荐 / 关注 / 问答 / 同城四个 Tab 对应不同查询；点赞、关注采用乐观更新：先改本地状态，失败回滚并提示；点击用 throttleFirst(800ms) 防止连点。
+•  S02：发送评论后插入 comment 并更新评论数，新评论显示在列表顶部「老李种菜（我）· 刚刚」；作者回复带「作者」标识。
+•  S03：动态 / 提问两种模式各自保存草稿（draft 表）；提问模式可设置悬赏积分（10–100），发布时扣除；7 天无人回答，App 启动时检查并退回积分。
+•  S04 / S05：只有提问者能看到「采纳」；采纳在同一事务内更新回答 accepted、问题 status = SOLVED，回答者获得悬赏积分和 20 成长值（回答者是当前用户时写入 points_txn），其余「采纳」按钮隐藏。
+•  S06 / S07：关注关系四种状态（关注 / 已关注 / 回关 / 互相关注）由双方关注标记计算。
+•  S08：评论回复、赞和收藏、新增关注、系统通知来自 notification 表；「全部已读」批量更新。
+•  S09：MockReplyEngine 根据 replies.json 的关键词选择回复，Single.timer(1500ms) 后插入对方消息，模拟真实聊天；顶部显示关联的集市商品卡片和防诈骗提示。
+12.6 我的与设置（M01–M13）
+•  M01：「帮助与反馈」点击显示 Snackbar「功能暂未开放」；签到卡与 H05 共用 PointsRepository。
+•  M02 / M03：昵称 30 天内只能修改 1 次（记录上次修改时间）；简介最多 60 字；擅长作物最多 5 个；「收藏」Tab 仅自己可见。
+•  M05：退出登录前弹出确认对话框；「切换账号」清除登录态后进入 A03。
+•  M06：安全等级按「已绑定手机 + 已设置密码 = 较高；再完成实名认证 = 高」计算；登录设备和登录记录现阶段为本机信息。
+•  M07 / M08：见 8.3；M07 自动带出已绑定手机号并脱敏显示（1385678），不需要原密码；M08 只需新手机号验证码，确认对话框后更新。
+•  M09：开关与 DataStore 双向同步；总开关关闭时提示「你将错过农事和预警提醒」；打开时检查 POST_NOTIFICATIONS 权限。
+•  M10：可见范围等选项用单选对话框；「导出我的数据」把作物、农事、记账导出为带 UTF-8 BOM 的 CSV（Excel 可直接打开），通过 MediaStore 保存到「下载」目录。
+•  M11：回答风格、参考内容、对话记录，加上新增的「模型服务」（9.6）；「清空全部对话」删除 chat_session 和 chat_message。
+•  M12：主题单选调用 setDefaultNightMode；动态取色切换后 recreate()；字体大小通过在 BaseActivity.attachBaseContext 中覆盖 Configuration.fontScale 实现；图片缓存见 10.1。
+•  M13：版本号读取 BuildConfig.VERSION_NAME / VERSION_CODE；检查更新、更新日志、意见反馈显示「功能暂未开放」；用户协议、隐私政策用 WebView 加载 assets/html/ 中的页面。
+12.7 积分（P01–P09）
+积分规则集中写在 PointsRules 常量类中，与 UI 设计文档和 P02 积分规则页一致：
+表 12-1 积分规则常量
+行为 | 积分 | 成长值 | 每日次数
+每日签到 | +10 | +5 | 1
+连续签到满 7 天（当天额外） | +20 | +10 | —
+发布动态 | +5 | +3 | 2
+回答问题 | +10 | +5 | 3
+回答被采纳 | 悬赏积分 | +20 | —
+完成今日农事 | +5 | +3 | 1
+记一笔账 | +2 | +1 | 1
+每天通过任务获得积分上限 | 100（悬赏积分不计入） | — | —
+集市置顶 24 小时 | −100 | — | —
+问答悬赏 | −10 至 −100 | — | 7 天无人回答退回
+等级阈值（成长值） | Lv.1–6：0 / 100 / 300 / 800 / 1,500 / 3,000 | 只增不减 | —
+•  余额 = SUM(points_txn.amount)，成长值 = SUM(points_txn.growth)；所有加减积分都只追加流水，不直接修改余额。
+•  P04 / P05：数量步进受每人限兑数量和当前余额限制；确认兑换在同一事务内写入积分流水（−600）、订单、库存减 1，成功页显示订单号。
+•  P06：地址增删改查，默认地址唯一；P05 选择地址后通过 mall_graph 共享的 ViewModel 带回。
+•  P07 / P08：物流节点由订单创建时间按时间偏移生成（待发货 → 已揽收 → 运输中 → 派送中 → 已签收），LogisticsWorker 发现节点变化时发通知；「复制」运单号写入剪贴板并提示「运单号已复制」。
+•  P09：快捷问题来自 service_faq.json，点击后显示「客服正在输入…」1 秒再回复；「转人工」提示「人工服务暂未开放」。
+13 测试方案
+13.1 单元测试
+表 13-1 单元测试清单
+被测对象 | 测试点
+PasswordStrength / PhoneMask | 强度分级边界；脱敏格式（11 位、非法输入）
+PointsRepository | 同日重复签到；连续天数中断；第 7 天奖励；每日 100 积分上限；悬赏不计入上限
+FarmIndexCalculator | 喷药适宜时段识别；降温预警触发条件；霜冻日期
+AliyunSigner | 固定 Nonce 和时间戳时签名结果与手工计算一致；特殊字符编码
+ScanResultParser | 正常 JSON；带代码块标记；缺字段；confidence 越界
+VisionErrors / VisionRepository | 各类错误是否切换备用模型；主模型成功时不调用备用模型
+LlmClient | 用 MockWebServer 返回 SSE，验证逐段输出、[DONE] 结束、401 转换为 AppError
+WeatherRepository | 30 分钟内不重复请求；请求失败时保留缓存
+ViewModel 测试需要 androidx.arch.core:core-testing 提供的 InstantTaskExecutorRule，让 LiveData 在测试线程同步执行。
+13.2 RxJava 测试
+测试前替换调度器
+@Rule public InstantTaskExecutorRule liveDataRule = new InstantTaskExecutorRule(); @Beforepublic void setUp() {    RxJavaPlugins.setIoSchedulerHandler(s -> Schedulers.trampoline());    RxJavaPlugins.setComputationSchedulerHandler(s -> Schedulers.trampoline());    RxAndroidPlugins.setInitMainThreadSchedulerHandler(s -> Schedulers.trampoline());} @Afterpublic void tearDown() {    RxJavaPlugins.reset();    RxAndroidPlugins.reset();}
+用 TestScheduler 测试验证码倒计时
+@Testpublic void countdown_reaches_zero_after_60_seconds() {    TestScheduler scheduler = new TestScheduler();    RxJavaPlugins.setComputationSchedulerHandler(s -> scheduler);     vm.startCountdownForTest();    scheduler.advanceTimeBy(10, TimeUnit.SECONDS);    assertEquals(50, (int) vm.countdown.getValue());     scheduler.advanceTimeBy(50, TimeUnit.SECONDS);    assertEquals(0, (int) vm.countdown.getValue());    assertTrue(vm.canSendCode.getValue());}
+13.3 网络与流式输出测试
+MockWebServer 模拟 SSE
+@Testpublic void stream_emits_chunks_until_done() {    MockWebServer server = new MockWebServer();    server.enqueue(new MockResponse()            .setHeader("Content-Type", "text/event-stream")            .setBody("data: {\"choices\":[{\"delta\":{\"content\":\"缺镁\"}}]}\n\n"                   + "data: {\"choices\":[{\"delta\":{\"content\":\"的表现\"}}]}\n\n"                   + "data: [DONE]\n\n"));    LlmConfig cfg = LlmConfig.custom(server.url("/").toString(), "test-key", "test-model");     client.stream(cfg, request("番茄叶片发黄"))            .test()            .awaitDone(5, TimeUnit.SECONDS)            .assertValues("缺镁", "的表现")            .assertComplete();}
+13.4 界面测试与验收
+•  Espresso：登录（协议未勾选提示、登录成功跳首页）、记一笔（键盘输入与保存）、签到（积分增加）三条主流程。
+•  Room：androidTest 中用内存数据库测试 DAO 和事务（农事记录同步记账、兑换扣积分）。
+表 13-2 手工验收清单
+检查项 | 标准
+页面还原 | 64 个页面与原型图一致：颜色角色、字号、圆角、间距按 UI 设计文档
+核心流程 | UI 设计文档第 8 章的 11 条流程都能走通
+深色模式 / 动态取色 | 所有页面切换后无硬编码颜色、文字可读
+字体放大 | 系统字体放大到最大时文字不被截断、按钮可点
+离线 | 断网时作物、记账、百科可用；天气显示缓存和离线提示；AI 给出网络错误提示
+权限拒绝 | 拒绝相机、通知、定位后有替代方案或说明，不崩溃
+真实服务 | DeepSeek 流式问答、识图主备切换（可把主模型名改错来验证）、和风天气、阿里云短信各验证一次
+14 开发计划
+按依赖顺序分 9 个阶段，每个阶段结束时都能运行并演示。工作量为单人估算，可按课程时间调整。
+表 14-1 开发阶段
+阶段 | 内容 | 交付与验收 | 估算
+M0 工程初始化 | 包名迁移；依赖与 flavor；主题颜色与字号；AppContainer；MainActivity + 导航骨架（64 个空页面可跳转） | 底部导航和全部页面能打开；深色模式生效 | 3 天
+M1 账号 | A01–A09；模拟账号；阿里云短信（含 fake 模式）；DataStore 登录态 | 注册、两种登录、找回密码、申诉流程可走通；真机收到短信 | 4 天
+M2 作物与农事 | C01–C05、H03、H04；Room 表；农事提醒 WorkManager | 新增作物、记录农事并同步记账；到点收到提醒 | 5 天
+M3 首页与天气 | H01、H02；和风天气；缓存；农事指数与降温预警 | 首页显示真实天气；断网显示缓存 | 3 天
+M4 AI 与识别 | D06 流式问答；D02 / D03 识图主备切换；M11 模型服务设置 | 逐字显示回答；拍照得到识别结果；改错主模型名时自动切换备用 | 5 天
+M5 发现其他功能 | D01、D04 / D05 百科、D07–D09 集市（Paging）、D10 / D11 记账 | 百科离线可查；集市分页与置顶；记账统计图 | 5 天
+M6 农友圈 | S01–S09；模拟数据导入；点赞评论关注；问答采纳；私信自动回复 | 社交互动结果保留在本地 | 5 天
+M7 我的与积分 | M01–M13、H05、P01–P09；积分规则；兑换与物流模拟 | 签到、任务、兑换、物流通知完整可用 | 5 天
+M8 测试与收尾 | 单元测试、界面测试、手工验收；性能与内存检查；替换示例图片说明 | 验收清单全部通过；演示 APK | 3 天
+15 风险与对策
+表 15-1 风险与对策
+风险 | 影响 | 对策
+DeepSeek 视觉模型是实验版，可能改名或下线 | 拍照识别不可用 | 模型名放配置；主模型失败自动切换通义千问 VL；用户可自定义识图模型
+大模型服务调整模型名（如 2026-07 旧名停用） | 问答报错 | 模型名全部可配置；401 / 404 给出明确提示
+Key 和 AccessKey 打包进 APK，可被反编译获取 | 被盗用产生费用 | 只用于演示、不分发 APK；控制台限额；RAM 最小权限；后端上线后改为服务端转发
+阿里云短信费用与频率限制 | 超额或发送失败 | 开发时使用 fake 模式；设置每日上限；60 秒重发间隔
+和风天气 API KEY 认证从 2027-02-01 起限制每日请求量 | 天气获取失败 | 缓存 30 分钟；后台每 3 小时刷新；后续改用 JWT 认证
+Picasso 2.8 依赖 OkHttp 3，与工程中的 OkHttp 5 共存 | 可能出现类冲突 | 优先验证；如有冲突，Picasso 改用默认下载器或单独构建 OkHttp3Downloader 客户端
+AGP 9 与第三方注解处理器（Room、Glide）兼容 | 编译失败 | 使用本文版本；M0 阶段先跑通编译再写业务
+维基图片的版权与署名要求 | 不规范使用 | 保留 CREDITS.md 来源清单并署名；正式发布前替换为自有图片
+Room 表结构频繁变化 | 数据丢失 | 开发阶段允许破坏性迁移；发布前固定版本并编写 Migration
+Fragment 库已进入维护模式 | 新特性少 | 不影响本项目；Navigation 仍完整支持 Fragment
+附录 A 页面与代码对应表
+包名均以 com.heban.app.ui 开头；「共享」表示同一嵌套导航图内的页面共用一个 ViewModel（见 6.1）。三张深色模式画板（H01、S01、D06 深色）与浅色页面使用同一套代码，由主题切换。
+表 A-1 页面与类
+编号 | 页面 | 包 / Fragment / ViewModel | 布局
+A01 | 闪屏 | uiMainActivity（系统闪屏）— | activity_main.xml
+A02 | 引导页 | ui.accountOnboardingFragment— | fragment_onboarding.xml
+A03 | 密码登录 | ui.accountLoginFragmentLoginViewModel | fragment_login.xml
+A04 | 验证码登录 | ui.accountLoginSmsFragmentLoginSmsViewModel | fragment_login_sms.xml
+A05 | 注册 | ui.accountRegisterFragmentRegisterViewModel（共享） | fragment_register.xml
+A06 | 完善资料 | ui.accountProfileSetupFragmentRegisterViewModel（共享） | fragment_profile_setup.xml
+A07 | 忘记密码 · 验证手机 | ui.accountForgotPwdFragmentResetPwdViewModel（共享） | fragment_forgot_pwd.xml
+A08 | 设置新密码 | ui.accountResetPwdFragmentResetPwdViewModel（共享） | fragment_reset_pwd.xml
+A09 | 手机号已停用 · 申诉换绑 | ui.accountPhoneAppealFragmentPhoneAppealViewModel | fragment_phone_appeal.xml
+H01 | 首页 | ui.homeHomeFragmentHomeViewModel | fragment_home.xml
+H02 | 天气详情 | ui.homeWeatherFragmentWeatherViewModel | fragment_weather.xml
+H03 | 农事日历 | ui.homeCalendarFragmentCalendarViewModel | fragment_calendar.xml
+H04 | 新建农事 | ui.homeAddTaskFragmentAddTaskViewModel | fragment_add_task.xml
+H05 | 签到与成就 | ui.homeCheckInFragmentCheckInViewModel | fragment_check_in.xml
+C01 | 我的作物 | ui.cropCropsFragmentCropsViewModel | fragment_crops.xml
+C02 | 作物详情 | ui.cropCropDetailFragmentCropDetailViewModel | fragment_crop_detail.xml
+C03 | 添加 / 编辑作物 | ui.cropAddCropFragmentAddCropViewModel | fragment_add_crop.xml
+C04 | 添加农事记录 | ui.cropAddRecordFragmentAddRecordViewModel | fragment_add_record.xml
+C05 | 地块管理 | ui.cropPlotsFragmentPlotsViewModel | fragment_plots.xml
+D01 | 发现 | ui.discoverDiscoverFragmentDiscoverViewModel | fragment_discover.xml
+D02 | 拍照识别 | ui.discover.scanScanFragmentScanViewModel（共享） | fragment_scan.xml
+D03 | 识别结果 | ui.discover.scanScanResultFragmentScanViewModel（共享） | fragment_scan_result.xml
+D04 | 病虫害百科 | ui.discover.pestPestsFragmentPestsViewModel | fragment_pests.xml
+D05 | 病害详情 | ui.discover.pestPestDetailFragmentPestDetailViewModel | fragment_pest_detail.xml
+D06 | AI 助手 | ui.discover.aiAiChatFragmentAiChatViewModel | fragment_ai_chat.xml
+D07 | 农产品集市 | ui.discover.marketMarketFragmentMarketViewModel | fragment_market.xml
+D08 | 商品详情 | ui.discover.marketProductFragmentProductViewModel | fragment_product.xml
+D09 | 发布商品 | ui.discover.marketAddProductFragmentAddProductViewModel | fragment_add_product.xml
+D10 | 收支记账 | ui.discover.ledgerLedgerFragmentLedgerViewModel | fragment_ledger.xml
+D11 | 记一笔 | ui.discover.ledgerAddEntryFragmentAddEntryViewModel | fragment_add_entry.xml
+S01 | 农友圈 | ui.communityCommunityFragmentCommunityViewModel | fragment_community.xml
+S02 | 动态详情 | ui.communityPostDetailFragmentPostDetailViewModel | fragment_post_detail.xml
+S03 | 发布动态 / 提问 | ui.communityPublishFragmentPublishViewModel | fragment_publish.xml
+S04 | 问答 | ui.communityQaFragmentQaViewModel | fragment_qa.xml
+S05 | 问题详情 | ui.communityQuestionFragmentQuestionViewModel | fragment_question.xml
+S06 | 农友主页 | ui.communityUserProfileFragmentUserProfileViewModel | fragment_user_profile.xml
+S07 | 关注与粉丝 | ui.communityFollowsFragmentFollowsViewModel | fragment_follows.xml
+S08 | 消息 | ui.communityMessagesFragmentMessagesViewModel | fragment_messages.xml
+S09 | 私信聊天 | ui.communityChatFragmentChatViewModel | fragment_chat.xml
+M01 | 我的 | ui.meProfileFragmentProfileViewModel | fragment_profile.xml
+M02 | 我的主页 | ui.meMyHomeFragmentMyHomeViewModel | fragment_my_home.xml
+M03 | 编辑资料 | ui.meEditProfileFragmentEditProfileViewModel | fragment_edit_profile.xml
+M04 | 我的收藏 | ui.meFavoritesFragmentFavoritesViewModel | fragment_favorites.xml
+M05 | 设置 | ui.me.settingsSettingsFragmentSettingsViewModel | fragment_settings.xml
+M06 | 账号与安全 | ui.me.settingsSecurityFragmentSecurityViewModel | fragment_security.xml
+M07 | 修改密码 | ui.me.settingsChangePwdFragmentChangePwdViewModel | fragment_change_pwd.xml
+M08 | 换绑手机号 | ui.me.settingsChangePhoneFragmentChangePhoneViewModel | fragment_change_phone.xml
+M09 | 消息通知 | ui.me.settingsNotifySettingsFragmentNotifySettingsViewModel | fragment_notify_settings.xml
+M10 | 隐私设置 | ui.me.settingsPrivacySettingsFragmentPrivacySettingsViewModel | fragment_privacy_settings.xml
+M11 | AI 助手设置 | ui.me.settingsAiSettingsFragmentAiSettingsViewModel | fragment_ai_settings.xml
+M12 | 显示与通用 | ui.me.settingsGeneralSettingsFragmentGeneralSettingsViewModel | fragment_general_settings.xml
+M13 | 关于禾伴 | ui.me.settingsAboutFragment— | fragment_about.xml
+P01 | 积分明细 | ui.pointsPointsDetailFragmentPointsDetailViewModel | fragment_points_detail.xml
+P02 | 积分规则 | ui.pointsPointsRulesFragment— | fragment_points_rules.xml
+P03 | 积分商城 | ui.pointsPointsMallFragmentPointsMallViewModel | fragment_points_mall.xml
+P04 | 兑换商品详情 | ui.pointsMallItemFragmentMallOrderViewModel（共享） | fragment_mall_item.xml
+P05 | 确认兑换 | ui.pointsMallConfirmFragmentMallOrderViewModel（共享） | fragment_mall_confirm.xml
+P06 | 收货地址 | ui.pointsAddressFragmentAddressViewModel | fragment_address.xml
+P07 | 兑换记录 | ui.pointsOrdersFragmentOrdersViewModel | fragment_orders.xml
+P08 | 物流详情 | ui.pointsLogisticsFragmentLogisticsViewModel | fragment_logistics.xml
+P09 | 禾伴客服 | ui.pointsServiceChatFragmentServiceChatViewModel | fragment_service_chat.xml
+附录 B 示例图片清单
+以下图片从维基百科 / Wikimedia Commons 获取，放在 app/src/main/assets/images/ 对应文件夹中。每张图下载后在 CREDITS.md 中记录原始链接、作者和协议。
+表 B-1 示例图片
+文件 | 内容 | 用于页面 | Commons 搜索关键词
+crops/tomato.jpg | 番茄植株与果实 | H01、C01、C02 | Solanum lycopersicum plant
+crops/cherry_tomato.jpg | 樱桃番茄 | C01、C02 | Cherry tomatoes on vine
+crops/cucumber.jpg | 黄瓜植株 | H01、C01 | Cucumis sativus plant
+crops/strawberry.jpg | 草莓植株 | C01 | Strawberry plant fruit
+crops/winter_wheat.jpg | 冬小麦田 | H01、C01 | Winter wheat field
+pests/cucumber_downy_mildew_1.jpg | 黄瓜霜霉病（叶面） | D01、D03、D04、D05 | Pseudoperonospora cubensis cucumber
+pests/cucumber_downy_mildew_2.jpg | 黄瓜霜霉病（叶背霉层） | D05 | Cucumber downy mildew leaf underside
+pests/tomato_gray_mold.jpg | 番茄灰霉病 | D01、D04 | Botrytis cinerea tomato
+pests/powdery_mildew.jpg | 白粉病 | D04 | Powdery mildew cucurbit leaf
+pests/aphid.jpg | 蚜虫 | D01、D04 | Aphid colony leaf
+pests/spider_mite.jpg | 红蜘蛛（叶螨） | D04 | Tetranychus urticae
+pests/tomato_late_blight.jpg | 番茄晚疫病 | D04 | Phytophthora infestans tomato
+pests/angular_leaf_spot.jpg | 黄瓜细菌性角斑病 | D03、D05 | Cucumber angular leaf spot
+pests/magnesium_deficiency.jpg | 缺镁症 | D03、S05 | Magnesium deficiency leaf
+products/cherry_tomato_box.jpg | 大棚樱桃番茄 | D07 | Cherry tomatoes harvest
+products/strawberry_fresh.jpg | 现摘草莓 | D01、D07、D08、S09 | Fresh strawberries
+products/mini_tiller.jpg | 小型微耕机 | D01、D07 | Rotary tiller two-wheel tractor
+products/sheep_manure.jpg | 羊粪有机肥 | D07 | Sheep manure fertilizer
+products/strawberry_seedling.jpg | 草莓苗 | D07 | Strawberry seedlings
+mall/tomato_seeds.jpg | 番茄种子 | P03、P04、P05、P07 | Tomato seeds
+mall/gardening_gloves.jpg | 园艺手套 | P03、P07、P08、P09 | Gardening gloves
+mall/pruning_shears.jpg | 修枝剪 | P03 | Pruning shears
+mall/organic_fertilizer.jpg | 有机肥 | P03、P07 | Compost organic fertilizer
+posts/strawberry_mulch.jpg | 草莓定植与银灰地膜 | S01、S02、S06 | Strawberry plastic mulch
+posts/yellow_sticky_trap.jpg | 黄板诱虫 | S01、S02 | Yellow sticky trap greenhouse
+posts/greenhouse.jpg | 大棚 | S01、M02 | Polytunnel greenhouse vegetables
+posts/pear_orchard.jpg | 梨园 | S01 | Pear orchard
+posts/drip_irrigation.jpg | 膜下滴灌 | S01、M02 | Drip irrigation mulch
+posts/tomato_leaf_yellowing.jpg | 番茄叶片发黄 | S04、S05 | Tomato leaf chlorosis
+附录 C 参考资料
+表 C-1 官方文档
+资料 | 地址
+AndroidX 各库版本（Room、Lifecycle、Navigation 等） | https://developer.android.com/jetpack/androidx/versions
+DeepSeek API 文档 / 更新日志 | https://api-docs.deepseek.com/https://api-docs.deepseek.com/updates/
+阿里云百炼（通义千问）OpenAI 兼容接口 | https://help.aliyun.com/zh/model-studio/
+阿里云短信认证 SendSmsVerifyCode | https://help.aliyun.com/zh/pnvs/developer-reference/api-dypnsapi-2017-05-25-sendsmsverifycode
+阿里云短信认证 · 个人开发者接入指南 | https://help.aliyun.com/zh/pnvs/use-cases/sms-verify-for-individual-developers
+和风天气开发文档（身份认证、项目和凭据） | https://dev.qweather.com/docs/
+RxJava 3 | https://github.com/ReactiveX/RxJava
+Retrofit / OkHttp | https://square.github.io/retrofit/https://square.github.io/okhttp/
+Glide / Picasso | https://bumptech.github.io/glide/https://square.github.io/picasso/
+Material Components for Android | https://github.com/material-components/material-components-android

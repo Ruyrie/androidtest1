@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>概览与信息架构</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#456732}a:hover{color:#2E4F1C}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.meta{background:#F2F5EA;border-radius:16px;padding:14px 18px}
+.meta .k{font-size:12px;line-height:16px;color:#43483E}
+.meta .v{font-size:16px;line-height:24px;font-weight:500;margin-top:4px}
+.tabh{background:#D9E7CB;color:#3E4A35;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:16px;line-height:24px;font-weight:500}
+.sub{border:1px solid #C3C8BB;border-radius:8px;padding:7px 12px;font-size:14px;line-height:20px;background:#F8FAF0;display:flex;align-items:center;gap:6px}
+.sub.l2{margin-left:20px}
+.pid{font-size:11px;line-height:16px;font-weight:500;color:#456732;font-family:Roboto,sans-serif}
+.step{border:1px solid #C3C8BB;border-radius:8px;padding:7px 12px;font-size:14px;line-height:20px;background:#F8FAF0;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.chev{color:#74796D;font-size:20px}
+.pr{border-radius:28px;padding:20px 22px;display:flex;gap:14px}
+.pr .t{font-size:18px;line-height:24px;font-weight:500}
+.pr .d{font-size:14px;line-height:20px;margin-top:4px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1400px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; padding: 56px 64px; display: flex; flex-direction: column; gap: 28px; overflow: hidden">
+
+<header style="display: flex; align-items: flex-end; gap: 32px">
+<div style="flex: 1">
+<div style="font-size: 14px; line-height: 20px; font-weight: 500; color: #456732">01 · 概览</div>
+<h1 style="margin: 4px 0 8px; font-size: 45px; line-height: 52px; font-weight: 500">禾伴 · 智慧种植助手</h1>
+<p style="margin: 0; font-size: 22px; line-height: 28px; color: #43483E">农事管理 + 农友社区。本期设计 App 端全部界面，后端接口后续接入。</p>
+</div>
+<div style="font-size: 14px; line-height: 20px; color: #43483E; text-align: right">UI 设计文档 v2.0<br>2026-10-10</div>
+</header>
+
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px">
+<div class="meta"><div class="k">平台</div><div class="v">Android 8.0+</div></div>
+<div class="meta"><div class="k">设计基准</div><div class="v">Pixel 8 · 412×915 dp</div></div>
+<div class="meta"><div class="k">设计语言</div><div class="v">Material 3</div></div>
+<div class="meta" style="display: flex; gap: 10px; align-items: center"><span style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; background: #4C8C2B"></span><span><span class="k" style="display: block">种子色</span><span class="v" style="display: block; margin-top: 0">#4C8C2B</span></span></div>
+<div class="meta"><div class="k">界面实现</div><div class="v">XML + DataBinding</div></div>
+<div class="meta"><div class="k">页面规模</div><div class="v">64 页 · 8 个模块</div></div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<div class="pr" style="background: #C5EFAB; color: #2E4F1C"><span class="ms" aria-hidden="true" style="font-size: 32px">smartphone</span><div><div class="t">贴近 Pixel 原生</div><div class="d">只用 M3 官方组件、色彩角色和字号；设置页采用 Pixel 分组列表样式</div></div></div>
+<div class="pr" style="background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true" style="font-size: 32px">forum</span><div><div class="t">种植 + 社交双主线</div><div class="d">自己的作物数据是核心，农友圈、问答、集市都能关联到作物记录</div></div></div>
+<div class="pr" style="background: #BBEBEC; color: #1E4E4E"><span class="ms" aria-hidden="true" style="font-size: 32px">cloud_off</span><div><div class="t">离线优先</div><div class="d">作物、农事、记账、百科存本地；社交内容联网后同步，弱网有缓存</div></div></div>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 500">信息架构 <span style="font-size: 14px; font-weight: 400; color: #43483E">底部导航 5 个一级入口；二级页面全屏打开，左上角返回；编号对应原型图画板</span></h2>
+
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #F2F5EA; border-radius: 16px; padding: 12px 16px">
+<span style="font-size: 14px; line-height: 20px; font-weight: 500; margin-right: 8px">启动前 · 账号</span>
+<span class="step"><span class="pid">A01</span>闪屏</span><span class="ms chev" aria-hidden="true">chevron_right</span>
+<span class="step"><span class="pid">A02</span>引导页</span><span class="ms chev" aria-hidden="true">chevron_right</span>
+<span class="step"><span class="pid">A03/04</span>密码 / 验证码登录</span><span class="ms chev" aria-hidden="true">chevron_right</span>
+<span class="step"><span class="pid">A05</span>注册</span><span class="ms chev" aria-hidden="true">chevron_right</span>
+<span class="step"><span class="pid">A06</span>完善资料</span>
+<span style="width: 24px"></span>
+<span class="step"><span class="pid">A07</span>忘记密码</span><span class="ms chev" aria-hidden="true">chevron_right</span>
+<span class="step"><span class="pid">A08</span>设置新密码</span>
+<span style="width: 24px"></span>
+<span class="step"><span class="pid">A09</span>手机号已停用 · 申诉换绑</span>
+</div>
+
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #FFE08B; color: #241A00; border-radius: 16px; padding: 12px 16px">
+<span style="font-size: 14px; line-height: 20px; font-weight: 500; margin-right: 8px">积分体系</span>
+<span class="step"><span class="pid">H05</span>签到 · 任务</span><span class="ms chev" aria-hidden="true">chevron_right</span>
+<span class="step"><span class="pid">P03</span>积分商城</span><span class="ms chev" aria-hidden="true">chevron_right</span>
+<span class="step"><span class="pid">P04</span>商品详情</span><span class="ms chev" aria-hidden="true">chevron_right</span>
+<span class="step"><span class="pid">P05/06</span>确认兑换 · 收货地址</span><span class="ms chev" aria-hidden="true">chevron_right</span>
+<span class="step"><span class="pid">P07</span>兑换记录</span><span class="ms chev" aria-hidden="true">chevron_right</span>
+<span class="step"><span class="pid">P08</span>物流详情</span>
+<span style="width: 24px"></span>
+<span class="step"><span class="pid">P01/02</span>积分明细 · 规则</span>
+<span class="step"><span class="pid">P09</span>禾伴客服</span>
+</div>
+
+<div style="display: flex; align-items: center; gap: 16px">
+<span style="background: #456732; color: #FFFFFF; border-radius: 12px; padding: 10px 20px; font-size: 16px; line-height: 24px; font-weight: 500">MainActivity · NavigationBar</span>
+<span style="display: flex; align-items: center; gap: 8px; background: #C5EFAB; color: #2E4F1C; border-radius: 16px; padding: 8px 16px; font-size: 14px; line-height: 20px; font-weight: 500"><span class="ms" aria-hidden="true" style="font-size: 20px">auto_awesome</span>全局悬浮按钮「问 AI」：首页 / 作物 / 发现 → D06 AI 助手</span>
+<span style="display: flex; align-items: center; gap: 8px; background: #F2F5EA; border-radius: 16px; padding: 8px 16px; font-size: 14px; line-height: 20px"><span class="ms" aria-hidden="true" style="font-size: 20px; color: #456732">notifications</span>首页铃铛 / 农友圈信封 → S08 消息</span>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; border-top: 2px solid #C3C8BB; padding-top: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div class="tabh"><span class="ms f" aria-hidden="true" style="font-size: 20px">home</span>首页<span class="pid">H01</span></div>
+<div class="sub"><span class="pid">H02</span>天气详情 · 农事指数</div>
+<div class="sub"><span class="pid">H03</span>农事日历</div>
+<div class="sub l2"><span class="pid">H04</span>新建农事</div>
+<div class="sub"><span class="pid">H05</span>签到与成就</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div class="tabh"><span class="ms f" aria-hidden="true" style="font-size: 20px">potted_plant</span>作物<span class="pid">C01</span></div>
+<div class="sub"><span class="pid">C02</span>作物详情</div>
+<div class="sub l2"><span class="pid">C04</span>添加农事记录</div>
+<div class="sub"><span class="pid">C03</span>添加 / 编辑作物</div>
+<div class="sub"><span class="pid">C05</span>地块管理</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div class="tabh"><span class="ms f" aria-hidden="true" style="font-size: 20px">explore</span>发现<span class="pid">D01</span></div>
+<div class="sub"><span class="pid">D02</span>拍照识别</div>
+<div class="sub l2"><span class="pid">D03</span>识别结果</div>
+<div class="sub"><span class="pid">D04</span>病虫害百科</div>
+<div class="sub l2"><span class="pid">D05</span>病害详情</div>
+<div class="sub"><span class="pid">D06</span>AI 助手</div>
+<div class="sub"><span class="pid">D07</span>农产品集市</div>
+<div class="sub l2"><span class="pid">D08/09</span>商品详情 · 发布</div>
+<div class="sub"><span class="pid">D10</span>收支记账</div>
+<div class="sub l2"><span class="pid">D11</span>记一笔</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div class="tabh"><span class="ms f" aria-hidden="true" style="font-size: 20px">forum</span>农友圈<span class="pid">S01</span></div>
+<div class="sub"><span class="pid">S02</span>动态详情 · 评论</div>
+<div class="sub"><span class="pid">S03</span>发布动态 / 提问</div>
+<div class="sub"><span class="pid">S04</span>问答</div>
+<div class="sub l2"><span class="pid">S05</span>问题详情 · 采纳</div>
+<div class="sub"><span class="pid">S06</span>农友主页</div>
+<div class="sub l2"><span class="pid">S07</span>关注与粉丝</div>
+<div class="sub"><span class="pid">S08</span>消息</div>
+<div class="sub l2"><span class="pid">S09</span>私信聊天</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div class="tabh"><span class="ms f" aria-hidden="true" style="font-size: 20px">person</span>我的<span class="pid">M01</span></div>
+<div class="sub"><span class="pid">M02</span>我的主页</div>
+<div class="sub l2"><span class="pid">M03</span>编辑资料</div>
+<div class="sub"><span class="pid">M04</span>我的收藏</div>
+<div class="sub"><span class="pid">M05</span>设置</div>
+<div class="sub l2"><span class="pid">M06/07</span>账号安全 · 修改密码</div>
+<div class="sub l2"><span class="pid">M08</span>换绑手机号</div>
+<div class="sub l2"><span class="pid">M09/10</span>消息通知 · 隐私</div>
+<div class="sub l2"><span class="pid">M11/12</span>AI 设置 · 显示通用</div>
+<div class="sub l2"><span class="pid">M13</span>关于禾伴</div>
+</div>
+</div>
+</section>
+
+<div style="display: flex; gap: 12px; align-items: flex-start; background: #F2F5EA; border-radius: 16px; padding: 16px 20px; font-size: 14px; line-height: 22px">
+<span class="ms" aria-hidden="true" style="color: #456732">touch_app</span>
+<span><strong style="font-weight: 500">原型里可以直接操作：</strong>底部导航与全部页面跳转；点赞、收藏、关注 / 回关；发表评论、发私信（对方会自动回复）；问答采纳；签到领积分；引导页翻页；密码显示 / 隐藏与强度校验；验证码倒计时；集市、问答、收藏筛选；记一笔数字键盘；各类开关、单选框、退出 / 注销确认对话框；清理缓存提示栏；换绑手机与申诉；积分商城兑换、新增收货地址、复制运单号、客服快捷问答。</span>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

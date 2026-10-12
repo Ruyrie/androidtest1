@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>积分明细</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border-radius:24px;color:#43483E;display:flex;align-items:center;justify-content:center}
+.tab{flex:1;height:48px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:20px;font-weight:500;position:relative;cursor:pointer}
+.row{display:flex;align-items:center;gap:16px;min-height:64px;padding:0 16px}
+.ic{width:40px;height:40px;flex-shrink:0;border-radius:20px;display:flex;align-items:center;justify-content:center}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="CheckIn.dc.html" class="ib" aria-label="返回" style="color: #191D16"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">积分明细</h1>
+<a href="PointsRules.dc.html" class="ib" aria-label="积分规则"><span class="ms" aria-hidden="true">help</span></a>
+</header>
+
+<div style="margin: 4px 16px 0; background: #C5EFAB; color: #2E4F1C; border-radius: 28px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; flex-shrink: 0">
+<div style="display: flex; align-items: flex-end; gap: 12px">
+<div style="flex: 1"><div style="font-size: 14px; line-height: 20px">当前积分</div><div style="font-size: 36px; line-height: 44px">1,280</div></div>
+<a href="PointsMall.dc.html" style="height: 40px; padding: 0 16px 0 12px; border-radius: 20px; background: #456732; color: #FFFFFF; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500"><span class="ms" aria-hidden="true" style="font-size: 18px">redeem</span>去兑换</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid rgba(46, 79, 28, 0.2); padding-top: 10px; font-size: 12px; line-height: 16px">
+<div>本月获得<div style="font-size: 16px; line-height: 24px; font-weight: 500">+157</div></div>
+<div>本月消耗<div style="font-size: 16px; line-height: 24px; font-weight: 500">−520</div></div>
+<div>成长值<div style="font-size: 16px; line-height: 24px; font-weight: 500">1,280</div></div>
+</div>
+</div>
+
+<div role="tablist" style="display: flex; border-bottom: 1px solid #E0E4D6; margin-top: 8px; flex-shrink: 0">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<button role="tab" aria-selected="{{t.on}}" class="tab" style="color: {{t.fg}}" onClick="{{t.pick}}">{{t.name}}<span style="position: absolute; left: 50%; bottom: 0; width: 48px; margin-left: -24px; height: 3px; border-radius: 3px 3px 0 0; background: {{t.bar}}"></span></button>
+</sc-for>
+</div>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding-top: 4px">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+<div class="row">
+<span class="ic" style="background: {{r.bg}}; color: {{r.fg}}"><span class="ms" aria-hidden="true" style="font-size: 20px">{{r.icon}}</span></span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 16px; line-height: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.title}}</span><span style="font-size: 12px; line-height: 16px; color: #43483E">{{r.time}}</span></span>
+<span style="font-size: 16px; line-height: 24px; font-weight: 500; color: {{r.ac}}">{{r.amt}}</span>
+</div>
+</sc-for>
+<p style="margin: 12px 0 0; text-align: center; font-size: 12px; line-height: 16px; color: #74796D">仅展示近 3 个月的记录</p>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const tab = (this.state && this.state.tab) || 'all';
+    const gain = { bg: '#C5EFAB', fg: '#2E4F1C' };
+    const use = { bg: '#E1E4D9', fg: '#43483E' };
+    const all = [
+      ['完成今日农事', '10月10日 09:12', 5, 'task_alt'],
+      ['悬赏提问「番茄叶片卷曲发黄」', '10月10日 08:40', -20, 'paid'],
+      ['回答被采纳（悬赏 20 + 奖励 20）', '10月09日 18:05', 40, 'verified'],
+      ['每日签到 · 连续第 5 天', '10月09日 07:31', 10, 'event_available'],
+      ['回答问题', '10月09日 07:50', 10, 'question_answer'],
+      ['记一笔账', '10月08日 20:16', 2, 'receipt_long'],
+      ['集市置顶「樱桃番茄」24 小时', '10月05日 10:02', -100, 'vertical_align_top'],
+      ['兑换「园艺手套 2 双」', '10月02日 15:44', -400, 'redeem'],
+      ['发布动态', '10月01日 12:20', 5, 'edit_note']
+    ];
+    const rows = all.filter(([, , n]) => tab === 'all' || (tab === 'gain' ? n > 0 : n < 0)).map(([title, time, n, icon]) => Object.assign({
+      title, time, icon, amt: (n > 0 ? '+' : '−') + Math.abs(n), ac: n > 0 ? '#456732' : '#191D16'
+    }, n > 0 ? gain : use));
+    return {
+      rows,
+      tabs: [['all', '全部'], ['gain', '获得'], ['use', '消耗']].map(([id, name]) => ({ name, on: id === tab, fg: id === tab ? '#456732' : '#43483E', bar: id === tab ? '#456732' : 'transparent', pick: () => this.setState({ tab: id }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>设置</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.it{min-height:72px;box-sizing:border-box;background:#EDEFE4;padding:12px 16px;display:flex;align-items:center;gap:16px}
+.ic{width:40px;height:40px;flex-shrink:0;border-radius:20px;display:flex;align-items:center;justify-content:center}
+.tx{flex:1;min-width:0;display:flex;flex-direction:column}
+.t1{font-size:16px;line-height:24px}
+.t2{font-size:14px;line-height:20px;color:#43483E}
+.gl{margin:0;padding:16px 16px 8px;font-size:14px;line-height:20px;font-weight:500;color:#456732}
+.grp{display:flex;flex-direction:column;gap:2px}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative">
+
+<header style="flex-shrink: 0; padding: 0 4px">
+<div style="height: 64px; display: flex; align-items: center">
+<a href="Profile.dc.html" aria-label="返回" style="width: 48px; height: 48px; border-radius: 24px; color: #191D16; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">arrow_back</span></a>
+</div>
+<h1 style="margin: 0; padding: 8px 12px 12px; font-size: 32px; line-height: 40px; font-weight: 500">设置</h1>
+</header>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 0 16px">
+<h2 class="gl">账号</h2>
+<div class="grp">
+<a href="Security.dc.html" class="it" style="border-radius: 28px 28px 4px 4px"><span class="ic" style="background: #C5EFAB; color: #2E4F1C"><span class="ms" aria-hidden="true">shield_person</span></span><span class="tx"><span class="t1">账号与安全</span><span class="t2">手机号 138****5678 · 修改密码</span></span></a>
+<a href="Privacy.dc.html" class="it" style="border-radius: 4px 4px 28px 28px"><span class="ic" style="background: #C5EFAB; color: #2E4F1C"><span class="ms" aria-hidden="true">lock</span></span><span class="tx"><span class="t1">隐私设置</span><span class="t2">主页可见范围、私信权限、黑名单</span></span></a>
+</div>
+
+<h2 class="gl">通用</h2>
+<div class="grp">
+<a href="Notify.dc.html" class="it" style="border-radius: 28px 28px 4px 4px"><span class="ic" style="background: #FFE08B; color: #241A00"><span class="ms" aria-hidden="true">notifications</span></span><span class="tx"><span class="t1">消息通知</span><span class="t2">农事提醒、互动消息、免打扰</span></span></a>
+<a href="General.dc.html" class="it" style="border-radius: 4px"><span class="ic" style="background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true">palette</span></span><span class="tx"><span class="t1">显示与通用</span><span class="t2">深色模式、字体大小、清理缓存</span></span></a>
+<a href="AISettings.dc.html" class="it" style="border-radius: 4px 4px 28px 28px"><span class="ic" style="background: #BBEBEC; color: #1E4E4E"><span class="ms" aria-hidden="true">auto_awesome</span></span><span class="tx"><span class="t1">AI 助手设置</span><span class="t2">回答风格、结合我的作物、对话记录</span></span></a>
+</div>
+
+<h2 class="gl">关于</h2>
+<div class="grp">
+<button onClick="{{notOpen}}" class="it" style="border: 0; width: 100%; text-align: left; cursor: pointer; color: #191D16; border-radius: 28px 28px 4px 4px"><span class="ic" style="background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true">help</span></span><span class="tx"><span class="t1">帮助与反馈</span><span class="t2">暂未开放</span></span></button>
+<a href="About.dc.html" class="it" style="border-radius: 4px 4px 28px 28px"><span class="ic" style="background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true">info</span></span><span class="tx"><span class="t1">关于禾伴</span><span class="t2">版本 1.0.0</span></span></a>
+</div>
+
+<div class="grp" style="margin-top: 16px">
+<a href="Login.dc.html" class="it" style="border-radius: 28px 28px 4px 4px; min-height: 56px"><span class="ms" aria-hidden="true" style="color: #43483E">switch_account</span><span class="t1" style="flex: 1">切换账号</span></a>
+<button onClick="{{ask}}" class="it" style="border: 0; width: 100%; text-align: left; border-radius: 4px 4px 28px 28px; min-height: 56px; cursor: pointer; color: #BA1A1A"><span class="ms" aria-hidden="true">logout</span><span class="t1" style="flex: 1">退出登录</span></button>
+</div>
+</main>
+
+<sc-if value="{{snack}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="position: absolute; left: 16px; right: 16px; bottom: 24px; min-height: 48px; box-sizing: border-box; border-radius: 4px; background: #2E312B; color: #F0F2E7; padding: 0 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15)">
+<span class="ms" aria-hidden="true" style="font-size: 20px; color: #AAD291">schedule</span>
+<span style="font-size: 14px; line-height: 20px">功能暂未开放</span>
+</div>
+</sc-if>
+
+<sc-if value="{{dialog}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.32); display: flex; align-items: center; justify-content: center; padding: 0 40px">
+<div role="dialog" aria-modal="true" aria-labelledby="lo-title" style="width: 100%; background: #E7E9DF; border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<span class="ms" aria-hidden="true" style="align-self: center; color: #456732">logout</span>
+<h2 id="lo-title" style="margin: 0; text-align: center; font-size: 24px; line-height: 32px; font-weight: 500">退出登录？</h2>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #43483E">作物和农事数据会保留在本机，重新登录后自动同步。未发送的草稿将被清除。</p>
+<div style="display: flex; justify-content: flex-end; gap: 8px">
+<button onClick="{{cancel}}" style="height: 40px; border: 0; background: transparent; border-radius: 20px; padding: 0 12px; color: #456732; font-size: 14px; font-weight: 500; cursor: pointer">取消</button>
+<a href="Login.dc.html" style="height: 40px; border-radius: 20px; padding: 0 12px; display: flex; align-items: center; color: #BA1A1A; font-size: 14px; font-weight: 500">退出登录</a>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  componentWillUnmount() {
+    if (this.t) clearTimeout(this.t);
+  }
+  renderVals() {
+    const dialog = !!(this.state && this.state.dialog);
+    return {
+      dialog,
+      snack: !!(this.state && this.state.snack),
+      notOpen: () => {
+        this.setState({ snack: true });
+        if (this.t) clearTimeout(this.t);
+        this.t = setTimeout(() => this.setState({ snack: false }), 3000);
+      },
+      ask: () => this.setState({ dialog: true }),
+      cancel: () => this.setState({ dialog: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

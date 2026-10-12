@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>社交与业务组件</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;family=Roboto+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#456732}a:hover{color:#2E4F1C}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.pn{background:#F2F5EA;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:14px}
+.h{margin:0;font-size:22px;line-height:28px;font-weight:500}
+.demo{background:#F8FAF0;border-radius:16px;padding:18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.spec{display:flex;flex-direction:column;gap:4px;font-size:13px;line-height:20px;color:#43483E}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500;flex-shrink:0}
+.bdg{height:22px;padding:0 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;font-size:12px;line-height:16px;font-weight:500}
+.btn{height:32px;box-sizing:border-box;border-radius:16px;padding:0 14px;display:inline-flex;align-items:center;gap:4px;font-size:14px;line-height:20px;font-weight:500}
+.act{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:#43483E}
+.lbl{font-size:11px;line-height:16px;color:#43483E;width:100%}
+.num{position:absolute;width:20px;height:20px;border-radius:10px;background:#386666;color:#FFFFFF;font-size:11px;line-height:20px;font-weight:500;text-align:center}
+.sk{background:#E1E4D9;border-radius:6px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1500px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; padding: 56px 64px; display: flex; flex-direction: column; gap: 28px; overflow: hidden">
+
+<header>
+<div style="font-size: 14px; line-height: 20px; font-weight: 500; color: #456732">08 · 社交与业务组件 · 页面状态</div>
+<h1 style="margin: 4px 0 8px; font-size: 36px; line-height: 44px; font-weight: 500">基于 M3 组合出来的业务组件</h1>
+<p style="margin: 0; max-width: 960px; font-size: 16px; line-height: 24px; color: #43483E">这些组件没有现成的 MDC 控件，统一用卡片、Chip、按钮组合而成；每个都要有空、加载、错误三种状态，保证真实用户使用时不出现白屏。</p>
+</header>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+
+<section class="pn">
+<h2 class="h">头像与身份标识</h2>
+<div class="demo">
+<span class="av" style="width: 24px; height: 24px; font-size: 11px; background: #456732; color: #FFFFFF">李</span>
+<span class="av" style="width: 32px; height: 32px; font-size: 13px; background: #BBEBEC; color: #1E4E4E">莓</span>
+<span class="av" style="width: 40px; height: 40px; font-size: 16px; background: #D9E7CB; color: #3E4A35">王</span>
+<span class="av" style="width: 48px; height: 48px; font-size: 18px; background: #FFE08B; color: #241A00">强</span>
+<span class="av" style="width: 72px; height: 72px; font-size: 28px; background: #456732; color: #FFFFFF">李</span>
+<span class="lbl">24 评论区 · 32 评论 · 40 动态卡片 · 48 列表 · 72 / 88 个人页</span>
+<span class="bdg" style="background: #FFE08B; color: #241A00"><span class="ms f" aria-hidden="true" style="font-size: 14px">military_tech</span>Lv.4 种植能手</span>
+<span class="bdg" style="background: #BBEBEC; color: #1E4E4E">农技专家</span>
+<span class="bdg" style="background: #C5EFAB; color: #2E4F1C">官方</span>
+<span class="bdg" style="background: #E1E4D9; color: #43483E">Lv.2</span>
+<span class="ms f" aria-label="实名认证" style="font-size: 18px; color: #386666">verified</span>
+</div>
+<div class="spec">
+<span>无头像时用昵称首字 + 容器色，按用户 ID 固定取色，不随机</span>
+<span>身份徽标高 20–22dp、圆角 6dp；一行最多显示 1 个等级 + 1 个身份</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">动态卡片结构</h2>
+<div class="demo" style="display: block; position: relative">
+<div style="background: #F2F5EA; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 10px"><span class="av" style="width: 32px; height: 32px; font-size: 13px; background: #BBEBEC; color: #1E4E4E">莓</span><span style="flex: 1; font-size: 13px; font-weight: 500">草莓姐姐 <span style="font-weight: 400; color: #43483E">· 2 小时前</span></span><span class="btn" style="height: 28px; border: 1px solid #74796D; color: #456732; font-size: 12px">关注</span></div>
+<div style="font-size: 13px; line-height: 19px">今年的红颜定植完成啦！银灰膜加黄板，蚜虫明显少了……</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px"><span class="sk" style="height: 56px"></span><span class="sk" style="height: 56px"></span><span class="sk" style="height: 56px"></span></div>
+<div style="display: flex; align-items: center; gap: 12px; font-size: 12px; color: #43483E"><span style="padding: 2px 6px; border-radius: 6px; background: #D9E7CB; color: #3E4A35; margin-right: auto">#草莓种植</span><span class="act" style="font-size: 12px"><span class="ms" aria-hidden="true" style="font-size: 16px">favorite</span>128</span><span class="act" style="font-size: 12px"><span class="ms" aria-hidden="true" style="font-size: 16px">chat_bubble</span>36</span></div>
+</div>
+<span class="num" style="left: 4px; top: 22px">1</span>
+<span class="num" style="left: 4px; top: 64px">2</span>
+<span class="num" style="left: 4px; top: 104px">3</span>
+<span class="num" style="left: 4px; top: 160px">4</span>
+</div>
+<div class="spec">
+<span>① 作者行：头像 40 + 昵称 / 徽标 + 关注按钮</span>
+<span>② 正文最多 3 行，超出省略，点击进详情</span>
+<span>③ 图片 1 张通栏；2–3 张等分；更多显示 +N</span>
+<span>④ 话题 Chip 左对齐，操作栏右对齐，触控区 40dp</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">互动按钮状态</h2>
+<div class="demo">
+<span class="lbl">点赞 / 收藏</span>
+<span class="act"><span class="ms" aria-hidden="true" style="font-size: 20px">favorite</span>128</span>
+<span class="act"><span class="ms f" aria-hidden="true" style="font-size: 20px; color: #BA1A1A">favorite</span>129</span>
+<span class="act"><span class="ms" aria-hidden="true" style="font-size: 20px">bookmark</span>收藏</span>
+<span class="act"><span class="ms f" aria-hidden="true" style="font-size: 20px; color: #456732">bookmark</span>已收藏</span>
+<span class="lbl" style="margin-top: 4px">关注关系</span>
+<span class="btn" style="background: #456732; color: #FFFFFF"><span class="ms" aria-hidden="true" style="font-size: 16px">add</span>关注</span>
+<span class="btn" style="background: #D9E7CB; color: #3E4A35">已关注</span>
+<span class="btn" style="background: #D9E7CB; color: #3E4A35">回关</span>
+<span class="btn" style="border: 1px solid #74796D; color: #43483E"><span class="ms" aria-hidden="true" style="font-size: 16px">sync_alt</span>互相关注</span>
+</div>
+<div class="spec">
+<span>点赞用 Error 色实心图标，数字 +1；乐观更新，失败回滚并弹 Snackbar</span>
+<span>主页的主按钮用 Filled，列表里的用描边 / Tonal，避免满屏绿色</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">问答状态</h2>
+<div class="demo">
+<span class="bdg" style="background: #E1E4D9; color: #43483E"><span class="ms" aria-hidden="true" style="font-size: 14px">pending</span>待解决</span>
+<span class="bdg" style="background: #C5EFAB; color: #2E4F1C"><span class="ms" aria-hidden="true" style="font-size: 14px">check_circle</span>已解决</span>
+<span class="bdg" style="background: #FFE08B; color: #241A00"><span class="ms" aria-hidden="true" style="font-size: 14px">paid</span>悬赏 20</span>
+<span class="bdg" style="background: #C5EFAB; color: #2E4F1C"><span class="ms f" aria-hidden="true" style="font-size: 14px">verified</span>已采纳</span>
+<div style="width: 100%; background: #BBEBEC; color: #1E4E4E; border-radius: 12px; padding: 10px 12px; font-size: 13px; line-height: 19px"><span style="display: flex; align-items: center; gap: 6px; font-weight: 500"><span class="ms f" aria-hidden="true" style="font-size: 16px">auto_awesome</span>AI 参考答案</span>从描述看更像缺镁，钾肥过多会抑制镁吸收……</div>
+</div>
+<div class="spec">
+<span>AI 参考答案固定用 Tertiary Container，与农友回答区分来源</span>
+<span>只有提问者看得到「采纳」按钮；采纳后其余按钮隐藏，积分转给回答者</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">商品卡 · 记账条目</h2>
+<div class="demo" style="align-items: stretch">
+<div style="width: 132px; background: #F2F5EA; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.3), 0 1px 3px 1px rgba(0,0,0,.15)"><div class="sk" style="height: 88px; border-radius: 0"></div><div style="padding: 8px 10px; font-size: 12px; line-height: 16px"><div style="font-weight: 500">红颜草莓 现摘</div><div style="font-size: 15px; line-height: 22px; font-weight: 500; color: #456732">¥25<span style="font-size: 11px; color: #43483E; font-weight: 400"> /斤</span></div><div style="color: #43483E">12 km</div></div></div>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 6px; justify-content: center">
+<div style="display: flex; align-items: center; gap: 10px; font-size: 13px"><span class="av" style="width: 32px; height: 32px; background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true" style="font-size: 18px">sell</span></span><span style="flex: 1">番茄销售</span><span style="font-weight: 500; color: #456732">+960</span></div>
+<div style="display: flex; align-items: center; gap: 10px; font-size: 13px"><span class="av" style="width: 32px; height: 32px; background: #E1E4D9; color: #43483E"><span class="ms" aria-hidden="true" style="font-size: 18px">compost</span></span><span style="flex: 1">硫酸钾 5 kg</span><span style="font-weight: 500">−60</span></div>
+</div>
+</div>
+<div class="spec">
+<span>价格用 Primary 色 + Title 字号，单位用 Body Small 辅助色</span>
+<span>收入写 + 并用 Primary 色，支出写 − 用正文色；不只靠颜色区分</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">角标与未读</h2>
+<div class="demo" style="gap: 28px">
+<span style="position: relative; display: inline-flex"><span class="ms" aria-hidden="true">notifications</span><span style="position: absolute; top: 0; right: 0; width: 8px; height: 8px; border-radius: 4px; background: #BA1A1A"></span></span>
+<span style="position: relative; display: inline-flex"><span class="ms" aria-hidden="true">mail</span><span style="position: absolute; top: -6px; right: -10px; min-width: 16px; height: 16px; padding: 0 4px; box-sizing: border-box; border-radius: 8px; background: #BA1A1A; color: #FFFFFF; font-size: 11px; line-height: 16px; font-weight: 500; text-align: center">3</span></span>
+<span style="position: relative; display: inline-flex"><span class="ms" aria-hidden="true">chat_bubble</span><span style="position: absolute; top: -6px; right: -18px; min-width: 16px; height: 16px; padding: 0 4px; box-sizing: border-box; border-radius: 8px; background: #BA1A1A; color: #FFFFFF; font-size: 11px; line-height: 16px; font-weight: 500; text-align: center">99+</span></span>
+<span style="min-width: 20px; height: 20px; padding: 0 6px; box-sizing: border-box; border-radius: 10px; background: #456732; color: #FFFFFF; font-size: 11px; line-height: 20px; font-weight: 500; text-align: center">2</span>
+</div>
+<div class="spec">
+<span>小红点 6–8dp：有新内容但不计数（导航、铃铛）</span>
+<span>数字角标高 16dp，超过 99 显示 99+；会话列表未读用 Primary 色</span>
+</div>
+</section>
+
+<section class="pn">
+<h2 class="h">空状态</h2>
+<div class="demo" style="flex-direction: column; text-align: center; gap: 10px; padding: 24px 18px">
+<span style="width: 64px; height: 64px; border-radius: 32px; background: #E1E4D9; color: #74796D; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true" style="font-size: 32px">potted_plant</span></span>
+<span style="font-size: 16px; line-height: 24px; font-weight: 500">还没有作物</span>
+<span style="font-size: 13px; line-height: 19px; color: #43483E">添加第一块地和作物，禾伴会按生长阶段提醒你</span>
+<span class="btn" style="height: 40px; border-radius: 20px; padding: 0 20px; background: #456732; color: #FFFFFF">添加作物</span>
+</div>
+<div class="spec"><span>图标 64 圆形底 + 标题 + 一句说明 + 一个主操作；不放插画大图</span></div>
+</section>
+
+<section class="pn">
+<h2 class="h">加载中</h2>
+<div class="demo" style="flex-direction: column; align-items: stretch; gap: 10px">
+<div style="display: flex; gap: 10px; align-items: center"><span class="sk" style="width: 40px; height: 40px; border-radius: 20px"></span><span style="flex: 1; display: flex; flex-direction: column; gap: 6px"><span class="sk" style="height: 12px; width: 50%"></span><span class="sk" style="height: 10px; width: 30%"></span></span></div>
+<span class="sk" style="height: 12px"></span><span class="sk" style="height: 12px; width: 80%"></span>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px"><span class="sk" style="height: 64px"></span><span class="sk" style="height: 64px"></span><span class="sk" style="height: 64px"></span></div>
+</div>
+<div class="spec"><span>列表首屏用骨架屏（Surface Container Highest）；按钮内操作用 CircularProgressIndicator；下拉刷新用 SwipeRefreshLayout</span></div>
+</section>
+
+<section class="pn">
+<h2 class="h">网络错误 · 离线</h2>
+<div class="demo" style="flex-direction: column; align-items: stretch; gap: 12px">
+<div role="status" style="background: #BBEBEC; color: #1E4E4E; border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; font-size: 13px"><span class="ms" aria-hidden="true" style="font-size: 18px">wifi_off</span><span style="flex: 1">当前离线，显示的是缓存内容</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 8px 0; text-align: center">
+<span class="ms" aria-hidden="true" style="font-size: 36px; color: #BA1A1A">cloud_off</span>
+<span style="font-size: 15px; font-weight: 500">加载失败</span>
+<span style="font-size: 13px; color: #43483E">网络不太好，检查后再试一次</span>
+<span class="btn" style="height: 40px; border-radius: 20px; padding: 0 20px; border: 1px solid #74796D; color: #456732"><span class="ms" aria-hidden="true" style="font-size: 18px">refresh</span>重试</span>
+</div>
+</div>
+<div class="spec"><span>有缓存时只在顶部显示离线提示栏；无缓存才整页报错；本地数据（作物、记账）始终可用</span></div>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

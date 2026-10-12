@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>农友主页 草莓姐姐</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ov{width:40px;height:40px;border:0;padding:0;border-radius:20px;background:rgba(248,250,240,.9);color:#191D16;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.bdg{height:24px;padding:0 8px;border-radius:8px;display:inline-flex;align-items:center;gap:4px;font-size:12px;line-height:16px;font-weight:500}
+.sn{display:flex;flex-direction:column;align-items:center}
+.sn b{font-size:18px;line-height:24px;font-weight:500}
+.sn span{font-size:12px;line-height:16px;color:#43483E}
+.tab{flex:1;height:48px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:20px;font-weight:500;position:relative;cursor:pointer}
+.th{height:128px;border-radius:8px;background:#E1E4D9;color:#74796D;display:flex;align-items:center;justify-content:center;position:relative}
+.row{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #E0E4D6}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<div style="height: 148px; flex-shrink: 0; background: #BBEBEC; color: #1E4E4E; position: relative; display: flex; align-items: center; justify-content: center">
+<span class="ms" aria-hidden="true" style="font-size: 48px; opacity: 0.5">landscape</span>
+<div style="position: absolute; left: 0; right: 0; top: 0; height: 64px; padding: 0 12px; display: flex; align-items: center; gap: 8px">
+<a href="Community.dc.html" class="ov" aria-label="返回"><span class="ms" aria-hidden="true">arrow_back</span></a>
+<span style="flex: 1"></span>
+<button class="ov" aria-label="更多：分享主页、举报、拉黑"><span class="ms" aria-hidden="true">more_vert</span></button>
+</div>
+</div>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 0 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: flex-end; gap: 8px; margin-top: -44px">
+<span style="width: 88px; height: 88px; box-sizing: border-box; border-radius: 44px; border: 4px solid #F8FAF0; background: #386666; color: #FFFFFF; font-size: 34px; font-weight: 500; display: flex; align-items: center; justify-content: center">莓</span>
+<span style="flex: 1"></span>
+<button onClick="{{follow}}" aria-pressed="{{followed}}" style="height: 40px; border-radius: 20px; padding: 0 24px; font-size: 14px; line-height: 20px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; border: 0; background: {{fBg}}; color: {{fFg}}"><span class="ms" aria-hidden="true" style="font-size: 18px">{{fIcon}}</span>{{fText}}</button>
+<a href="Chat.dc.html" aria-label="私信" style="width: 40px; height: 40px; box-sizing: border-box; border-radius: 20px; border: 1px solid #74796D; color: #43483E; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true" style="font-size: 20px">chat_bubble</span></a>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; display: flex; align-items: center; gap: 6px; font-size: 24px; line-height: 32px; font-weight: 500">草莓姐姐<span class="ms f" aria-label="已实名认证" style="font-size: 20px; color: #386666">verified</span></h1>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<span class="bdg" style="background: #FFE08B; color: #241A00"><span class="ms f" aria-hidden="true" style="font-size: 14px">military_tech</span>Lv.6 种植能手</span>
+<span class="bdg" style="background: #C5EFAB; color: #2E4F1C"><span class="ms f" aria-hidden="true" style="font-size: 14px">thumb_up</span>回答被采纳 68 次</span>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 21px">句容白兔镇种草莓 8 年，大棚 3 亩。欢迎交流种植经验，现摘草莓可以私信预定。</p>
+<div style="display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: #43483E"><span class="ms" aria-hidden="true" style="font-size: 16px">location_on</span>江苏 句容 · 种植 8 年 · 加入禾伴 326 天</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: #F2F5EA; border-radius: 16px; padding: 12px 0">
+<a href="Follows.dc.html" class="sn"><b>86</b><span>关注</span></a>
+<a href="Follows.dc.html" class="sn"><b>{{fans}}</b><span>粉丝</span></a>
+<span class="sn"><b>9,860</b><span>获赞</span></span>
+</div>
+
+<div style="display: flex; gap: 8px; align-items: center">
+<span style="font-size: 12px; line-height: 16px; color: #43483E">在种</span>
+<span class="bdg" style="background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true" style="font-size: 14px">psychiatry</span>草莓 · 3 亩</span>
+<span class="bdg" style="background: #D9E7CB; color: #3E4A35"><span class="ms" aria-hidden="true" style="font-size: 14px">nutrition</span>番茄 · 0.5 亩</span>
+</div>
+
+<div role="tablist" style="display: flex; border-bottom: 1px solid #E0E4D6; margin: 0 -16px">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<button role="tab" aria-selected="{{t.on}}" class="tab" style="color: {{t.fg}}" onClick="{{t.pick}}">{{t.name}}<span style="position: absolute; left: 50%; bottom: 0; width: 48px; margin-left: -24px; height: 3px; border-radius: 3px 3px 0 0; background: {{t.bar}}"></span></button>
+</sc-for>
+</div>
+
+<sc-if value="{{showPosts}}" hint-placeholder-val="{{ true }}">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px">
+<sc-for list="{{thumbs}}" as="m" hint-placeholder-count="6"><a href="PostDetail.dc.html" class="th"><span class="ms" aria-hidden="true">image</span><span style="position: absolute; left: 6px; bottom: 6px; display: flex; align-items: center; gap: 2px; font-size: 11px; color: #191D16; background: rgba(248,250,240,0.85); border-radius: 6px; padding: 0 4px"><span class="ms f" aria-hidden="true" style="font-size: 12px; color: #BA1A1A">favorite</span>{{m.likes}}</span></a></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{showQA}}" hint-placeholder-val="{{ false }}">
+<div>
+<a href="Question.dc.html" class="row"><span class="ms" aria-hidden="true" style="color: #456732">question_answer</span><span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 15px; line-height: 22px">回答了：番茄叶片卷曲发黄，是缺什么肥？</span><span style="font-size: 12px; color: #43483E">1 小时前 · 8 赞同</span></span></a>
+<a href="Question.dc.html" class="row"><span class="ms f" aria-hidden="true" style="color: #456732">verified</span><span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 15px; line-height: 22px">回答被采纳：草莓白粉病怎么预防？</span><span style="font-size: 12px; color: #43483E">3 天前 · 41 赞同</span></span></a>
+</div>
+</sc-if>
+<sc-if value="{{showMarket}}" hint-placeholder-val="{{ false }}">
+<div>
+<a href="Product.dc.html" class="row"><span style="width: 56px; height: 56px; border-radius: 8px; background: #E1E4D9; color: #74796D; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">image</span></span><span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 15px; line-height: 22px">句容红颜草莓 当天现摘</span><span style="font-size: 14px; font-weight: 500; color: #456732">¥25 /斤</span></span></a>
+<a href="Product.dc.html" class="row"><span style="width: 56px; height: 56px; border-radius: 8px; background: #E1E4D9; color: #74796D; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">image</span></span><span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 15px; line-height: 22px">红颜草莓脱毒苗 现货</span><span style="font-size: 14px; font-weight: 500; color: #456732">¥0.6 /株</span></span></a>
+</div>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const followed = !!st.followed;
+    const tab = st.tab || 'posts';
+    const defs = [['posts', '动态 42'], ['qa', '问答 15'], ['market', '集市 2']];
+    return {
+      followed,
+      fText: followed ? '已关注' : '关注', fIcon: followed ? 'check' : 'add',
+      fBg: followed ? '#D9E7CB' : '#456732', fFg: followed ? '#3E4A35' : '#FFFFFF',
+      follow: () => this.setState({ followed: !followed }),
+      fans: (1203 + (followed ? 1 : 0)).toLocaleString('en-US'),
+      tabs: defs.map(([id, name]) => ({ name, on: id === tab, fg: id === tab ? '#456732' : '#43483E', bar: id === tab ? '#456732' : 'transparent', pick: () => this.setState({ tab: id }) })),
+      showPosts: tab === 'posts', showQA: tab === 'qa', showMarket: tab === 'market',
+      thumbs: [128, 356, 87, 42, 210, 66].map((likes) => ({ likes }))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>编辑资料</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button,input,textarea{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.fld{position:relative;display:block}
+.fl{position:absolute;left:12px;top:-8px;padding:0 4px;background:#F8FAF0;font-size:12px;line-height:16px;color:#43483E}
+.fb{height:56px;box-sizing:border-box;border:1px solid #74796D;border-radius:4px;padding:0 12px 0 16px;display:flex;align-items:center;gap:8px;font-size:16px;line-height:24px}
+.fb input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:16px;line-height:24px;color:#191D16;padding:0}
+.seg{flex:1;border:1px solid #74796D;display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;line-height:20px;font-weight:500;cursor:pointer}
+.ic{height:32px;box-sizing:border-box;border:1px solid #C3C8BB;border-radius:8px;padding:0 4px 0 12px;display:inline-flex;align-items:center;gap:4px;font-size:14px;line-height:20px;font-weight:500;color:#43483E}
+.x{width:24px;height:24px;border:0;padding:0;border-radius:12px;background:transparent;color:#43483E;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.sw{width:52px;height:32px;flex-shrink:0;box-sizing:border-box;border-radius:16px;display:flex;align-items:center;cursor:pointer;padding:0}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 8px 0 4px; display: flex; align-items: center; gap: 4px">
+<a href="MyHome.dc.html" aria-label="关闭" style="width: 48px; height: 48px; border-radius: 24px; color: #191D16; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">close</span></a>
+<h1 style="margin: 0 0 0 4px; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">编辑资料</h1>
+<a href="MyHome.dc.html" style="height: 40px; padding: 0 12px; border-radius: 20px; display: flex; align-items: center; color: #456732; font-size: 14px; font-weight: 500">保存</a>
+</header>
+
+<form style="flex: 1; min-height: 0; overflow: hidden; padding: 0 16px; display: flex; flex-direction: column; gap: 20px">
+<div style="position: relative; height: 136px; flex-shrink: 0">
+<button type="button" aria-label="更换封面" style="position: absolute; left: 0; right: 0; top: 0; height: 96px; border: 0; border-radius: 16px; background: #C5EFAB; color: #2E4F1C; display: flex; align-items: center; justify-content: flex-end; gap: 6px; padding: 0 16px; font-size: 14px; font-weight: 500"><span class="ms" aria-hidden="true" style="font-size: 20px">add_photo_alternate</span>更换封面</button>
+<button type="button" aria-label="更换头像" style="position: absolute; left: 16px; top: 48px; width: 88px; height: 88px; box-sizing: border-box; border: 4px solid #F8FAF0; padding: 0; border-radius: 44px; background: #456732; color: #FFFFFF; font-size: 34px; font-weight: 500; display: flex; align-items: center; justify-content: center">李<span style="position: absolute; right: -4px; bottom: -4px; width: 32px; height: 32px; border-radius: 16px; border: 3px solid #F8FAF0; background: #D9E7CB; color: #3E4A35; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true" style="font-size: 16px">photo_camera</span></span></button>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<label class="fld"><span class="fl">昵称</span><span class="fb"><input value="{{nick}}" onChange="{{onNick}}" maxlength="16" aria-label="昵称"><span style="font-size: 12px; color: #43483E">{{nickLen}}/16</span></span></label>
+<span style="padding: 0 16px; font-size: 12px; line-height: 16px; color: #43483E">30 天内可修改 1 次</span>
+</div>
+
+<label class="fld"><span class="fl">个人简介</span><textarea value="{{bio}}" onChange="{{onBio}}" maxlength="60" aria-label="个人简介" style="display: block; width: 100%; box-sizing: border-box; height: 88px; resize: none; border: 1px solid #74796D; border-radius: 4px; padding: 16px 16px 24px; background: transparent; font-size: 16px; line-height: 24px; color: #191D16; outline: 0"></textarea><span style="position: absolute; right: 12px; bottom: 6px; font-size: 12px; color: #43483E">{{bioLen}}/60</span></label>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<label class="fld"><span class="fl">所在地区</span><span class="fb"><span style="flex: 1">南京 江宁</span><span class="ms" aria-hidden="true" style="color: #43483E">arrow_drop_down</span></span></label>
+<label class="fld"><span class="fl">种植年限</span><span class="fb"><span style="flex: 1">12 年</span><span class="ms" aria-hidden="true" style="color: #43483E">arrow_drop_down</span></span></label>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; line-height: 20px; font-weight: 500">种植身份</span>
+<div role="group" aria-label="种植身份" style="display: flex; height: 40px">
+<sc-for list="{{roles}}" as="r" hint-placeholder-count="3">
+<span role="button" aria-pressed="{{r.on}}" class="seg" style="background: {{r.bg}}; color: {{r.fg}}; border-radius: {{r.rad}}; border-left-width: {{r.bl}}" onClick="{{r.pick}}"><sc-if value="{{r.on}}" hint-placeholder-val="{{ false }}"><span class="ms" aria-hidden="true" style="font-size: 18px">check</span></sc-if>{{r.name}}</span>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; line-height: 20px; font-weight: 500">擅长作物 <span style="font-weight: 400; color: #43483E">展示在主页，最多 5 个</span></span>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{skills}}" as="s" hint-placeholder-count="3">
+<span class="ic">{{s.name}}<button type="button" class="x" aria-label="删除 {{s.name}}" onClick="{{s.remove}}"><span class="ms" aria-hidden="true" style="font-size: 16px">close</span></button></span>
+</sc-for>
+<button type="button" onClick="{{add}}" style="height: 32px; border: 1px dashed #74796D; background: transparent; border-radius: 8px; padding: 0 12px 0 8px; display: inline-flex; align-items: center; gap: 4px; color: #456732; font-size: 14px; font-weight: 500; cursor: pointer"><span class="ms" aria-hidden="true" style="font-size: 18px">add</span>添加</button>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 2px">
+<sc-for list="{{toggles}}" as="t" hint-placeholder-count="2">
+<div style="display: flex; align-items: center; gap: 16px; min-height: 56px; background: #EDEFE4; padding: 8px 16px; border-radius: {{t.rad}}">
+<span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 16px; line-height: 24px">{{t.name}}</span><span style="font-size: 12px; line-height: 16px; color: #43483E">{{t.sub}}</span></span>
+<button type="button" role="switch" aria-checked="{{t.on}}" aria-label="{{t.name}}" class="sw" style="background: {{t.bg}}; border: {{t.bd}}; justify-content: {{t.just}}; padding: {{t.pad}}" onClick="{{t.toggle}}"><span style="border-radius: 12px; display: flex; align-items: center; justify-content: center; width: {{t.th}}; height: {{t.th}}; background: {{t.thBg}}; color: #456732"><sc-if value="{{t.on}}" hint-placeholder-val="{{ true }}"><span class="ms" aria-hidden="true" style="font-size: 16px">check</span></sc-if></span></button>
+</div>
+</sc-for>
+</div>
+</form>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const nick = st.nick !== undefined ? st.nick : '老李种菜';
+    const bio = st.bio !== undefined ? st.bio : '江宁种菜 12 年，主种番茄、黄瓜和小麦。爱琢磨省工省肥的法子，欢迎交流。';
+    const role = st.role || '种植户';
+    const skills = st.skills || ['番茄', '黄瓜', '冬小麦'];
+    const pool = ['大棚管理', '水肥一体化', '病虫害防治', '草莓'];
+    const sw = st.sw || { crops: true, badges: true };
+    const roleNames = ['种植户', '家庭园艺', '农技人员'];
+    const swDefs = [['crops', '在主页展示我的作物', '农友可以看到作物和生长阶段，不显示地块位置'], ['badges', '在主页展示成就徽章', '包括等级、签到天数和获得的徽章']];
+    return {
+      nick, nickLen: nick.length, bio, bioLen: bio.length,
+      onNick: (e) => this.setState({ nick: e.target.value }),
+      onBio: (e) => this.setState({ bio: e.target.value }),
+      roles: roleNames.map((n, i) => {
+        const on = n === role;
+        const last = i === roleNames.length - 1;
+        return { name: n, on, bg: on ? '#D9E7CB' : 'transparent', fg: on ? '#3E4A35' : '#191D16', rad: i === 0 ? '20px 0 0 20px' : (last ? '0 20px 20px 0' : '0'), bl: i === 0 ? '1px' : '0', pick: () => this.setState({ role: n }) };
+      }),
+      skills: skills.map((name) => ({ name, remove: () => this.setState({ skills: skills.filter((x) => x !== name) }) })),
+      add: () => { const next = pool.find((p) => !skills.includes(p)); if (next && skills.length < 5) this.setState({ skills: skills.concat([next]) }); },
+      toggles: swDefs.map(([id, name, sub], i) => {
+        const on = !!sw[id];
+        return {
+          name, sub, on, rad: i === 0 ? '28px 28px 4px 4px' : '4px 4px 28px 28px',
+          bg: on ? '#456732' : '#E1E4D9', bd: on ? '0' : '2px solid #74796D', just: on ? 'flex-end' : 'flex-start', pad: on ? '0 4px' : '0 6px',
+          th: on ? '24px' : '16px', thBg: on ? '#FFFFFF' : '#74796D',
+          toggle: () => { const n = Object.assign({}, sw); n[id] = !on; this.setState({ sw: n }); }
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

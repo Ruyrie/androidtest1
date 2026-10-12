@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>问答</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=block" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+button{font-family:Roboto,'Noto Sans SC',sans-serif}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.f{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.ib{width:48px;height:48px;flex-shrink:0;border:0;padding:0;background:transparent;border-radius:24px;color:#43483E;display:flex;align-items:center;justify-content:center;position:relative}
+.nv{height:80px;flex-shrink:0;background:#EDEFE4;display:flex}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;padding-top:12px;gap:4px;color:#43483E}
+.pl{width:64px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative}
+.on{color:#191D16}.on .pl{background:#D9E7CB;color:#3E4A35}
+.lb{font-size:12px;line-height:16px;font-weight:500}
+.tab{flex:1;height:48px;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:20px;font-weight:500;position:relative;color:#43483E}
+.chip{height:32px;box-sizing:border-box;border-radius:8px;display:inline-flex;align-items:center;gap:6px;font-size:14px;line-height:20px;font-weight:500;white-space:nowrap;cursor:pointer}
+.q{display:flex;flex-direction:column;gap:8px;padding:14px 0;border-bottom:1px solid #E0E4D6}
+.st{height:24px;padding:0 8px;border-radius:8px;font-size:12px;line-height:24px;font-weight:500;display:inline-flex;align-items:center;gap:4px}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; background: #F8FAF0; color: #191D16; font-family: Roboto, 'Noto Sans SC', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative">
+
+<header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 4px 0 16px; display: flex; align-items: center; gap: 4px">
+<h1 style="margin: 0; flex: 1; font-size: 22px; line-height: 28px; font-weight: 500">农友圈</h1>
+<button class="ib" aria-label="搜索问题"><span class="ms" aria-hidden="true">search</span></button>
+<a href="Messages.dc.html" class="ib" aria-label="消息，3 条未读"><span class="ms" aria-hidden="true">mail</span><span style="position: absolute; top: 6px; right: 4px; min-width: 16px; height: 16px; padding: 0 4px; box-sizing: border-box; border-radius: 8px; background: #BA1A1A; color: #FFFFFF; font-size: 11px; line-height: 16px; font-weight: 500; text-align: center">3</span></a>
+</header>
+
+<nav aria-label="农友圈分类" style="display: flex; flex-shrink: 0; border-bottom: 1px solid #E0E4D6">
+<a href="Community.dc.html" class="tab">推荐</a>
+<span class="tab">关注</span>
+<span class="tab" aria-current="page" style="color: #456732">问答<span style="position: absolute; left: 50%; bottom: 0; width: 40px; margin-left: -20px; height: 3px; border-radius: 3px 3px 0 0; background: #456732"></span></span>
+<span class="tab">同城</span>
+</nav>
+
+<main style="flex: 1; min-height: 0; overflow: hidden; padding: 12px 16px 0; display: flex; flex-direction: column">
+<div style="display: flex; gap: 8px; padding-bottom: 4px">
+<sc-for list="{{filters}}" as="c" hint-placeholder-count="4">
+<span role="button" aria-pressed="{{c.on}}" class="chip" style="background: {{c.bg}}; color: {{c.fg}}; border: {{c.bd}}; padding: {{c.pad}}" onClick="{{c.pick}}"><sc-if value="{{c.on}}" hint-placeholder-val="{{ false }}"><span class="ms" aria-hidden="true" style="font-size: 18px">check</span></sc-if>{{c.name}}</span>
+</sc-for>
+</div>
+
+<sc-for list="{{qs}}" as="q" hint-placeholder-count="4">
+<a href="Question.dc.html" class="q">
+<span style="display: flex; gap: 12px">
+<span style="flex: 1; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 16px; line-height: 24px; font-weight: 500">{{q.title}}</span>
+<span style="font-size: 14px; line-height: 20px; color: #43483E; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{q.preview}}</span>
+</span>
+<sc-if value="{{q.hasImg}}" hint-placeholder-val="{{ true }}"><span style="width: 72px; height: 72px; flex-shrink: 0; border-radius: 8px; background: #E1E4D9; color: #74796D; display: flex; align-items: center; justify-content: center"><span class="ms" aria-hidden="true">image</span></span></sc-if>
+</span>
+<span style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+<span class="st" style="background: {{q.sBg}}; color: {{q.sFg}}"><span class="ms" aria-hidden="true" style="font-size: 14px">{{q.sIcon}}</span>{{q.status}}</span>
+<sc-if value="{{q.hasReward}}" hint-placeholder-val="{{ false }}"><span class="st" style="background: #FFE08B; color: #241A00"><span class="ms" aria-hidden="true" style="font-size: 14px">paid</span>{{q.reward}}</span></sc-if>
+<span style="font-size: 12px; line-height: 16px; color: #43483E">{{q.meta}}</span>
+</span>
+</a>
+</sc-for>
+</main>
+
+<a href="Publish.dc.html" style="position: absolute; right: 16px; bottom: 96px; height: 56px; padding: 0 20px 0 16px; border-radius: 16px; background: #C5EFAB; color: #2E4F1C; display: flex; align-items: center; gap: 12px; font-size: 14px; line-height: 20px; font-weight: 500; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15)"><span class="ms" aria-hidden="true">contact_support</span>提问</a>
+
+<nav aria-label="主导航" class="nv">
+<a href="Main.dc.html" class="ni"><span class="pl"><span class="ms" aria-hidden="true">home</span></span><span class="lb">首页</span></a>
+<a href="Crops.dc.html" class="ni"><span class="pl"><span class="ms" aria-hidden="true">potted_plant</span></span><span class="lb">作物</span></a>
+<a href="Discover.dc.html" class="ni"><span class="pl"><span class="ms" aria-hidden="true">explore</span></span><span class="lb">发现</span></a>
+<a href="Community.dc.html" class="ni on" aria-current="page"><span class="pl"><span class="ms f" aria-hidden="true">forum</span></span><span class="lb">农友圈</span></a>
+<a href="Profile.dc.html" class="ni"><span class="pl"><span class="ms" aria-hidden="true">person</span></span><span class="lb">我的</span></a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const cur = (this.state && this.state.f) || '全部';
+    const open = { status: '待解决', sIcon: 'pending', sBg: '#E1E4D9', sFg: '#43483E' };
+    const done = { status: '已解决', sIcon: 'check_circle', sBg: '#C5EFAB', sFg: '#2E4F1C' };
+    const all = [
+      Object.assign({ title: '番茄叶片卷曲发黄，是缺什么肥？', preview: '中下部叶片从边缘开始卷曲发黄，叶脉还是绿的，最近追过一次钾肥…', hasImg: true, hasReward: true, reward: '悬赏 20', meta: '老李种菜 · 3 小时前 · 5 个回答', mine: true, crop: true }, open),
+      Object.assign({ title: '黄瓜花多果少，怎么提高坐果率？', preview: '王农艺师：夜温控制在 13–15°C，减少氮肥，开花期可以人工辅助授粉…', hasImg: false, hasReward: false, reward: '', meta: '菜园小周 · 昨天 · 12 个回答', mine: false, crop: true }, done),
+      Object.assign({ title: '草莓苗定植后叶片发红正常吗？', preview: '定植一周，老叶边缘发红，新叶正常，是不是缓苗没缓过来？', hasImg: true, hasReward: true, reward: '悬赏 10', meta: '果园阿强 · 2 天前 · 1 个回答', mine: false, crop: false }, open),
+      Object.assign({ title: '冬小麦播种量一亩多少合适？', preview: 'AI 参考：江苏适期播种每亩 12–15 kg，晚播每推迟 1 天增加 0.5 kg…', hasImg: false, hasReward: false, reward: '', meta: '江宁老陈 · 3 天前 · 8 个回答', mine: false, crop: true }, done)
+    ];
+    const names = ['全部', '待解决', '与我作物相关', '我的提问'];
+    const qs = all.filter((q) => cur === '全部' || (cur === '待解决' && q.status === '待解决') || (cur === '与我作物相关' && q.crop) || (cur === '我的提问' && q.mine));
+    return {
+      qs,
+      filters: names.map((n) => {
+        const on = n === cur;
+        return { name: n, on, bg: on ? '#D9E7CB' : 'transparent', fg: on ? '#3E4A35' : '#43483E', bd: on ? '1px solid #D9E7CB' : '1px solid #C3C8BB', pad: on ? '0 12px 0 8px' : '0 12px', pick: () => this.setState({ f: n }) };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>
