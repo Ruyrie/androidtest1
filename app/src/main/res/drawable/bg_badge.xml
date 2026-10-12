@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 身份徽标底：圆角 6dp，颜色由 BadgeStyles 通过 backgroundTint 设置 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@android:color/white" />
+    <corners android:radius="6dp" />
+</shape>
