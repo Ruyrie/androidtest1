@@ -66,6 +66,8 @@ public final class PestsFormat {
     @NonNull
     public static String bannerDesc(@NonNull PestEntity p) {
         List<String> t = tags(p.cropTags);
+        // 数据中的提示已带作物（如「黄瓜、白菜等 · 秋季低温高湿易发」）时直接使用，避免重复
+        if (p.tip != null && p.tip.contains(" · ")) return p.tip;
         String crops = t.isEmpty() ? null : String.join("、", t) + (t.size() > 1 ? "等" : "");
         return join(" · ", crops, p.tip);
     }
