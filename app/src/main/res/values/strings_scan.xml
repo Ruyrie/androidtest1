@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D02 拍照识别、D03 识别结果 -->
+<resources>
+    <!-- D02 -->
+    <string name="scan_title">拍照识别</string>
+    <string name="scan_close">关闭</string>
+    <string name="scan_flash_turn_on">打开闪光灯</string>
+    <string name="scan_flash_turn_off">关闭闪光灯</string>
+    <string name="scan_hint_pest">对准病叶或虫体，保持清晰</string>
+    <string name="scan_hint_crop">拍下整株或叶片，识别作物与杂草</string>
+    <string name="scan_mode_group">识别模式</string>
+    <string name="scan_mode_pest">病虫害</string>
+    <string name="scan_mode_crop">作物 / 杂草</string>
+    <string name="scan_pick_photo">从相册选择</string>
+    <string name="scan_shutter">拍照</string>
+    <string name="scan_history">识别记录</string>
+    <string name="scan_disclaimer">照片将发送到云端大模型识别，结果仅供参考</string>
+    <string name="scan_camera_failed">相机启动失败</string>
+    <string name="scan_capture_failed">拍照失败，请重试</string>
+    <string name="scan_photo_failed">照片无法读取，请换一张</string>
+    <string name="scan_permission_title">需要相机权限</string>
+    <string name="scan_permission_desc">允许禾伴使用相机后才能拍照识别，也可以先从相册选择照片</string>
+    <string name="scan_permission_go">去授权</string>
+
+    <!-- D02 识别记录底部弹窗 -->
+    <string name="scan_history_empty">还没有识别记录</string>
+    <string name="scan_history_empty_desc">拍一张病叶或整株的照片试试</string>
+    <string name="scan_history_unusable">照片不可用</string>
+    <string name="scan_history_saved">已保存</string>
+    <string name="scan_history_delete_title">删除这条识别记录？</string>
+    <string name="scan_history_delete">删除</string>
+
+    <!-- D03 -->
+    <string name="scan_result_title">识别结果</string>
+    <string name="scan_result_refresh">重新识别</string>
+    <string name="scan_result_photo">识别的照片</string>
+    <string name="scan_result_most_likely">最可能是</string>
+    <string name="scan_result_match">匹配度 %1$d%%</string>
+    <string name="scan_result_percent">%1$d%%</string>
+    <string name="scan_result_spread_fast">传播快</string>
+    <string name="scan_result_view_treatment">查看防治方法</string>
+    <string name="scan_result_ask_ai">问 AI</string>
+    <string name="scan_result_others">其他可能</string>
+    <string name="scan_result_ask_farmers">拿不准？发到问答请农友帮忙看看</string>
+    <string name="scan_result_publish">发到问答</string>
+    <string name="scan_result_save_to">保存到「%1$s」记录</string>
+    <string name="scan_result_save_to_crop">保存到作物记录</string>
+    <string name="scan_result_saved">已保存</string>
+    <string name="scan_result_saved_to">已保存到「%1$s」记录</string>
+    <string name="scan_result_provider">由 %1$s 识别</string>
+    <string name="scan_result_loading">正在识别…</string>
+    <string name="scan_result_failed">识别失败</string>
+    <string name="scan_result_image_bad">照片不可用</string>
+    <string name="scan_result_image_bad_default">照片模糊、过暗或不是植物，请重新拍摄</string>
+    <string name="scan_result_retry">重试</string>
+    <string name="scan_result_retake">重拍</string>
+    <string name="scan_result_pick_crop">保存到哪种作物</string>
+    <string name="scan_result_save">保存</string>
+    <string name="scan_result_no_crops">还没有作物</string>
+    <string name="scan_result_add_crop">添加作物</string>
+</resources>

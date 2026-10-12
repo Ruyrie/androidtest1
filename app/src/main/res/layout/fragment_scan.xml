@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D02 拍照识别（原型 Scan.dc.html）：始终为深色相机界面（Fragment 以深色配置加载本布局，?attr 颜色取深色值）。
+     上方取景区（相机预览 / 占位叶子图标、取景框四角、顶栏、提示条），下方 220dp 操作区（识别模式、相册 / 快门 / 记录、说明）。
+     相机画面上的白色描边、快门与纯黑底色是相机界面固定用色，不随主题变化。 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.heban.app.data.model.ScanMode" />
+
+        <variable
+            name="vm"
+            type="com.heban.app.ui.discover.scan.ScanViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:orientation="vertical">
+
+        <!-- 取景区：Surface Container（深色 #1D211A） -->
+        <FrameLayout
+            android:id="@+id/viewfinder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="?attr/colorSurfaceContainer">
+
+            <!-- 相机未启动时的占位：160dp 叶子图标 -->
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_eco"
+                app:tint="?attr/colorOutlineVariant"
+                app:visible="@{!safeUnbox(vm.cameraDenied)}" />
+
+            <androidx.camera.view.PreviewView
+                android:id="@+id/preview_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:importantForAccessibility="no"
+                app:scaleType="fillCenter" />
+
+            <!-- 取景框：280dp，四角 36dp 白色 4dp 描边 -->
+            <FrameLayout
+                android:id="@+id/frame"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                app:visible="@{!safeUnbox(vm.cameraDenied)}">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="top|start"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/scan_frame_corner" />
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="top|end"
+                    android:importantForAccessibility="no"
+                    android:rotation="90"
+                    android:src="@drawable/scan_frame_corner" />
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="bottom|end"
+                    android:importantForAccessibility="no"
+                    android:rotation="180"
+                    android:src="@drawable/scan_frame_corner" />
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="bottom|start"
+                    android:importantForAccessibility="no"
+                    android:rotation="270"
+                    android:src="@drawable/scan_frame_corner" />
+            </FrameLayout>
+
+            <!-- 相机权限被拒绝：说明 + 去授权（相册仍可用） -->
+            <LinearLayout
+                android:id="@+id/permission_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingHorizontal="40dp"
+                app:visible="@{safeUnbox(vm.cameraDenied)}">
+
+                <FrameLayout
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@drawable/scan_bg_circle"
+                    android:backgroundTint="?attr/colorSurfaceContainerHighest"
+                    android:importantForAccessibility="no">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_photo_camera"
+                        app:tint="?attr/colorOnSurfaceVariant" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="@string/scan_permission_title"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="@string/scan_permission_desc"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_grant"
+                    style="@style/Widget.HeBan.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/scan_permission_go" />
+            </LinearLayout>
+
+            <!-- 顶栏：关闭 / 标题 / 闪光灯（白色） -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/top_bar_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="4dp">
+
+                <ImageButton
+                    android:id="@+id/btn_close"
+                    android:layout_width="@dimen/touch_target"
+                    android:layout_height="@dimen/touch_target"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/scan_close"
+                    android:src="@drawable/ic_close"
+                    app:tint="@android:color/white" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_weight="1"
+                    android:accessibilityHeading="true"
+                    android:gravity="center"
+                    android:text="@string/scan_title"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="@android:color/white" />
+
+                <ImageButton
+                    android:id="@+id/btn_flash"
+                    android:layout_width="@dimen/touch_target"
+                    android:layout_height="@dimen/touch_target"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@{safeUnbox(vm.flashOn) ? @string/scan_flash_turn_off : @string/scan_flash_turn_on}"
+                    android:onClick="@{() -> vm.toggleFlash()}"
+                    android:src="@{safeUnbox(vm.flashOn) ? @drawable/ic_flash_on : @drawable/ic_flash_off}"
+                    app:tint="@android:color/white" />
+            </LinearLayout>
+
+            <!-- 提示条：距底 24dp，高 36dp -->
+            <LinearLayout
+                android:id="@+id/hint"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/scan_bg_pill18"
+                android:backgroundTint="@color/scan_hint_pill"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                app:visible="@{!safeUnbox(vm.cameraDenied)}">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_lightbulb"
+                    app:tint="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/tv_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@{vm.mode == ScanMode.CROP ? @string/scan_hint_crop : @string/scan_hint_pest}"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- 操作区：220dp，内容垂直居中，间距 20dp -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/mode_group"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:contentDescription="@string/scan_mode_group"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/mode_pest"
+                    style="@style/Widget.HeBan.Scan.Mode"
+                    android:checked="@{vm.mode != ScanMode.CROP}"
+                    android:onClick="@{() -> vm.selectMode(ScanMode.PEST)}"
+                    android:text="@string/scan_mode_pest" />
+
+                <RadioButton
+                    android:id="@+id/mode_crop"
+                    style="@style/Widget.HeBan.Scan.Mode"
+                    android:layout_marginStart="8dp"
+                    android:checked="@{vm.mode == ScanMode.CROP}"
+                    android:onClick="@{() -> vm.selectMode(ScanMode.CROP)}"
+                    android:text="@string/scan_mode_crop" />
+            </RadioGroup>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:paddingHorizontal="40dp">
+
+                <ImageButton
+                    android:id="@+id/btn_album"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_gravity="start|center_vertical"
+                    android:background="@drawable/scan_bg_side_square"
+                    android:contentDescription="@string/scan_pick_photo"
+                    android:src="@drawable/ic_photo_library"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+
+                <ImageButton
+                    android:id="@+id/btn_shutter"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/scan_shutter"
+                    android:contentDescription="@string/scan_shutter"
+                    android:enabled="@{!safeUnbox(vm.cameraDenied)}" />
+
+                <ImageButton
+                    android:id="@+id/btn_history"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:background="@drawable/scan_bg_side_circle"
+                    android:contentDescription="@string/scan_history"
+                    android:src="@drawable/ic_history"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="@dimen/page_margin"
+                android:gravity="center"
+                android:text="@string/scan_disclaimer"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

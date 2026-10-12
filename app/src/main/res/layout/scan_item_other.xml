@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D03「其他可能」一行：56dp，名称 Body Large + 64dp 小进度条 + 百分比 + chevron；非首行上方 1dp 分隔线 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorSurfaceContainerHighest" />
+
+    <LinearLayout
+        android:id="@+id/row"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_one_line"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="15dp">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="?attr/colorOnSurface" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/bar"
+            style="@style/Widget.Material3.LinearProgressIndicator.Legacy"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:importantForAccessibility="no"
+            android:max="100"
+            app:indicatorColor="?attr/colorOutline"
+            app:trackColor="?attr/colorSurfaceContainerHighest"
+            app:trackCornerRadius="2dp"
+            app:trackThickness="4dp" />
+
+        <TextView
+            android:id="@+id/tv_percent"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="12dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="?attr/colorOnSurfaceVariant" />
+    </LinearLayout>
+</LinearLayout>

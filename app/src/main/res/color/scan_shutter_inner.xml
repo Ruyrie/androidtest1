@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D02 快门内圆：按下时 70% 不透明，不可用时 38% -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="0.38" android:color="@android:color/white" android:state_enabled="false" />
+    <item android:alpha="0.7" android:color="@android:color/white" android:state_pressed="true" />
+    <item android:color="@android:color/white" />
+</selector>

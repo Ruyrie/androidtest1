@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D03 识别结果（原型 ScanResult.dc.html）：照片 168dp → 识别结论卡（名称、严重程度、匹配度、特征标签、症状说明、
+     查看防治方法 / 问 AI）→ 其他可能 → 发到问答提示栏 → 保存到作物记录 → 「由 DeepSeek 识别」。
+     识别中显示「正在识别…」，失败 / 照片不可用显示提示与重试、重拍。 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.heban.app.ui.discover.scan.ScanViewModel.Phase" />
+
+        <variable
+            name="vm"
+            type="com.heban.app.ui.discover.scan.ScanViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.HeBan.Toolbar"
+            android:layout_width="match_parent"
+            app:contentInsetEnd="0dp"
+            app:contentInsetEndWithActions="0dp"
+            app:navigationContentDescription="@string/back"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/scan_result_title">
+
+            <ImageButton
+                android:id="@+id/btn_refresh"
+                android:layout_width="@dimen/touch_target"
+                android:layout_height="@dimen/touch_target"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/scan_result_refresh"
+                android:enabled="@{vm.phase != Phase.LOADING}"
+                android:src="@drawable/ic_refresh"
+                app:tint="?attr/colorOnSurfaceVariant" />
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/page_margin"
+                android:paddingTop="4dp"
+                android:paddingBottom="@dimen/section_gap">
+
+                <!-- 照片：168dp，圆角 16dp；没有照片时 Surface Container Highest + 图片图标 -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="168dp"
+                    android:background="@drawable/scan_bg_round16"
+                    android:backgroundTint="?attr/colorSurfaceContainerHighest">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_image"
+                        app:tint="?attr/colorOutline" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/scan_result_photo"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.HeBan.Scan.Round16" />
+                </FrameLayout>
+
+                <!-- 识别中 -->
+                <LinearLayout
+                    android:id="@+id/state_loading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:accessibilityLiveRegion="polite"
+                    android:background="@drawable/scan_bg_round16"
+                    android:backgroundTint="?attr/colorSurfaceContainerLow"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/card_padding"
+                    android:paddingVertical="32dp"
+                    app:visible="@{vm.phase == Phase.LOADING}">
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:importantForAccessibility="no"
+                        android:indeterminate="true"
+                        app:indicatorColor="?attr/colorPrimary"
+                        app:indicatorSize="40dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/scan_result_loading"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="?attr/colorOnSurface" />
+                </LinearLayout>
+
+                <!-- 识别失败 / 照片不可用 -->
+                <LinearLayout
+                    android:id="@+id/state_problem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:accessibilityLiveRegion="polite"
+                    android:background="@drawable/scan_bg_round16"
+                    android:backgroundTint="?attr/colorSurfaceContainerLow"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding"
+                    app:visible="@{vm.phase == Phase.ERROR || vm.phase == Phase.IMAGE_BAD}">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:id="@+id/problem_icon_bg"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/scan_bg_circle"
+                            android:importantForAccessibility="no">
+
+                            <ImageView
+                                android:id="@+id/problem_icon"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:importantForAccessibility="no" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/problem_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/icon_text_gap"
+                            android:layout_weight="1"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textColor="?attr/colorOnSurface" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/problem_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_retake"
+                            style="@style/Widget.HeBan.Button.Tonal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/scan_result_retake"
+                            app:icon="@drawable/ic_photo_camera" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_retry"
+                            style="@style/Widget.HeBan.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:onClick="@{() -> vm.retry()}"
+                            android:text="@string/scan_result_retry"
+                            app:icon="@drawable/ic_refresh"
+                            app:visible="@{vm.phase == Phase.ERROR}" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 识别成功 -->
+                <LinearLayout
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:visible="@{vm.phase == Phase.SUCCESS}">
+
+                    <!-- 识别结论：Surface Container Low，圆角 16dp，内边距 16dp，间距 12dp -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/scan_bg_round16"
+                        android:backgroundTint="?attr/colorSurfaceContainerLow"
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/scan_result_most_likely"
+                                    android:textAppearance="?attr/textAppearanceBodySmall"
+                                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                                <TextView
+                                    android:id="@+id/tv_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                                    android:textColor="?attr/colorOnSurface" />
+                            </LinearLayout>
+
+                            <!-- 严重程度：高 32dp 胶囊，轻度 Tertiary / 中度 Warning / 重度 Error / 健康 Primary Container -->
+                            <LinearLayout
+                                android:id="@+id/severity_chip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:layout_marginStart="12dp"
+                                android:background="@drawable/scan_bg_round16"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingHorizontal="12dp">
+
+                                <ImageView
+                                    android:id="@+id/severity_icon"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:importantForAccessibility="no"
+                                    android:src="@drawable/ic_warning" />
+
+                                <TextView
+                                    android:id="@+id/tv_severity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:textAppearance="?attr/textAppearanceLabelLarge" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- 匹配度：8dp 进度条 + 「匹配度 92%」 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.progressindicator.LinearProgressIndicator
+                                android:id="@+id/match_bar"
+                                style="@style/Widget.Material3.LinearProgressIndicator.Legacy"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:importantForAccessibility="no"
+                                android:max="100"
+                                app:indicatorColor="?attr/colorPrimary"
+                                app:trackColor="?attr/colorSecondaryContainer"
+                                app:trackCornerRadius="4dp"
+                                app:trackThickness="8dp" />
+
+                            <TextView
+                                android:id="@+id/tv_match"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:textAppearance="?attr/textAppearanceTitleSmall"
+                                android:textColor="?attr/colorOnSurface" />
+                        </LinearLayout>
+
+                        <!-- 特征标签：病害类型 / 发病部位 / 传播快 -->
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/tags"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            app:chipSpacingHorizontal="@dimen/chip_gap"
+                            app:chipSpacingVertical="@dimen/chip_gap" />
+
+                        <TextView
+                            android:id="@+id/tv_evidence"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_treatment"
+                                style="@style/Widget.HeBan.Button"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/scan_result_view_treatment" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_ask_ai"
+                                style="@style/Widget.HeBan.Button.Tonal"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:text="@string/scan_result_ask_ai"
+                                app:icon="@drawable/ic_auto_awesome"
+                                app:iconGravity="textStart"
+                                app:iconSize="18dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 其他可能：标题 Title Medium + 描边列表（每行 56dp） -->
+                    <LinearLayout
+                        android:id="@+id/others_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:accessibilityHeading="true"
+                            android:text="@string/scan_result_others"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <LinearLayout
+                            android:id="@+id/others_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/scan_bg_outline12"
+                            android:clipToOutline="true"
+                            android:orientation="vertical"
+                            android:padding="1dp" />
+                    </LinearLayout>
+
+                    <!-- 拿不准：Tertiary Container 提示栏 + 发到问答 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/scan_bg_round12"
+                        android:backgroundTint="?attr/colorTertiaryContainer"
+                        android:gravity="center_vertical"
+                        android:minHeight="64dp"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_groups"
+                            app:tint="?attr/colorOnTertiaryContainer" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:text="@string/scan_result_ask_farmers"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?attr/colorOnTertiaryContainer" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_publish"
+                            style="@style/Widget.HeBan.Button.Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:minHeight="@dimen/button_height"
+                            android:paddingHorizontal="12dp"
+                            android:text="@string/scan_result_publish"
+                            android:textColor="?attr/colorTertiary" />
+                    </LinearLayout>
+
+                    <!-- 保存到作物记录：文字按钮 + bookmark_add -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_save"
+                        style="@style/Widget.HeBan.Button.Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="12dp"
+                        android:paddingHorizontal="12dp"
+                        app:icon="@drawable/ic_bookmark_add"
+                        app:iconSize="18dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_provider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

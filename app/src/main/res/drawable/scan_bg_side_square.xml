@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D02 相册按钮：52dp，圆角 14dp，Surface Container Highest -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="14dp" />
+            <solid android:color="?attr/colorSurfaceContainerHighest" />
+        </shape>
+    </item>
+</ripple>

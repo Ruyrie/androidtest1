@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D02 取景框左上角：36dp，白色 4dp 描边，外圆角 16dp；其余三个角旋转使用 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="36dp"
+    android:height="36dp"
+    android:viewportWidth="36"
+    android:viewportHeight="36">
+    <path
+        android:pathData="M2,36 L2,16 A14,14 0 0,1 16,2 L36,2"
+        android:strokeWidth="4"
+        android:strokeColor="@android:color/white"
+        android:strokeLineCap="butt" />
+</vector>
