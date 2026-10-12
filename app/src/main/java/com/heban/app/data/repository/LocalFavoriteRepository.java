@@ -9,8 +9,9 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
-/** FavoriteRepository 的本地实现（Room）。M5 数据层实现前为占位。 */
+/** FavoriteRepository 的本地实现（Room），按当前账号隔离；未登录时观察结果为 false / 空列表，toggle 报 NOT_LOGGED_IN。 */
 public final class LocalFavoriteRepository implements FavoriteRepository {
     private final AppDatabase db;
     private final CurrentUser user;
@@ -22,16 +23,30 @@ public final class LocalFavoriteRepository implements FavoriteRepository {
 
     @Override
     public Flowable<Boolean> observeIsFavorite(String targetType, long targetId) {
-        return Flowable.just(false);
+        return UserScope.observe(user, () -> false,
+                uid -> db.favoriteDao().observeIsFavorite(uid, targetType, targetId));
     }
 
     @Override
     public Completable toggle(String targetType, long targetId) {
-        return Completable.complete();
+        return UserScope.require(user).flatMapCompletable(uid -> Completable.fromAction(() ->
+                db.runInTransaction(() -> {
+                    if (db.favoriteDao().countSync(uid, targetType, targetId) > 0) {
+                        db.favoriteDao().deleteSync(uid, targetType, targetId);
+                    } else {
+                        FavoriteEntity f = new FavoriteEntity();
+                        f.userId = uid;
+                        f.targetType = targetType;
+                        f.targetId = targetId;
+                        f.createdAt = System.currentTimeMillis();
+                        db.favoriteDao().insertSync(f);
+                    }
+                }))).subscribeOn(Schedulers.io());
     }
 
     @Override
     public Flowable<List<FavoriteEntity>> observeAll(String targetType) {
-        return Flowable.just(Collections.emptyList());
+        return UserScope.observe(user, Collections::<FavoriteEntity>emptyList,
+                uid -> db.favoriteDao().observeAll(uid, targetType));
     }
 }

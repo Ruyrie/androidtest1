@@ -25,4 +25,19 @@ public interface FavoriteDao {
 
     @Query("DELETE FROM favorite WHERE user_id = :userId AND target_type = :type AND target_id = :targetId")
     Completable delete(long userId, String type, long targetId);
+
+    // —— 同步版本，供 Repository 在 runInTransaction 中使用 ——
+
+    @Query("SELECT COUNT(*) FROM favorite WHERE user_id = :userId AND target_type = :type AND target_id = :targetId")
+    int countSync(long userId, String type, long targetId);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    long insertSync(FavoriteEntity favorite);
+
+    @Query("DELETE FROM favorite WHERE user_id = :userId AND target_type = :type AND target_id = :targetId")
+    int deleteSync(long userId, String type, long targetId);
+
+    /** 收藏对象被删除时（如删除自己发布的商品），清除所有账号对它的收藏 */
+    @Query("DELETE FROM favorite WHERE target_type = :type AND target_id = :targetId")
+    int deleteTargetSync(String type, long targetId);
 }
