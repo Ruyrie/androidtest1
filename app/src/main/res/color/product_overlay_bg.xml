@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D08 图片上的返回 / 分享按钮底色：Surface 90%（原型 rgba(248, 250, 240, .9)） -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="0.9" android:color="?attr/colorSurface" />
+</selector>

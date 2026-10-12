@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D08 特征标签（原型 .tag）：高 28dp，Surface Container Low，16dp Primary 图标 + 文字，仅展示 -->
+<com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.HeBan.Product.FeatureChip"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />

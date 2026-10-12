@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D07 农产品集市、D08 商品详情、D09 发布商品（原型 Market / Product / AddProduct.dc.html） -->
+<resources>
+    <!-- ===== D07 农产品集市 ===== -->
+    <string name="market_title">农产品集市</string>
+    <string name="market_search">搜索商品</string>
+    <string name="market_search_close">关闭搜索</string>
+    <string name="market_favorites">我的收藏</string>
+    <string name="market_favorites_on">只看收藏的商品</string>
+    <string name="market_favorites_off">已显示全部商品</string>
+    <string name="market_cat_all">全部</string>
+    <string name="market_cat_produce">农产品</string>
+    <string name="market_cat_supply">农资</string>
+    <string name="market_cat_seedling">种苗</string>
+    <string name="market_cat_machine">农机具</string>
+    <!-- 江宁区附近 · 36 件 -->
+    <string name="market_count_region">%1$s附近 · %2$d 件</string>
+    <string name="market_count_plain">附近 · %1$d 件</string>
+    <string name="market_sort_distance">距离最近</string>
+    <string name="market_sort_newest">最新发布</string>
+    <string name="market_sort_price">价格最低</string>
+    <string name="market_sort_desc">排序：%1$s</string>
+    <string name="market_tag_pinned">置顶 · 剩 %1$d 小时</string>
+    <string name="market_mine">我发布的</string>
+    <string name="market_distance">%1$skm</string>
+    <string name="market_price">¥%1$s</string>
+    <string name="market_unit">" /%1$s"</string>
+    <string name="market_publish">发布</string>
+    <string name="market_empty_all">集市还没有商品</string>
+    <string name="market_empty_category">还没有%1$s商品</string>
+    <string name="market_empty_desc">发布闲置农资或自家农产品，附近的农友都能看到</string>
+    <string name="market_empty_action">发布商品</string>
+    <string name="market_empty_search">没有找到相关商品</string>
+    <string name="market_empty_search_desc">换个关键词试试</string>
+    <string name="market_empty_favorites">还没有收藏的商品</string>
+    <string name="market_empty_favorites_desc">在商品详情页点击「收藏」，就能在这里找到</string>
+
+    <!-- ===== D08 商品详情 ===== -->
+    <string name="product_share">分享</string>
+    <string name="product_share_text">%1$s %2$s，来自禾伴农产品集市</string>
+    <string name="product_image_item">商品图片 %1$d</string>
+    <string name="product_image_empty">暂无商品图片</string>
+    <string name="product_indicator">%1$d / %2$d</string>
+    <string name="product_watermark">禾伴 @%1$s</string>
+    <!-- /斤 · 10 斤起 -->
+    <string name="product_per_unit">/%1$s</string>
+    <string name="product_min_qty">%1$s %2$s起</string>
+    <string name="product_sep">" · "</string>
+    <string name="product_stats">%1$d 人想要 · 浏览 %2$d</string>
+    <string name="product_views">浏览 %1$d</string>
+    <string name="product_verified">已认证</string>
+    <string name="product_seller_years">种植 %1$d 年</string>
+    <string name="product_seller_rating">好评 %1$d%%</string>
+    <string name="product_home">主页</string>
+    <string name="product_desc_title">商品描述</string>
+    <string name="product_row_location">发货地</string>
+    <string name="product_row_spec">规格</string>
+    <string name="product_row_stock">采摘日期</string>
+    <string name="product_notice">禾伴不提供在线支付，请当面验货交易，谨防要求预付定金的诈骗。</string>
+    <string name="product_fav">收藏</string>
+    <string name="product_faved">已收藏</string>
+    <string name="product_chat">私信</string>
+    <string name="product_contact">联系卖家</string>
+    <string name="product_delete">删除</string>
+    <string name="product_delete_title">删除这件商品？</string>
+    <string name="product_delete_message">删除后集市中不再显示，且无法恢复。</string>
+    <string name="product_deleted">已删除</string>
+
+    <!-- 详情页特征标签（与商品 tags 中的文字一致） -->
+    <string name="product_feature_origin">产地直供</string>
+    <string name="product_feature_pickup">可自提</string>
+    <string name="product_feature_local">同城配送</string>
+    <string name="product_feature_express">快递</string>
+    <string name="product_feature_record">附种植记录</string>
+
+    <!-- ===== D09 发布商品 ===== -->
+    <string name="add_product_title">发布商品</string>
+    <string name="add_product_close">关闭</string>
+    <string name="add_product_publish">发布</string>
+    <string name="add_product_cover">封面</string>
+    <string name="add_product_add_media">添加图片或视频</string>
+    <string name="add_product_video">添加视频</string>
+    <string name="add_product_count">%1$d/%2$d</string>
+    <string name="add_product_photo_hint">第一张为封面，建议拍清楚实物和产地</string>
+    <string name="add_product_photo_item">第 %1$d 张图片</string>
+    <string name="add_product_photo_set_cover">设为封面</string>
+    <string name="add_product_photo_delete">删除</string>
+    <string name="add_product_photos_limit">最多添加 %1$d 张图片</string>
+    <string name="add_product_photo_failed">图片添加失败，请重试</string>
+    <string name="add_product_field_title">标题</string>
+    <string name="add_product_category">分类</string>
+    <!-- 农产品 · 水果 -->
+    <string name="add_product_category_value">%1$s · %2$s</string>
+    <string name="add_product_min_qty">起售量</string>
+    <string name="add_product_price">价格（元）</string>
+    <string name="add_product_price_prefix">¥</string>
+    <string name="add_product_unit">单位</string>
+    <string name="add_product_trade">交易方式</string>
+    <string name="add_product_trade_multi">可多选</string>
+    <string name="add_product_location">交易地点</string>
+    <string name="add_product_location_edit">修改交易地点</string>
+    <string name="add_product_location_hint">如：江苏省 句容市 白兔镇</string>
+    <string name="add_product_desc">描述</string>
+    <string name="add_product_pin">置顶 24 小时</string>
+    <!-- 100 积分，排在集市列表最前（我的积分 1,280） -->
+    <string name="add_product_pin_off">%1$d 积分，排在集市列表最前（我的积分 %2$s）</string>
+    <string name="add_product_pin_on">发布时扣除 %1$d 积分，剩余 %2$s；排在集市列表最前</string>
+    <string name="add_product_pin_insufficient">%1$d 积分，排在集市列表最前（积分不足，我的积分 %2$s）</string>
+    <string name="add_product_record">附上种植记录</string>
+    <string name="add_product_record_desc">展示「%1$s」的施肥用药记录，买家更放心</string>
+    <string name="add_product_record_choose">选择作物</string>
+    <string name="add_product_err_photos">请至少添加 1 张图片</string>
+    <string name="add_product_err_title">请输入标题</string>
+    <string name="add_product_err_category">请选择分类</string>
+    <string name="add_product_err_price">请输入正确的价格</string>
+    <string name="add_product_published">已发布</string>
+
+    <!-- 分类（大类 · 细分），大类与 ProductEntity.CAT_* 一致 -->
+    <string-array name="add_product_sub_produce">
+        <item>水果</item>
+        <item>蔬菜</item>
+        <item>粮油</item>
+        <item>禽蛋</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="add_product_sub_supply">
+        <item>肥料</item>
+        <item>农药</item>
+        <item>农膜</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="add_product_sub_seedling">
+        <item>种子</item>
+        <item>秧苗</item>
+        <item>果苗</item>
+    </string-array>
+    <string-array name="add_product_sub_machine">
+        <item>微耕机</item>
+        <item>植保机械</item>
+        <item>小型农具</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="add_product_units">
+        <item>斤</item>
+        <item>公斤</item>
+        <item>箱</item>
+        <item>盒</item>
+        <item>袋</item>
+        <item>株</item>
+        <item>台</item>
+        <item>件</item>
+    </string-array>
+</resources>

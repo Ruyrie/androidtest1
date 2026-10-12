@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D07 农产品集市 / D08 商品详情 / D09 发布商品 专用尺寸与样式 -->
+<resources>
+    <dimen name="market_card_image">150dp</dimen>
+    <dimen name="product_image_height">300dp</dimen>
+    <dimen name="add_product_tile">88dp</dimen>
+    <!-- 原型表单项之间 20dp：描边输入框顶部为浮动标签预留约 7dp，紧接输入框时减去 -->
+    <dimen name="add_product_gap">20dp</dimen>
+    <dimen name="add_product_field_gap">14dp</dimen>
+
+    <!-- D07 卡片价格：18/24 Medium Primary -->
+    <style name="TextAppearance.HeBan.Market.Price" parent="TextAppearance.HeBan.TitleMedium">
+        <item name="android:textSize">18sp</item>
+        <item name="lineHeight">24sp</item>
+    </style>
+
+    <!-- D07 卡片头像文字：11sp Medium -->
+    <style name="TextAppearance.HeBan.Market.Avatar" parent="TextAppearance.HeBan.LabelSmall">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <!-- D07 分类 Chip：高 32dp，未选中左右 14dp；选中时左侧 8dp + 18dp 勾 + 6dp -->
+    <style name="Widget.HeBan.Market.CategoryChip" parent="Widget.HeBan.Chip.Filter">
+        <item name="chipStartPadding">9dp</item>
+        <item name="chipEndPadding">9dp</item>
+        <item name="iconEndPadding">0dp</item>
+        <item name="textStartPadding">5dp</item>
+        <item name="textEndPadding">5dp</item>
+    </style>
+
+    <!-- D07 排序按钮：14sp，On Surface Variant，右侧 18dp 下拉箭头 -->
+    <style name="Widget.HeBan.Market.SortButton" parent="Widget.HeBan.Button.Text">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">32dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="iconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="iconGravity">end</item>
+        <item name="iconSize">18dp</item>
+        <item name="iconPadding">2dp</item>
+    </style>
+
+    <!-- D08 正文：14/22 -->
+    <style name="TextAppearance.HeBan.Product.Body" parent="TextAppearance.HeBan.BodyMedium">
+        <item name="lineHeight">22sp</item>
+    </style>
+
+    <!-- D08 防诈骗提示：13/20 -->
+    <style name="TextAppearance.HeBan.Product.Notice" parent="TextAppearance.HeBan.BodyMedium">
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">20sp</item>
+    </style>
+
+    <!-- D08 特征标签：高 28dp，左右 10dp，圆角 8dp，Surface Container Low，16dp Primary 图标 + 4dp，12/16 Medium -->
+    <style name="Widget.HeBan.Product.FeatureChip" parent="Widget.HeBan.Chip.Assist">
+        <item name="chipBackgroundColor">?attr/colorSurfaceContainerLow</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="chipCornerRadius">@dimen/corner_small</item>
+        <item name="chipMinHeight">28dp</item>
+        <item name="chipIconVisible">true</item>
+        <item name="chipIconSize">16dp</item>
+        <item name="chipIconTint">?attr/colorPrimary</item>
+        <item name="chipStartPadding">10dp</item>
+        <item name="iconStartPadding">0dp</item>
+        <item name="iconEndPadding">0dp</item>
+        <item name="textStartPadding">4dp</item>
+        <item name="textEndPadding">0dp</item>
+        <item name="chipEndPadding">10dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelMedium</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="ensureMinTouchTargetSize">false</item>
+    </style>
+
+    <!-- D08 卖家卡片「主页」：高 32dp，左右 12dp，Outline 描边，Primary 文字 -->
+    <style name="Widget.HeBan.Product.HomeButton" parent="Widget.HeBan.Button.Outlined">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">32dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+    </style>
+
+    <!-- D08 底栏图标按钮（收藏 / 私信 / 浏览）：宽 56dp，24dp 图标 + 2dp + 11/16 Medium 文字 -->
+    <style name="Widget.HeBan.Product.BarItem" parent="">
+        <item name="android:layout_width">56dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <!-- D08 底栏图标按钮文字：11/16 Medium On Surface Variant，图标下方 2dp -->
+    <style name="Widget.HeBan.Product.BarLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelSmall</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- D08 信息行：标签列 72dp + 内容，上下 8dp，14/20 -->
+    <style name="Widget.HeBan.Product.InfoRow" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="Widget.HeBan.Product.InfoLabel" parent="">
+        <item name="android:layout_width">72dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="Widget.HeBan.Product.InfoValue" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- D08 底栏主按钮：高 48dp，圆角 24dp，20dp 图标 + 8dp，16/24 Medium -->
+    <style name="Widget.HeBan.Product.MainButton" parent="Widget.HeBan.Button">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceTitleMedium</item>
+        <item name="cornerRadius">24dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">20dp</item>
+        <item name="iconPadding">8dp</item>
+    </style>
+
+    <!-- D08 自己发布的商品：删除（Error 描边按钮） -->
+    <style name="Widget.HeBan.Product.DeleteButton" parent="Widget.HeBan.Button.Outlined">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceTitleMedium</item>
+        <item name="android:textColor">?attr/colorError</item>
+        <item name="iconTint">?attr/colorError</item>
+        <item name="strokeColor">?attr/colorError</item>
+        <item name="cornerRadius">24dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">20dp</item>
+        <item name="iconPadding">8dp</item>
+    </style>
+
+    <!-- D09 顶栏「发布」：高 40dp，左右 20dp，Filled -->
+    <style name="Widget.HeBan.AddProduct.PublishButton" parent="Widget.HeBan.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_gravity">end|center_vertical</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+    </style>
+
+    <!-- D09 交易方式 Chip：未选中左右 16dp；选中时左侧 8dp + 18dp 勾 + 6dp -->
+    <style name="Widget.HeBan.AddProduct.TradeChip" parent="Widget.HeBan.Chip.Filter">
+        <item name="chipStartPadding">11dp</item>
+        <item name="chipEndPadding">11dp</item>
+        <item name="iconEndPadding">0dp</item>
+        <item name="textStartPadding">5dp</item>
+        <item name="textEndPadding">5dp</item>
+    </style>
+
+    <!-- D09 开关 52 × 32：打开时白色滑块内显示 Primary 色的勾（图标在代码中按状态设置） -->
+    <style name="Widget.HeBan.AddProduct.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbIconTint">?attr/colorPrimary</item>
+    </style>
+</resources>

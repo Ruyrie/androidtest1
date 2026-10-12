@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D08 商品详情（原型 Product.dc.html）：图片轮播 300dp（返回 / 分享浮层、页码）、价格与想要 / 浏览、标题、
+     特征标签、卖家卡片、商品描述、信息行、防诈骗提示；底栏 收藏 / 私信 / 联系卖家（自己的商品：浏览 + 删除） -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.heban.app.ui.discover.market.ProductViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/product_image_height"
+                        android:background="?attr/colorSurfaceContainerHighest">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            tools:listitem="@layout/product_item_image" />
+
+                        <TextView
+                            android:id="@+id/tv_indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:layout_gravity="bottom|end"
+                            android:layout_margin="16dp"
+                            android:background="@drawable/product_bg_indicator"
+                            android:backgroundTint="@color/product_indicator_bg"
+                            android:gravity="center"
+                            android:paddingHorizontal="10dp"
+                            android:textAppearance="?attr/textAppearanceBodySmall"
+                            android:textColor="?attr/colorOnSurfaceInverse"
+                            tools:text="1 / 4" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/page_margin">
+
+                        <!-- ¥25 /斤 · 10 斤起 …… 23 人想要 · 浏览 418 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:baselineAligned="true"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                                android:textColor="?attr/colorPrimary"
+                                tools:text="¥25" />
+
+                            <TextView
+                                android:id="@+id/tv_unit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                tools:text="/斤 · 10 斤起" />
+
+                            <TextView
+                                android:id="@+id/tv_stats"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:maxLines="1"
+                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                tools:text="23 人想要 · 浏览 418" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:accessibilityHeading="true"
+                            android:text="@{vm.product.title}"
+                            android:textAppearance="?attr/textAppearanceTitleLarge"
+                            android:textColor="?attr/colorOnSurface"
+                            tools:text="句容红颜草莓 当天现摘" />
+
+                        <!-- 特征标签（Chip 不可点击，触控区不扩展） -->
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/features"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            app:chipSpacingHorizontal="8dp"
+                            app:chipSpacingVertical="8dp" />
+
+                        <!-- 卖家卡片 -->
+                        <LinearLayout
+                            android:id="@+id/seller_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:background="@drawable/product_bg_seller"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/tv_avatar"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:background="@drawable/market_bg_avatar"
+                                android:gravity="center"
+                                android:importantForAccessibility="no"
+                                android:includeFontPadding="false"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textSize="18sp"
+                                tools:text="莓" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_seller"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:ellipsize="end"
+                                        android:maxLines="1"
+                                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                                        android:textColor="?attr/colorOnSurface"
+                                        tools:text="草莓姐姐" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_verified"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginStart="6dp"
+                                        android:contentDescription="@string/product_verified"
+                                        android:src="@drawable/ic_verified_fill"
+                                        app:tint="?attr/colorTertiary" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/tv_seller_info"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:textAppearance="?attr/textAppearanceBodySmall"
+                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    tools:text="句容白兔镇 · 种植 8 年 · 好评 98%" />
+                            </LinearLayout>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_home"
+                                style="@style/Widget.HeBan.Product.HomeButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:layout_marginStart="12dp"
+                                android:text="@string/product_home" />
+                        </LinearLayout>
+
+                        <!-- 商品描述 -->
+                        <LinearLayout
+                            android:id="@+id/section_desc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:accessibilityHeading="true"
+                                android:text="@string/product_desc_title"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <TextView
+                                android:id="@+id/tv_desc"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:lineHeight="22sp"
+                                android:text="@{vm.product.description}"
+                                android:textAppearance="@style/TextAppearance.HeBan.Product.Body"
+                                android:textColor="?attr/colorOnSurface"
+                                tools:text="大棚种植，膜下滴灌，坐果期只用生物农药。" />
+                        </LinearLayout>
+
+                        <!-- 信息行：发货地 / 规格 / 采摘日期（上方 1dp 分隔线） -->
+                        <LinearLayout
+                            android:id="@+id/rows"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:divider="@drawable/product_bg_divider"
+                            android:orientation="vertical"
+                            android:showDividers="beginning">
+
+                            <LinearLayout
+                                android:id="@+id/row_location"
+                                style="@style/Widget.HeBan.Product.InfoRow">
+
+                                <TextView
+                                    style="@style/Widget.HeBan.Product.InfoLabel"
+                                    android:text="@string/product_row_location" />
+
+                                <TextView
+                                    android:id="@+id/tv_location"
+                                    style="@style/Widget.HeBan.Product.InfoValue"
+                                    tools:text="江苏省 句容市 白兔镇" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/row_spec"
+                                style="@style/Widget.HeBan.Product.InfoRow">
+
+                                <TextView
+                                    style="@style/Widget.HeBan.Product.InfoLabel"
+                                    android:text="@string/product_row_spec" />
+
+                                <TextView
+                                    android:id="@+id/tv_spec"
+                                    style="@style/Widget.HeBan.Product.InfoValue"
+                                    tools:text="2 斤 / 盒，单果 20–30 g" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/row_stock"
+                                style="@style/Widget.HeBan.Product.InfoRow">
+
+                                <TextView
+                                    style="@style/Widget.HeBan.Product.InfoLabel"
+                                    android:text="@string/product_row_stock" />
+
+                                <TextView
+                                    android:id="@+id/tv_stock"
+                                    style="@style/Widget.HeBan.Product.InfoValue"
+                                    tools:text="每日现摘，库存约 300 斤" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- 防诈骗提示 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:background="@drawable/product_bg_notice"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="10dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_shield"
+                                app:tint="?attr/colorOnWarningContainer" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="1"
+                                android:lineHeight="20sp"
+                                android:text="@string/product_notice"
+                                android:textAppearance="@style/TextAppearance.HeBan.Product.Notice"
+                                android:textColor="?attr/colorOnWarningContainer" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <!-- 底栏：80dp，Surface Container -->
+            <LinearLayout
+                android:id="@+id/bottom_bar"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="?attr/colorSurfaceContainer"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="8dp"
+                android:paddingEnd="16dp">
+
+                <LinearLayout
+                    android:id="@+id/btn_fav"
+                    style="@style/Widget.HeBan.Product.BarItem"
+                    android:contentDescription="@{safeUnbox(vm.favorite) ? @string/product_faved : @string/product_fav}">
+
+                    <ImageView
+                        android:id="@+id/iv_fav"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_favorite"
+                        app:tint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:id="@+id/tv_fav"
+                        style="@style/Widget.HeBan.Product.BarLabel"
+                        android:text="@{safeUnbox(vm.favorite) ? @string/product_faved : @string/product_fav}"
+                        tools:text="@string/product_fav" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btn_chat"
+                    style="@style/Widget.HeBan.Product.BarItem"
+                    android:layout_marginStart="4dp"
+                    android:contentDescription="@string/product_chat">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_chat_bubble"
+                        app:tint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        style="@style/Widget.HeBan.Product.BarLabel"
+                        android:text="@string/product_chat" />
+                </LinearLayout>
+
+                <!-- 自己发布的商品：浏览数 -->
+                <LinearLayout
+                    android:id="@+id/item_views"
+                    style="@style/Widget.HeBan.Product.BarItem"
+                    android:background="@null"
+                    android:focusable="true"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_visibility"
+                        app:tint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:id="@+id/tv_views"
+                        style="@style/Widget.HeBan.Product.BarLabel"
+                        tools:text="浏览 418" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_contact"
+                    style="@style/Widget.HeBan.Product.MainButton"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:text="@string/product_contact"
+                    app:icon="@drawable/ic_call" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_delete"
+                    style="@style/Widget.HeBan.Product.DeleteButton"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:text="@string/product_delete"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_delete" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 返回 / 分享：40dp 圆形浮层按钮，固定在页面顶部 -->
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="top|start"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/product_bg_overlay_button"
+            android:backgroundTint="@color/product_overlay_bg"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="?attr/colorOnSurface" />
+
+        <ImageButton
+            android:id="@+id/btn_share"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/product_bg_overlay_button"
+            android:backgroundTint="@color/product_overlay_bg"
+            android:contentDescription="@string/product_share"
+            android:src="@drawable/ic_share"
+            app:tint="?attr/colorOnSurface" />
+    </FrameLayout>
+</layout>
