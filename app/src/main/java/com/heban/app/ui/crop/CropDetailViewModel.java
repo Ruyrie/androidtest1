@@ -161,4 +161,31 @@ public class CropDetailViewModel extends BaseViewModel {
     private void onError(Throwable e) {
         toast.setValue(AppError.from(e).message);
     }
+
+    /**
+     * 「问 AI 诊断」带入的问题：「我种的番茄（樱桃番茄，结果期第 68 天，1号大棚）……」；
+     * 有「需关注」提示时请 AI 针对该风险诊断，否则请教当前阶段的管理要点。
+     */
+    @Nullable
+    static String aiPrompt(@Nullable CropDetail d) {
+        if (d == null || d.crop == null) return null;
+        StringBuilder who = new StringBuilder(d.crop.name);
+        StringBuilder info = new StringBuilder();
+        if (d.crop.variety != null && !d.crop.variety.trim().isEmpty()) info.append(d.crop.variety.trim());
+        if (d.card != null) {
+            if (info.length() > 0) info.append("，");
+            if (d.card.stage != null && !d.card.stage.isEmpty()) info.append(d.card.stage);
+            info.append("第 ").append(d.card.daysPlanted).append(" 天");
+        }
+        if (d.plotName != null && !d.plotName.isEmpty()) {
+            if (info.length() > 0) info.append("，");
+            info.append(d.plotName);
+        }
+        if (info.length() > 0) who.append("（").append(info).append("）");
+        String note = d.crop.attentionNote;
+        if (note != null && !note.trim().isEmpty()) {
+            return "我种的" + who + "出现了「" + note.trim() + "」提示，请帮我诊断原因并给出防治建议。";
+        }
+        return "我种的" + who + "现在需要注意什么？请结合当前生长阶段给出管理建议。";
+    }
 }

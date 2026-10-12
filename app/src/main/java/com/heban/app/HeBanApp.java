@@ -11,6 +11,8 @@ import com.google.android.material.color.DynamicColorsOptions;
 import com.heban.app.di.AppContainer;
 import com.heban.app.di.AppViewModelFactory;
 import com.heban.app.worker.WeatherRefreshWorker;
+import com.squareup.picasso.LruCache;
+import com.squareup.picasso.Picasso;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
@@ -46,6 +48,16 @@ public class HeBanApp extends Application {
                 .build());
 
         RxJavaPlugins.setErrorHandler(e -> Log.w(TAG, "Undeliverable RxJava error", e));
+
+        // Picasso：详情大图（技术准备文档 10.2），内存缓存 16MB，调试时显示来源标记
+        try {
+            Picasso.setSingletonInstance(new Picasso.Builder(this)
+                    .memoryCache(new LruCache(16 * 1024 * 1024))
+                    .indicatorsEnabled(BuildConfig.DEBUG)
+                    .build());
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "Picasso already initialized", e);
+        }
         container.notifier.createChannels();
         try {
             WeatherRefreshWorker.enqueue(this);     // 每 3 小时刷新天气，满足降温预警时通知

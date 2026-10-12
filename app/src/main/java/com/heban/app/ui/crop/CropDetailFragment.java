@@ -64,7 +64,12 @@ public class CropDetailFragment extends BaseFragment {
             nav().navigate(R.id.addCropFragment, cropArgs());
         });
         binding.btnMore.setOnClickListener(this::showMoreMenu);
-        binding.btnAskAi.setOnClickListener(v -> nav().navigate(R.id.aiChatFragment, cropArgs()));
+        binding.btnAskAi.setOnClickListener(v -> {
+            Bundle b = cropArgs();
+            String prompt = CropDetailViewModel.aiPrompt(vm.detail.getValue());
+            if (prompt != null) b.putString(NavArgs.AI_PROMPT, prompt);
+            nav().navigate(R.id.aiChatFragment, b);
+        });
         binding.btnAddRecord.setOnClickListener(v -> {
             if (!LoginRequired.check(this)) return;
             nav().navigate(R.id.addRecordFragment, cropArgs());
