@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D10 收支记账 / D11 记一笔 -->
+<resources>
+    <!-- D10 收支记账 -->
+    <string name="ledger_title">收支记账</string>
+    <string name="ledger_prev_month">上个月</string>
+    <string name="ledger_next_month">下个月</string>
+    <string name="ledger_balance_current">本月结余</string>
+    <string name="ledger_balance_month">%1$d月结余</string>
+    <string name="ledger_income">收入</string>
+    <string name="ledger_expense">支出</string>
+    <string name="ledger_views">统计视图</string>
+    <string name="ledger_view_trend">结余趋势</string>
+    <string name="ledger_view_mix">支出构成</string>
+    <string name="ledger_mix_empty">这个月还没有支出</string>
+    <string name="ledger_add">记一笔</string>
+    <string name="ledger_empty_title">还没有记账</string>
+    <string name="ledger_empty_desc">点「记一笔」记下收入和支出</string>
+    <string name="ledger_record_locked">来自农事记录的账目请在农事记录中修改</string>
+    <string name="ledger_delete_title">删除这笔账？</string>
+    <string name="ledger_delete_message">「%1$s %2$s」删除后不能恢复。</string>
+    <string name="ledger_deleted">已删除</string>
+
+    <!-- D11 记一笔 -->
+    <string name="add_entry_close">关闭</string>
+    <string name="add_entry_kind">收支类型</string>
+    <string name="add_entry_out">支出</string>
+    <string name="add_entry_in">收入</string>
+    <string name="add_entry_categories">分类</string>
+    <string name="add_entry_crop_none">不关联作物</string>
+    <string name="add_entry_crop_pick">关联作物</string>
+    <string name="add_entry_date_pick">选择日期</string>
+    <string name="add_entry_note_add">添加备注</string>
+    <string name="add_entry_note_hint">备注，如「樱桃番茄 120 斤」</string>
+    <string name="add_entry_backspace">删除</string>
+    <string name="add_entry_clear">清空</string>
+    <string name="add_entry_save">保存</string>
+    <string name="add_entry_delete">删除</string>
+    <string name="add_entry_amount_required">请输入金额</string>
+    <string name="add_entry_saved">已记一笔</string>
+    <string name="add_entry_updated">已保存修改</string>
+    <string name="add_entry_deleted">已删除</string>
+    <string name="add_entry_not_found">这笔账已不存在</string>
+    <string name="add_entry_record_locked">来自农事记录的账目请在农事记录中修改</string>
+</resources>

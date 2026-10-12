@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D10 本月汇总主信息卡：圆角 28dp，Primary Container（原型 Ledger） -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="28dp" />
+    <solid android:color="?attr/colorPrimaryContainer" />
+</shape>

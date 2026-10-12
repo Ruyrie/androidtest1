@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D10 流水卡片（Surface Container Low，圆角 16dp）：同一天的第一条，带点击涟漪 -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight">
+    <item>
+        <shape android:shape="rectangle">
+            <corners
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="0dp"
+                android:topLeftRadius="16dp"
+                android:topRightRadius="16dp" />
+            <solid android:color="?attr/colorSurfaceContainerLow" />
+        </shape>
+    </item>
+</ripple>

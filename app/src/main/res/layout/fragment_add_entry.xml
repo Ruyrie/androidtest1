@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D11 记一笔（原型 AddEntry.dc.html）：支出 / 收入、金额、类别网格、作物 · 日期 · 备注、自定义数字键盘 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.heban.app.ui.discover.ledger.AddEntryViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:orientation="vertical">
+
+        <!-- 顶栏：× · 支出 | 收入（居中，每段 88 × 40）· 编辑时右侧「删除」 -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.HeBan.Toolbar"
+            android:layout_width="match_parent"
+            android:paddingEnd="4dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetEndWithActions="0dp"
+            app:navigationContentDescription="@string/add_entry_close"
+            app:navigationIcon="@drawable/ic_close">
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/group_type"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/add_entry_kind"
+                app:checkedButton="@id/btn_out"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_out"
+                    style="@style/Widget.HeBan.Ledger.Segment"
+                    android:layout_width="88dp"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="@string/add_entry_out" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_in"
+                    style="@style/Widget.HeBan.Ledger.Segment"
+                    android:layout_width="88dp"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="@string/add_entry_in" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <!-- 金额与类别：小屏时可滚动，键盘固定在底部 -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- 「支出 · 化肥」+「−¥60」：右对齐，内边距 16 24 8 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="24dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.headerText}"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        tools:text="支出 · 化肥" />
+
+                    <TextView
+                        android:id="@+id/tv_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:accessibilityLiveRegion="polite"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@{vm.amountText}"
+                        android:textAppearance="@style/TextAppearance.HeBan.AddEntry.Amount"
+                        android:textColor="?attr/colorOnSurface"
+                        tools:text="−¥60" />
+                </LinearLayout>
+
+                <!-- 类别：4 列，行距 16dp、列距 8dp（格子各留 8dp / 4dp 外边距） -->
+                <GridLayout
+                    android:id="@+id/grid_categories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="4"
+                    android:contentDescription="@string/add_entry_categories"
+                    android:paddingHorizontal="12dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="8dp"
+                    android:useDefaultMargins="false" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- 作物 · 日期 · 备注：高 32dp、圆角 8dp 的描边 Chip，间距 8dp，放不下时换行
+             （Chip 上下各有 8dp 透明触控区，用负边距抵消） -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-8dp"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="4dp"
+            app:chipSpacingHorizontal="8dp"
+            app:chipSpacingVertical="-8dp">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_crop"
+                style="@style/Widget.HeBan.AddEntry.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_entry_crop_none"
+                app:chipIcon="@drawable/ic_nutrition"
+                app:closeIcon="@drawable/ic_arrow_drop_down"
+                app:closeIconVisible="true"
+                app:textEndPadding="6dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_date"
+                style="@style/Widget.HeBan.AddEntry.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:chipIcon="@drawable/ic_event"
+                tools:text="今天 10/10" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_note"
+                style="@style/Widget.HeBan.AddEntry.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_entry_note_add"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:chipIcon="@drawable/ic_edit_note" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- 数字键盘：Surface Container 底，内边距 12 12 20，4 列间距 8dp（每键外边距 4dp），「保存」占两行 -->
+        <GridLayout
+            android:id="@+id/keypad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorSurfaceContainer"
+            android:columnCount="4"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="16dp"
+            android:rowCount="4"
+            android:useDefaultMargins="false">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_1"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:text="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_2"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:text="2" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_3"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:text="3" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_back"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:contentDescription="@string/add_entry_backspace"
+                app:icon="@drawable/ic_backspace" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_4"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:text="4" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_5"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:text="5" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_6"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:text="6" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_clear"
+                style="@style/Widget.HeBan.AddEntry.Key.Small"
+                android:text="@string/add_entry_clear" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_7"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:text="7" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_8"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:text="8" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_9"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:text="9" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_save"
+                style="@style/Widget.HeBan.AddEntry.Key.Save"
+                android:enabled="@{!safeUnbox(vm.saving)}"
+                android:text="@string/add_entry_save" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_dot"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:text="." />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_0"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:text="0" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_00"
+                style="@style/Widget.HeBan.AddEntry.Key"
+                android:text="00" />
+        </GridLayout>
+    </LinearLayout>
+</layout>

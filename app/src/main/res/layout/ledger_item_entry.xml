@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D10 一条流水：高 64dp，左右 16dp；类别图标 40dp 圆形底 · 标题 / 副标题 · 金额（收入 Primary「+」，支出 On Surface「−」）。
+     背景（圆角位置）、分隔线、图标颜色由 LedgerAdapter 按 first / last / income 设置 -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="row"
+            type="com.heban.app.ui.discover.ledger.LedgerRow" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/item"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/ledger_bg_item_single">
+
+        <!-- 同一天内的分隔线：1dp Surface Variant，通栏 -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorSurfaceVariant" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <FrameLayout
+                android:id="@+id/icon_bg"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ledger_bg_circle"
+                android:importantForAccessibility="no">
+
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    tools:src="@drawable/ic_sell" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{row.title}"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    tools:text="樱桃番茄 120 斤" />
+
+                <TextView
+                    android:id="@+id/tv_sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{row.sub}"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="销售 · 番茄 · 1号大棚" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:maxLines="1"
+                android:text="@{row.amount}"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                tools:text="+960" />
+        </LinearLayout>
+    </FrameLayout>
+</layout>

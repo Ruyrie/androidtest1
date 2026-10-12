@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D10 收支记账 / D11 记一笔 专用样式（颜色全部取自主题） -->
+<resources>
+    <!-- 分段按钮：高 40dp，1dp Outline 描边，选中 Secondary Container（D10 带勾） -->
+    <style name="Widget.HeBan.Ledger.Segment" parent="Widget.HeBan.Button.Outlined">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:checkable">true</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="android:textColor">@color/ledger_segment_fg</item>
+        <item name="iconTint">@color/ledger_segment_fg</item>
+        <item name="backgroundTint">@color/ledger_segment_bg</item>
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">18dp</item>
+        <item name="iconPadding">6dp</item>
+    </style>
+
+    <!-- 本月结余：36 / 44（原型 font-size 36px） -->
+    <style name="TextAppearance.HeBan.Ledger.Balance" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <!-- 收入 / 支出金额：18 / 24 Medium -->
+    <style name="TextAppearance.HeBan.Ledger.SummaryValue" parent="TextAppearance.HeBan.TitleMedium">
+        <item name="android:textSize">18sp</item>
+        <item name="lineHeight">24sp</item>
+    </style>
+
+    <!-- D11 大号金额：45 / 52（原型 font-size 45px） -->
+    <style name="TextAppearance.HeBan.AddEntry.Amount" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <!-- D11 数字键：高 56dp，圆角 16dp，Surface 底，22sp 常规字重 -->
+    <style name="Widget.HeBan.AddEntry.Key" parent="Widget.Material3.Button.UnelevatedButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceTitleLarge</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="backgroundTint">?attr/colorSurface</item>
+        <item name="rippleColor">?attr/colorControlHighlight</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="iconTint">?attr/colorOnSurface</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconSize">24dp</item>
+    </style>
+
+    <!-- 「清空」：16sp -->
+    <style name="Widget.HeBan.AddEntry.Key.Small">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- 「保存」：占两行，Primary 底，16 / 24 Medium -->
+    <style name="Widget.HeBan.AddEntry.Key.Save">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_rowSpan">2</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="android:textAppearance">?attr/textAppearanceTitleMedium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+    </style>
+
+    <!-- D11 作物 / 日期 / 备注 Chip：高 32dp，圆角 8dp，Outline Variant 描边，图标 18dp Primary，间距 6dp -->
+    <style name="Widget.HeBan.AddEntry.Chip" parent="Widget.HeBan.Chip.Assist">
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:maxWidth">280dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="chipStrokeColor">?attr/colorOutlineVariant</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipIconSize">18dp</item>
+        <item name="chipIconTint">?attr/colorPrimary</item>
+        <item name="chipStartPadding">10dp</item>
+        <item name="iconStartPadding">0dp</item>
+        <item name="iconEndPadding">0dp</item>
+        <item name="textStartPadding">6dp</item>
+        <item name="textEndPadding">8dp</item>
+        <item name="chipEndPadding">0dp</item>
+        <item name="closeIconSize">18dp</item>
+        <item name="closeIconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="closeIconStartPadding">0dp</item>
+        <item name="closeIconEndPadding">8dp</item>
+    </style>
+</resources>

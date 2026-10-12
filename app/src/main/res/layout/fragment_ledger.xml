@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D10 收支记账（原型 Ledger.dc.html）：月份切换、本月汇总、结余趋势 / 支出构成、按天分组的明细、「记一笔」扩展 FAB -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.heban.app.ui.discover.ledger.LedgerViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- 顶栏：返回 · 收支记账 · ‹ 2026年10月 › -->
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                style="@style/Widget.HeBan.Toolbar"
+                android:layout_width="match_parent"
+                android:paddingEnd="4dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetEndWithActions="0dp"
+                app:navigationContentDescription="@string/back"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:title="@string/ledger_title">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btn_prev"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/ledger_prev_month"
+                        android:onClick="@{() -> vm.previousMonth()}"
+                        android:src="@drawable/ic_chevron_left"
+                        app:tint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:id="@+id/tv_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:text="@{vm.monthTitle}"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:textColor="?attr/colorOnSurface"
+                        tools:text="2026年10月" />
+
+                    <ImageButton
+                        android:id="@+id/btn_next"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:alpha="@{safeUnbox(vm.canNext) ? 1f : 0.38f}"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/ledger_next_month"
+                        android:enabled="@{safeUnbox(vm.canNext)}"
+                        android:onClick="@{() -> vm.nextMonth()}"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="?attr/colorOnSurfaceVariant" />
+                </LinearLayout>
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/page_margin"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="96dp">
+
+                    <!-- 本月汇总：Primary Container，圆角 28dp，内边距 20 / 18 -->
+                    <LinearLayout
+                        android:id="@+id/card_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ledger_bg_summary"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="18dp">
+
+                        <TextView
+                            android:id="@+id/tv_balance_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ledger_balance_current"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?attr/colorOnPrimaryContainer" />
+
+                        <TextView
+                            android:id="@+id/tv_balance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:maxLines="1"
+                            android:text="@{vm.balanceText}"
+                            android:textAppearance="@style/TextAppearance.HeBan.Ledger.Balance"
+                            android:textColor="?attr/colorOnPrimaryContainer"
+                            tools:text="+¥3,460" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="12dp"
+                            android:alpha="0.2"
+                            android:background="?attr/colorOnPrimaryContainer" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingTop="12dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="6dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/ledger_income"
+                                    android:textAppearance="?attr/textAppearanceBodySmall"
+                                    android:textColor="?attr/colorOnPrimaryContainer" />
+
+                                <TextView
+                                    android:id="@+id/tv_income"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:maxLines="1"
+                                    android:text="@{vm.incomeText}"
+                                    android:textAppearance="@style/TextAppearance.HeBan.Ledger.SummaryValue"
+                                    android:textColor="?attr/colorOnPrimaryContainer"
+                                    tools:text="¥5,200" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/ledger_expense"
+                                    android:textAppearance="?attr/textAppearanceBodySmall"
+                                    android:textColor="?attr/colorOnPrimaryContainer" />
+
+                                <TextView
+                                    android:id="@+id/tv_expense"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:maxLines="1"
+                                    android:text="@{vm.expenseText}"
+                                    android:textAppearance="@style/TextAppearance.HeBan.Ledger.SummaryValue"
+                                    android:textColor="?attr/colorOnPrimaryContainer"
+                                    tools:text="¥1,740" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 统计视图：结余趋势 / 支出构成（分段按钮，高 40dp） -->
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/group_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="14dp"
+                        android:contentDescription="@string/ledger_views"
+                        app:checkedButton="@id/btn_trend"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_trend"
+                            style="@style/Widget.HeBan.Ledger.Segment"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/ledger_view_trend" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_mix"
+                            style="@style/Widget.HeBan.Ledger.Segment"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/ledger_view_mix" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                    <!-- 图表区：高 176dp -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="176dp"
+                        android:layout_marginTop="14dp">
+
+                        <com.heban.app.ui.discover.ledger.LedgerBarChartView
+                            android:id="@+id/chart_trend"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:visible="@{!safeUnbox(vm.showMix)}" />
+
+                        <com.heban.app.ui.discover.ledger.LedgerMixChartView
+                            android:id="@+id/chart_mix"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:visible="@{safeUnbox(vm.showMix)}" />
+                    </FrameLayout>
+
+                    <!-- 明细：按天分组 -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/ledger_item_entry" />
+
+                    <!-- 本月没有记账（UI 设计文档表 7-2：图标 64 圆形底 + 标题 + 一句说明；主操作即「记一笔」FAB） -->
+                    <LinearLayout
+                        android:id="@+id/empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="32dp"
+                        android:paddingTop="24dp"
+                        android:paddingBottom="8dp"
+                        app:visible="@{safeUnbox(vm.empty)}">
+
+                        <FrameLayout
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:background="@drawable/ledger_bg_circle"
+                            android:backgroundTint="?attr/colorSecondaryContainer"
+                            android:importantForAccessibility="no">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_gravity="center"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_receipt_long"
+                                app:tint="?attr/colorOnSecondaryContainer" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center"
+                            android:text="@string/ledger_empty_title"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center"
+                            android:text="@string/ledger_empty_desc"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+
+        <!-- 记一笔：扩展 FAB，Primary Container，距右 16dp、距底 24dp；列表滚动时收起为图标 -->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_add"
+            style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/ledger_add"
+            app:icon="@drawable/ic_edit" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
